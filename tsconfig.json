@@ -1,0 +1,115 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        ////////// Module //////////
+        "module": "CommonJS", // 모듈 코드 생성시에 어떤 버전으로 생성할지
+        "moduleResolution": "node", // 모듈 코드 해석시에 어떤 버전으로 해석할지
+        "allowSyntheticDefaultImports": true, // default export없는 모듈도 default import 가능하게
+        "esModuleInterop": true, // babel 생태계와의 호환을 의해 __importStar, __importDefault를 내보냄. 타입 시스템 호환을 위해 바로 위의 것 활성화함.
+        ////////// path //////////
+        "baseUrl": ".", // 나중에 module참조 에러시 사용할 path
+        "outDir": "./dist", // 출력 데이터(구조적으로) 쌓이는 경로
+        "paths": {
+            "@Assets/*": [
+                "src/Assets/*"
+            ],
+            "@Types/*": [
+                "src/@types/*"
+            ],
+            "@Models/*": [
+                "src/Models/*"
+            ],
+            "@Views/*": [
+                "src/Views/*"
+            ],
+            "@Pages/*": [
+                "src/Pages/*"
+            ],
+            "@Templates/*": [
+                "src/Templates/*"
+            ],
+            "@Utils/*": [
+                "src/Utils/*"
+            ],
+            "@Components/*": [
+                "src/Components/*"
+            ],
+            "@Stores/*": [
+                "src/Stores/*"
+            ],
+            "@Styles/*": [
+                "src/Styles/*"
+            ],
+            "@Widgets/*": [
+                "src/Widgets/*"
+            ],
+            "@Module/*": [
+                "src/Module/*"
+            ],
+        },
+        ////////// log //////////
+        "listFiles": false, // 컴파일 부분에서 생성된 파일의 이름을 로깅함.
+        "pretty": true, // 에러랑 메세지를 이쁘게 표현함.
+        ////////// React //////////
+        "jsx": "react-jsx", // tsx에서 jsx 활용 가능하게 함.
+        ////////// JS //////////
+        "allowJs": true, // js파일도 컴파일에 포함함.
+        "checkJs": false, // js파일의 에러도 잡음. allowjs 없이 못씀
+        "maxNodeModuleJsDepth": 0, // js파일이 node_modules에서 검색 가능한 최대 의존성 깊이
+        ////////// Lint + Strict //////////
+        "strict": true,
+        "noUnusedLocals": false, // 안쓰는 로컬 변수 체크
+        "noUnusedParameters": false, // 함수 파라미터 중 안쓰는 것 체크
+        "noFallthroughCasesInSwitch": true, // switch문제서 fallthrough를 잡아줌
+        "noImplicitReturns": true, // 모든 경로의 함수가 리턴하는지 확인
+        /*
+		  "noImplicitAny": true,                      // any타입이 될거 같으면 error
+		  "noImplicitThis": true,                     // this 쓸 때, 요소가 any타입이면 error
+		  "alwaysStrict": true,                       // 컴파일 시에 모든 파일에 'use strict'포함.
+		  "strictBindCallApply": true,                // bind, call, apply 메소드를 엄격하게 검사
+		  "strictNullChecks": true,                   // null, undefined는 any혹은 각각을 표기한 곳에서만 허용, 포함되있던 일반적 경우에 대해 모두 제거
+		  "strictFunctionTypes": true,                // 서브타입은 파라미터로 받지 않음.
+		  "strictPropertyInitialization": true,       // 초기화 되지 않은 class 변수는 constructor에서 초기화를 보장(타입 + 초기값)
+			*/
+        ////////// edit outfile //////////
+        "newLine": "lf", // new line(\n)의 형태
+        "removeComments": true, // 컴파일 결과에 코멘트 삭제
+        ////////// more spec //////////
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "ESNext"
+        ], // 컴파일 과정에서 포함될 라이브러리
+        ////////// optimization //////////
+        "importHelpers": true, // tslib의 helper사용
+        ////////// sourceMap //////////
+        "inlineSourceMap": false, // sourcemap을 하나만 사용
+        "sourceMap": true, // inspector에서 
+        ////////// etc //////////
+        "skipLibCheck": true, // .d.ts파일에 대한 타입체크 스킵
+        "forceConsistentCasingInFileNames": true, // 파일 참조시 대소문자 구분 철저히 함.
+        "resolveJsonModule": true, // .json 파일도 import 가능
+        "isolatedModules": false, // transpileModule, @babel/plugin-transform-typescript의 컴파일 결과가 안전한지 추가 확인
+        // 데코 레이터 기능 활성화
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "types": [
+            "vite-plugin-svgr/client",
+            "@types/tampermonkey"
+        ],
+        "typeRoots": [
+            "./node_modules/@types",
+            "./src/@types"
+        ],
+    },
+    "include": [
+        "src",
+        "svg.d.ts",
+        "vite-env.d.ts"
+    ],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+.InputBox {
+    position: relative;
+
+    .InputValue {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        width: 100px;
+        height: 26px;
+        overflow: hidden;
+        padding: 0 8px;
+        position: relative;
+        border-radius: 6px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+
+        &:hover {
+            cursor: text;
+        }
+
+        input {
+            text-align: right;
+            width: 100%;
+            font-weight: 500;
+            font-size: 14px;
+        }
+    }
+
+    .Tip {
+        display: none;
+        position: absolute;
+        background-color: #ef0e0e;
+        border-radius: 8px;
+        padding: 4px 6px;
+        bottom: 0%;
+        transform: translate(0%, 110%);
+
+        p {
+            color: #fff;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        &.View {
+            display: flex;
+        }
+    }
+}

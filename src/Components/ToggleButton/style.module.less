@@ -1,0 +1,32 @@
+.ToggleButton {
+    width: 46px;
+    height: 24px;
+    border-radius: 36px;
+    background-color: rgb(216, 218, 223);
+    position: relative;
+    transition-duration: .2s;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.Enable {
+        background-color: #0388ff;
+
+        .Circle {
+            transform: translate(134%, -50%);
+        }
+    }
+
+    .Circle {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        top: 50%;
+        left: 0px;
+        transform: translate(20%, -50%);
+        transition-duration: .2s;
+    }
+}

@@ -1,0 +1,90 @@
+.SettingTemplate {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: fixed !important;
+    width: 330px;
+    height: 400px;
+    background-color: #fff;
+    display: none;
+    z-index: 10001;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 12px;
+    border: 1px solid rgba(117, 123, 138, .2);
+    flex-direction: column;
+    overflow: auto;
+
+    &.View {
+        display: flex;
+    }
+
+    .Header {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 34px;
+        flex-direction: row;
+        position: relative;
+        border-bottom: 1px solid rgba(117, 123, 138, .1);
+        background-color: rgba(0, 0, 0, 0.02);
+        padding-left: 12px;
+
+        .Title {
+            p {
+                font-size: 14px;
+            }
+        }
+
+        .Menus {
+            height: 100%;
+            position: absolute;
+            right: 0;
+
+            .Menu {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 28px;
+                height: 100%;
+                transition-duration: .1s;
+
+                svg {
+                    width: 60%;
+                    height: 100%;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: rgba(0, 0, 0, 0.05);
+                }
+            }
+        }
+    }
+
+    .Content {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+
+        &::-webkit-scrollbar-track,
+        &::-webkit-scrollbar {
+            background-color: transparent;
+            width: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba(63, 63, 63, 0.8) !important;
+            border-radius: 20px;
+            background-clip: padding-box !important;
+            border: 3px solid transparent !important;
+        }
+
+        &:hover::-webkit-scrollbar-thumb {
+            background: rgba(63, 63, 63, 0.8) !important;
+            background-clip: padding-box !important;
+            border: 3px solid transparent !important;
+        }
+
+    }
+}

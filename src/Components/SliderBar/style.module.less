@@ -1,0 +1,53 @@
+@track-bg-color: #d8dadf;
+@thumb-color: #0388ff;
+@filled-color: #0388ff;
+@thumb-size: 14px;
+@track-height: 6px;
+@track-radius: 4px;
+
+.SliderBar {
+    width: 150px;
+    margin: 20px auto;
+
+    .SliderTrack {
+        position: relative;
+        width: 100%;
+        height: @track-height;
+        background-color: @track-bg-color;
+        border-radius: @track-radius;
+
+        .SliderFilled {
+            position: absolute;
+            height: 100%;
+            background-color: @filled-color;
+            border-radius: inherit;
+            transition-duration: .1s;
+        }
+
+        .SliderThumb {
+            position: absolute;
+            top: -(@thumb-size / 2 - @track-height / 2);
+            width: @thumb-size * 2;
+            height: @thumb-size;
+            background-color: @thumb-color;
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 10;
+            transform: translate(-50%, 0%);
+            transition-duration: .1s;
+            transform-origin: 0;
+
+            &:hover {
+                scale: 1.15;
+            }
+
+            &::after {
+                display: flex;
+                justify-content: center;
+                content: attr(data-value);
+                color: #fff;
+                font-weight: 600;
+            }
+        }
+    }
+}

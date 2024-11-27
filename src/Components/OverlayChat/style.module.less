@@ -1,0 +1,72 @@
+.OverlayChat {
+    position: fixed;
+    flex-direction: column;
+    z-index: 1502;
+    border-radius: 8px;
+    cursor: move;
+    left: 0;
+    top: 0;
+    display: none;
+    gap: 4px;
+    padding: 8px 4px;
+
+    &.View {
+        display: flex;
+    }
+
+    .Chat {
+        display: flex;
+        position: relative;
+        z-index: 1;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+
+        &.Sorted {
+            .MessageContainer {
+                display: flex;
+                flex-direction: row;
+
+                .Username {
+                    width: 126px;
+                }
+
+                .Message {
+                    flex: 1;
+                }
+            }
+        }
+
+        &.Background {
+            .MessageContainer {
+                padding: 4px 8px;
+            }
+        }
+
+        .MessageContainer {
+            padding: 2px 8px;
+            border-radius: 8px;
+
+            .Username {
+                display: inline;
+                word-break: break-all;
+                white-space: nowrap;
+                margin-right: 8px;
+
+                p {
+                    display: inline;
+                    font-weight: 700;
+                }
+            }
+
+            .Message {
+                display: inline;
+                word-break: break-all;
+
+                p {
+                    display: inline;
+                    font-weight: 500;
+                    color: #f6f9ff;
+                }
+            }
+        }
+    }
+}
