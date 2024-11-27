@@ -10,18 +10,7 @@ const SettingMenuComponent: React.FC<I_PROPS> = ({
     toggleSetting
 }) => {
     const id = 'chatStylerSetting';
-
-    useEffect(() => {
-        const closeButton = document.querySelector('button[aria-label="채팅 접기"]');
-
-        if (closeButton) {
-            const parentDiv = closeButton.closest('div');
-            if (parentDiv) {
-                parentDiv.remove();
-            }
-        }
-    }, []);
-
+    
     useEffect(() => {
         const checkAndInsertElement = () => {
             const serviceUtilElement = document.querySelector("div[class^='toolbar_section__']");

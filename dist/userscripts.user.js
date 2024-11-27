@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241127215608
+// @version      20241128004040
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -34,6 +34,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #000000;
 }
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -59,20 +60,18 @@ img {
   user-select: none;
   -webkit-user-drag: none;
 }
-p {
-  color: #000000;
-}
-._SettingMenu_1f6w4_1 {
+._SettingMenu_1u5wd_1 {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 8px;
+  margin-right: 8px;
 }
-._SettingMenu_1f6w4_1 button p {
+._SettingMenu_1u5wd_1 button p {
   font-size: 24px !important;
-  background: linear-gradient(45deg, #0388ff, #48dcb6);
+  background: #00fda4;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
@@ -80,7 +79,7 @@ p {
   line-height: 1;
   padding: 8px !important;
 }
-._SettingMenu_1f6w4_1:hover {
+._SettingMenu_1u5wd_1:hover {
   background-color: rgba(255, 255, 255, 0.25);
 }
 ._SettingTemplate_6q8n6_1 {
@@ -159,7 +158,7 @@ p {
   background-clip: padding-box !important;
   border: 3px solid transparent !important;
 }
-._ToggleButton_6twf4_1 {
+._ToggleButton_1ur8z_1 {
   width: 46px;
   height: 24px;
   border-radius: 36px;
@@ -167,16 +166,16 @@ p {
   position: relative;
   transition-duration: 0.2s;
 }
-._ToggleButton_6twf4_1:hover {
+._ToggleButton_1ur8z_1:hover {
   cursor: pointer;
 }
-._ToggleButton_6twf4_1._Enable_6twf4_12 {
-  background-color: #0388ff;
+._ToggleButton_1ur8z_1._Enable_1ur8z_12 {
+  background-color: #00fda4;
 }
-._ToggleButton_6twf4_1._Enable_6twf4_12 ._Circle_6twf4_15 {
+._ToggleButton_1ur8z_1._Enable_1ur8z_12 ._Circle_1ur8z_15 {
   transform: translate(134%, -50%);
 }
-._ToggleButton_6twf4_1 ._Circle_6twf4_15 {
+._ToggleButton_1ur8z_1 ._Circle_1ur8z_15 {
   position: absolute;
   width: 18px;
   height: 18px;
@@ -322,30 +321,30 @@ p {
 ._InputBox_1a5to_1 ._Tip_1a5to_25._View_1a5to_39 {
   display: flex;
 }
-._SliderBar_pao52_1 {
+._SliderBar_9iii2_1 {
   width: 150px;
   margin: 20px auto;
 }
-._SliderBar_pao52_1 ._SliderTrack_pao52_5 {
+._SliderBar_9iii2_1 ._SliderTrack_9iii2_5 {
   position: relative;
   width: 100%;
   height: 6px;
   background-color: #d8dadf;
   border-radius: 4px;
 }
-._SliderBar_pao52_1 ._SliderTrack_pao52_5 ._SliderFilled_pao52_12 {
+._SliderBar_9iii2_1 ._SliderTrack_9iii2_5 ._SliderFilled_9iii2_12 {
   position: absolute;
   height: 100%;
-  background-color: #0388ff;
+  background-color: #00fda4;
   border-radius: inherit;
   transition-duration: 0.1s;
 }
-._SliderBar_pao52_1 ._SliderTrack_pao52_5 ._SliderThumb_pao52_19 {
+._SliderBar_9iii2_1 ._SliderTrack_9iii2_5 ._SliderThumb_9iii2_19 {
   position: absolute;
   top: -4px;
   width: 28px;
   height: 14px;
-  background-color: #0388ff;
+  background-color: #00fda4;
   border-radius: 6px;
   cursor: pointer;
   z-index: 10;
@@ -353,83 +352,83 @@ p {
   transition-duration: 0.1s;
   transform-origin: 0;
 }
-._SliderBar_pao52_1 ._SliderTrack_pao52_5 ._SliderThumb_pao52_19:hover {
+._SliderBar_9iii2_1 ._SliderTrack_9iii2_5 ._SliderThumb_9iii2_19:hover {
   scale: 1.15;
 }
-._SliderBar_pao52_1 ._SliderTrack_pao52_5 ._SliderThumb_pao52_19::after {
+._SliderBar_9iii2_1 ._SliderTrack_9iii2_5 ._SliderThumb_9iii2_19::after {
   display: flex;
   justify-content: center;
   content: attr(data-value);
   color: #fff;
   font-weight: 600;
 }
-._FrameChat_pf39v_1 {
-  z-index: 998;
+._FrameChat_19cdu_1 {
+  z-index: 1;
   display: flex;
   flex-direction: column;
   position: absolute;
   gap: 4px;
 }
-._FrameChat_pf39v_1._LeftTop_pf39v_8 {
+._FrameChat_19cdu_1._LeftTop_19cdu_8 {
   top: 0;
 }
-._FrameChat_pf39v_1._LeftBottom_pf39v_11 {
+._FrameChat_19cdu_1._LeftBottom_19cdu_11 {
   bottom: 0;
 }
-._FrameChat_pf39v_1._RightTop_pf39v_14 {
+._FrameChat_19cdu_1._RightTop_19cdu_14 {
   right: 0;
   top: 0;
 }
-._FrameChat_pf39v_1._RightBottom_pf39v_18 {
+._FrameChat_19cdu_1._RightBottom_19cdu_18 {
   right: 0;
   bottom: 0;
 }
-._FrameChat_pf39v_1 ._Chat_pf39v_22 {
+._FrameChat_19cdu_1 ._Chat_19cdu_22 {
   display: flex;
   position: relative;
   z-index: 1;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-._FrameChat_pf39v_1 ._Chat_pf39v_22._Sorted_pf39v_28 ._MessageContainer_pf39v_28 {
+._FrameChat_19cdu_1 ._Chat_19cdu_22._Sorted_19cdu_28 ._MessageContainer_19cdu_28 {
   display: flex;
   flex-direction: row;
 }
-._FrameChat_pf39v_1 ._Chat_pf39v_22._Sorted_pf39v_28 ._MessageContainer_pf39v_28 ._Username_pf39v_32 {
+._FrameChat_19cdu_1 ._Chat_19cdu_22._Sorted_19cdu_28 ._MessageContainer_19cdu_28 ._Username_19cdu_32 {
   width: 126px;
 }
-._FrameChat_pf39v_1 ._Chat_pf39v_22._Sorted_pf39v_28 ._MessageContainer_pf39v_28 ._Message_pf39v_28 {
+._FrameChat_19cdu_1 ._Chat_19cdu_22._Sorted_19cdu_28 ._MessageContainer_19cdu_28 ._Message_19cdu_28 {
   flex: 1;
 }
-._FrameChat_pf39v_1 ._Chat_pf39v_22 ._MessageContainer_pf39v_28 {
+._FrameChat_19cdu_1 ._Chat_19cdu_22 ._MessageContainer_19cdu_28 {
   padding: 2px 8px;
   border-radius: 8px;
 }
-._FrameChat_pf39v_1 ._Chat_pf39v_22 ._MessageContainer_pf39v_28 ._Username_pf39v_32 {
+._FrameChat_19cdu_1 ._Chat_19cdu_22 ._MessageContainer_19cdu_28 ._Username_19cdu_32 {
   display: inline;
   word-break: break-all;
   white-space: nowrap;
   margin-right: 8px;
 }
-._FrameChat_pf39v_1 ._Chat_pf39v_22 ._MessageContainer_pf39v_28 ._Username_pf39v_32 p {
+._FrameChat_19cdu_1 ._Chat_19cdu_22 ._MessageContainer_19cdu_28 ._Username_19cdu_32 p {
   display: inline;
   font-weight: 700;
 }
-._FrameChat_pf39v_1 ._Chat_pf39v_22 ._MessageContainer_pf39v_28 ._Message_pf39v_28 {
+._FrameChat_19cdu_1 ._Chat_19cdu_22 ._MessageContainer_19cdu_28 ._Message_19cdu_28 {
   display: inline;
   word-break: break-all;
 }
-._FrameChat_pf39v_1 ._Chat_pf39v_22 ._MessageContainer_pf39v_28 ._Message_pf39v_28 p {
+._FrameChat_19cdu_1 ._Chat_19cdu_22 ._MessageContainer_19cdu_28 ._Message_19cdu_28 p {
   display: inline;
   font-weight: 500;
   color: #f6f9ff;
 }
-._FrameChat_pf39v_1 ._Chat_pf39v_22._Background_pf39v_61 ._MessageContainer_pf39v_28 {
+._FrameChat_19cdu_1 ._Chat_19cdu_22._Background_19cdu_61 ._MessageContainer_19cdu_28 {
   padding: 4px 8px;
 }
-._OverlayChat_yu3l1_1 {
+._OverlayChat_xa9av_1 {
   position: fixed;
   flex-direction: column;
-  z-index: 1502;
+  z-index: 13000;
   border-radius: 8px;
   cursor: move;
   left: 0;
@@ -438,47 +437,47 @@ p {
   gap: 4px;
   padding: 8px 4px;
 }
-._OverlayChat_yu3l1_1._View_yu3l1_13 {
+._OverlayChat_xa9av_1._View_xa9av_13 {
   display: flex;
 }
-._OverlayChat_yu3l1_1 ._Chat_yu3l1_16 {
+._OverlayChat_xa9av_1 ._Chat_xa9av_16 {
   display: flex;
   position: relative;
   z-index: 1;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-._OverlayChat_yu3l1_1 ._Chat_yu3l1_16._Sorted_yu3l1_22 ._MessageContainer_yu3l1_22 {
+._OverlayChat_xa9av_1 ._Chat_xa9av_16._Sorted_xa9av_22 ._MessageContainer_xa9av_22 {
   display: flex;
   flex-direction: row;
 }
-._OverlayChat_yu3l1_1 ._Chat_yu3l1_16._Sorted_yu3l1_22 ._MessageContainer_yu3l1_22 ._Username_yu3l1_26 {
+._OverlayChat_xa9av_1 ._Chat_xa9av_16._Sorted_xa9av_22 ._MessageContainer_xa9av_22 ._Username_xa9av_26 {
   width: 126px;
 }
-._OverlayChat_yu3l1_1 ._Chat_yu3l1_16._Sorted_yu3l1_22 ._MessageContainer_yu3l1_22 ._Message_yu3l1_22 {
+._OverlayChat_xa9av_1 ._Chat_xa9av_16._Sorted_xa9av_22 ._MessageContainer_xa9av_22 ._Message_xa9av_22 {
   flex: 1;
 }
-._OverlayChat_yu3l1_1 ._Chat_yu3l1_16._Background_yu3l1_32 ._MessageContainer_yu3l1_22 {
+._OverlayChat_xa9av_1 ._Chat_xa9av_16._Background_xa9av_32 ._MessageContainer_xa9av_22 {
   padding: 4px 8px;
 }
-._OverlayChat_yu3l1_1 ._Chat_yu3l1_16 ._MessageContainer_yu3l1_22 {
+._OverlayChat_xa9av_1 ._Chat_xa9av_16 ._MessageContainer_xa9av_22 {
   padding: 2px 8px;
   border-radius: 8px;
 }
-._OverlayChat_yu3l1_1 ._Chat_yu3l1_16 ._MessageContainer_yu3l1_22 ._Username_yu3l1_26 {
+._OverlayChat_xa9av_1 ._Chat_xa9av_16 ._MessageContainer_xa9av_22 ._Username_xa9av_26 {
   display: inline;
   word-break: break-all;
   white-space: nowrap;
   margin-right: 8px;
 }
-._OverlayChat_yu3l1_1 ._Chat_yu3l1_16 ._MessageContainer_yu3l1_22 ._Username_yu3l1_26 p {
+._OverlayChat_xa9av_1 ._Chat_xa9av_16 ._MessageContainer_xa9av_22 ._Username_xa9av_26 p {
   display: inline;
   font-weight: 700;
 }
-._OverlayChat_yu3l1_1 ._Chat_yu3l1_16 ._MessageContainer_yu3l1_22 ._Message_yu3l1_22 {
+._OverlayChat_xa9av_1 ._Chat_xa9av_16 ._MessageContainer_xa9av_22 ._Message_xa9av_22 {
   display: inline;
   word-break: break-all;
 }
-._OverlayChat_yu3l1_1 ._Chat_yu3l1_16 ._MessageContainer_yu3l1_22 ._Message_yu3l1_22 p {
+._OverlayChat_xa9av_1 ._Chat_xa9av_16 ._MessageContainer_xa9av_22 ._Message_xa9av_22 p {
   display: inline;
   font-weight: 500;
   color: #f6f9ff;
@@ -7460,7 +7459,7 @@ p {
       createRoot = m$1.createRoot;
       m$1.hydrateRoot;
     }
-    const SettingMenu = "_SettingMenu_1f6w4_1";
+    const SettingMenu = "_SettingMenu_1u5wd_1";
     const styles$8 = {
       SettingMenu
     };
@@ -7469,14 +7468,8 @@ p {
     }) => {
       const id2 = "chatStylerSetting";
       reactExports.useEffect(() => {
-        const closeElement = document.getElementById("setbox_close");
-        if (closeElement) {
-          closeElement.remove();
-        }
-      }, []);
-      reactExports.useEffect(() => {
         const checkAndInsertElement = () => {
-          const serviceUtilElement = document.querySelector(".serviceUtil");
+          const serviceUtilElement = document.querySelector("div[class^='toolbar_section__']");
           if (!serviceUtilElement) {
             setTimeout(checkAndInsertElement, 1e3);
             return;
@@ -7569,9 +7562,9 @@ p {
         delayedProbe();
       });
     }
-    const ToggleButton$1 = "_ToggleButton_6twf4_1";
-    const Enable = "_Enable_6twf4_12";
-    const Circle = "_Circle_6twf4_15";
+    const ToggleButton$1 = "_ToggleButton_1ur8z_1";
+    const Enable = "_Enable_1ur8z_12";
+    const Circle = "_Circle_1ur8z_15";
     const styles$6 = {
       ToggleButton: ToggleButton$1,
       Enable,
@@ -11824,6 +11817,7 @@ p {
         __publicField(this, "_setting", /* @__PURE__ */ new Map());
         __publicField(this, "_chats", []);
         __publicField(this, "_maxChats", 20);
+        __publicField(this, "_chatId", 0);
         __publicField(this, "init", () => {
           for (const setting of this.initSetting) {
             this.setting.set(setting.key, setting.value);
@@ -11837,6 +11831,7 @@ p {
           this.chats.push(chat);
           if (this.chats.length >= this.maxChats)
             this.chats.shift();
+          this._chatId++;
         });
         __publicField(this, "lastChat", () => {
           return this.chats[this.chats.length - 1];
@@ -11856,6 +11851,9 @@ p {
       get maxChats() {
         return this._maxChats;
       }
+      get chatId() {
+        return this._chatId;
+      }
     }
     __decorateClass([
       observable
@@ -11866,6 +11864,9 @@ p {
     __decorateClass([
       observable
     ], MainStore.prototype, "_maxChats", 2);
+    __decorateClass([
+      observable
+    ], MainStore.prototype, "_chatId", 2);
     __decorateClass([
       action
     ], MainStore.prototype, "init", 2);
@@ -11890,6 +11891,9 @@ p {
     __decorateClass([
       computed
     ], MainStore.prototype, "maxChats", 1);
+    __decorateClass([
+      computed
+    ], MainStore.prototype, "chatId", 1);
     class RootStore {
       constructor() {
         __publicField(this, "mainStore");
@@ -12245,10 +12249,10 @@ p {
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$3.Tip, tip.length > 0 ? styles$3.View : false), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: tip }) })
       ] });
     };
-    const SliderBar$1 = "_SliderBar_pao52_1";
-    const SliderTrack = "_SliderTrack_pao52_5";
-    const SliderFilled = "_SliderFilled_pao52_12";
-    const SliderThumb = "_SliderThumb_pao52_19";
+    const SliderBar$1 = "_SliderBar_9iii2_1";
+    const SliderTrack = "_SliderTrack_9iii2_5";
+    const SliderFilled = "_SliderFilled_9iii2_12";
+    const SliderThumb = "_SliderThumb_9iii2_19";
     const styles$2 = {
       SliderBar: SliderBar$1,
       SliderTrack,
@@ -12740,17 +12744,17 @@ p {
         document.body
       );
     };
-    const FrameChat$1 = "_FrameChat_pf39v_1";
-    const LeftTop = "_LeftTop_pf39v_8";
-    const LeftBottom = "_LeftBottom_pf39v_11";
-    const RightTop = "_RightTop_pf39v_14";
-    const RightBottom = "_RightBottom_pf39v_18";
-    const Chat$2 = "_Chat_pf39v_22";
-    const Sorted$1 = "_Sorted_pf39v_28";
-    const MessageContainer$1 = "_MessageContainer_pf39v_28";
-    const Username$1 = "_Username_pf39v_32";
-    const Message$1 = "_Message_pf39v_28";
-    const Background$1 = "_Background_pf39v_61";
+    const FrameChat$1 = "_FrameChat_19cdu_1";
+    const LeftTop = "_LeftTop_19cdu_8";
+    const LeftBottom = "_LeftBottom_19cdu_11";
+    const RightTop = "_RightTop_19cdu_14";
+    const RightBottom = "_RightBottom_19cdu_18";
+    const Chat$2 = "_Chat_19cdu_22";
+    const Sorted$1 = "_Sorted_19cdu_28";
+    const MessageContainer$1 = "_MessageContainer_19cdu_28";
+    const Username$1 = "_Username_19cdu_32";
+    const Message$1 = "_Message_19cdu_28";
+    const Background$1 = "_Background_19cdu_61";
     const styles$1 = {
       FrameChat: FrameChat$1,
       LeftTop,
@@ -12781,11 +12785,18 @@ p {
       const frameOffsetX = mainStore.setting.get("frame_offset_x");
       const frameOffsetY = mainStore.setting.get("frame_offset_y");
       reactExports.useEffect(() => {
-        const div = document.querySelector("#videoLayer");
-        if (div) {
-          setPlayerSizeDiv(div);
-        }
-      }, []);
+        const addFrameChat = () => {
+          const div = document.querySelector("#live_player_layout");
+          if (!div) {
+            setTimeout(addFrameChat, 1e3);
+            return;
+          }
+          if (div) {
+            setPlayerSizeDiv(div);
+          }
+        };
+        addFrameChat();
+      }, [window.location.href]);
       const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id: id2, username, messageText, color }) => {
         const background = frameChatBackground ? `rgba(0, 0, 0, ${frameChatOpacity}%)` : "";
         const fontSize = `${frameFontSize}px`;
@@ -12862,14 +12873,14 @@ p {
         playerSizeDiv
       ) : null;
     });
-    const OverlayChat$1 = "_OverlayChat_yu3l1_1";
-    const View = "_View_yu3l1_13";
-    const Chat$1 = "_Chat_yu3l1_16";
-    const Sorted = "_Sorted_yu3l1_22";
-    const MessageContainer = "_MessageContainer_yu3l1_22";
-    const Username = "_Username_yu3l1_26";
-    const Message = "_Message_yu3l1_22";
-    const Background = "_Background_yu3l1_32";
+    const OverlayChat$1 = "_OverlayChat_xa9av_1";
+    const View = "_View_xa9av_13";
+    const Chat$1 = "_Chat_xa9av_16";
+    const Sorted = "_Sorted_xa9av_22";
+    const MessageContainer = "_MessageContainer_xa9av_22";
+    const Username = "_Username_xa9av_26";
+    const Message = "_Message_xa9av_22";
+    const Background = "_Background_xa9av_32";
     const styles = {
       OverlayChat: OverlayChat$1,
       View,
@@ -13037,9 +13048,9 @@ p {
       const chat_style = mainStore.setting.get("chat_style");
       const defalut_chat_enable = mainStore.setting.get("defalut_chat_enable");
       reactExports.useEffect(() => {
-        const sideElement = document.querySelector("#webplayer_contents .wrapping.side");
+        const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
         if (sideElement)
-          sideElement.style.display = defalut_chat_enable ? "block" : "none";
+          sideElement.style.width = defalut_chat_enable ? "" : "0";
       }, [defalut_chat_enable]);
       let chatElem;
       switch (chat_style) {
@@ -13072,6 +13083,16 @@ p {
       const toggleSetting = () => {
         IsSetting((prevIsSetting) => !prevIsSetting);
       };
+      const addZIndexToElements = () => {
+        const bottomButtonsElement = document.querySelector(".pzp-pc__bottom-buttons");
+        const bottomShadowElement = document.querySelector(".pzp-pc-ui-bottom-shadow.pzp-pc__bottom-shadow");
+        if (bottomButtonsElement) {
+          bottomButtonsElement.style.zIndex = "2";
+        }
+        if (bottomShadowElement) {
+          bottomShadowElement.style.zIndex = "2";
+        }
+      };
       const initSetting = () => {
         GM_listValues().map((v2) => {
           mainStore.setSetting(v2, GM_getValue(v2), false);
@@ -13080,36 +13101,37 @@ p {
         IsInit(true);
       };
       const updateChatMessages = () => {
-        const chatAreaElements = document.querySelectorAll("#chat_area");
+        const closeButton = document.querySelector('div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]');
+        if (closeButton && closeButton.style.display != "none")
+          closeButton.style.display = "none";
+        const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
         const chatArea = chatAreaElements[chatAreaElements.length - 1];
         if (!chatArea) return;
-        const chatItems = chatArea.querySelectorAll(".chatting-list-item");
-        const recentChats = Array.from(chatItems).slice(-10);
+        const chatItems = chatArea.querySelectorAll('[class*="live_chatting_list_item"]');
+        const recentChats = Array.from(chatItems).slice(-mainStore.maxChats);
         if (recentChats.length <= 1) return;
         const lastChat = mainStore.lastChat();
         recentChats.forEach((chat) => {
-          var _a2, _b2;
-          const username = ((_a2 = chat.querySelector(".username .author")) == null ? void 0 : _a2.textContent) || null;
-          const message = chat.querySelector(".message-text");
-          if (!username || !message) return;
-          const id2 = Number(message == null ? void 0 : message.id) || 0;
-          if (lastChat.id >= id2) return;
-          const messageText = ((_b2 = chat.querySelector(".msg")) == null ? void 0 : _b2.textContent) || "";
-          mainStore.addChat({ id: id2, username, messageText, color: colors[colorIdx] });
-          colorIdx == colors.length - 1 ? colorIdx = 0 : colorIdx++;
+          const usernameElement = chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
+          const username = (usernameElement == null ? void 0 : usernameElement.textContent) || null;
+          const messageElement = chat.querySelector('[class*="live_chatting_message_text"]');
+          if (!username || !messageElement) return;
+          if (messageElement instanceof HTMLElement) {
+            let id2 = Number(chat.id);
+            if (!id2) {
+              id2 = mainStore.chatId + 1;
+              chat.setAttribute("id", id2.toString());
+            }
+            if (lastChat.id >= id2) return;
+            const messageText = messageElement.textContent || "";
+            mainStore.addChat({ id: id2, username, messageText, color: colors[colorIdx] });
+            colorIdx == colors.length - 1 ? colorIdx = 0 : colorIdx++;
+          }
         });
-      };
-      const checkViewChat = () => {
-        const buttonElement = document.querySelector(".view_ctrl .btn_chat");
-        if (!buttonElement) return;
-        const computedStyle = window.getComputedStyle(buttonElement);
-        const button = buttonElement.querySelector("button");
-        if (!button) return;
-        computedStyle.display == "block" && button.click();
       };
       reactExports.useEffect(() => {
         initSetting();
-        checkViewChat();
+        addZIndexToElements();
         chatUpdate.current = setInterval(() => {
           updateChatMessages();
         }, 300);

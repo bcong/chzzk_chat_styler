@@ -23,11 +23,21 @@ const FrameChat = observer(() => {
     const frameOffsetY = mainStore.setting.get('frame_offset_y');
 
     useEffect(() => {
-        const div = document.querySelector('#videoLayer');
-        if (div) {
-            setPlayerSizeDiv(div);
-        }
-    }, []);
+        const addFrameChat = () => {
+            const div = document.querySelector('#live_player_layout');
+            
+            if (!div) {
+                setTimeout(addFrameChat, 1000);
+                return;
+            }
+
+            if (div) {
+                setPlayerSizeDiv(div);
+            }
+        };
+
+        addFrameChat();
+    }, [window.location.href]);
 
     const chatsElem = mainStore.chats
         .slice(-frameViewCount)

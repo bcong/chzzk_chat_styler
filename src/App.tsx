@@ -28,6 +28,19 @@ const App = () => {
         IsSetting((prevIsSetting) => !prevIsSetting);
     };
 
+    const addZIndexToElements = () => {
+        const bottomButtonsElement = document.querySelector('.pzp-pc__bottom-buttons') as HTMLElement | null;
+        const bottomShadowElement = document.querySelector('.pzp-pc-ui-bottom-shadow.pzp-pc__bottom-shadow') as HTMLElement | null;
+
+        if (bottomButtonsElement) {
+            bottomButtonsElement.style.zIndex = '2';
+        }
+
+        if (bottomShadowElement) {
+            bottomShadowElement.style.zIndex = '2';
+        }
+    };
+
     const initSetting = () => {
         GM_listValues().map((v) => {
             mainStore.setSetting(v as T_SETTING, GM_getValue(v), false);
@@ -37,6 +50,11 @@ const App = () => {
     };
 
     const updateChatMessages = () => {
+        const closeButton = document.querySelector('div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]') as HTMLElement | null;
+
+        if (closeButton && closeButton.style.display != 'none')
+            closeButton.style.display = 'none';
+
         const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
         const chatArea = chatAreaElements[chatAreaElements.length - 1];
 
@@ -76,6 +94,7 @@ const App = () => {
 
     useEffect(() => {
         initSetting();
+        addZIndexToElements();
 
         chatUpdate.current = setInterval(() => {
             updateChatMessages();
