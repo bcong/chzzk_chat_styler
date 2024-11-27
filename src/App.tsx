@@ -10,6 +10,7 @@ const App = () => {
     const [isSetting, IsSetting] = useState(false);
     const [isInit, IsInit] = useState(false);
     const chatUpdate = useRef<number | null>(null);
+    const defalut_chat_enable = mainStore.setting.get('defalut_chat_enable');
     let colorIdx = 0;
 
     const colors = [
@@ -50,6 +51,11 @@ const App = () => {
     };
 
     const updateChatMessages = () => {
+        const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
+
+        if (sideElement)
+            sideElement.style.width = defalut_chat_enable ? '' : '0';
+
         const closeButton = document.querySelector('div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]') as HTMLElement | null;
 
         if (closeButton && closeButton.style.display != 'none')
