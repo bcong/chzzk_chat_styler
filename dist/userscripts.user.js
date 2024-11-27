@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241128013620
+// @version      20241128014413
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -26,7 +26,6 @@
   padding: 0;
   border: 0;
   box-sizing: border-box;
-  font-family: "Pretendard" !important;
 }
 #root,
 html,
@@ -60,7 +59,7 @@ img {
   user-select: none;
   -webkit-user-drag: none;
 }
-._SettingMenu_1u5wd_1 {
+._SettingMenu_go8op_1 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,8 +67,9 @@ img {
   height: 40px;
   border-radius: 8px;
   margin-right: 8px;
+  font-family: "Pretendard";
 }
-._SettingMenu_1u5wd_1 button p {
+._SettingMenu_go8op_1 button p {
   font-size: 24px !important;
   background: #00fda4;
   -webkit-background-clip: text;
@@ -79,10 +79,10 @@ img {
   line-height: 1;
   padding: 8px !important;
 }
-._SettingMenu_1u5wd_1:hover {
+._SettingMenu_go8op_1:hover {
   background-color: rgba(255, 255, 255, 0.25);
 }
-._SettingTemplate_6q8n6_1 {
+._SettingTemplate_1esbo_1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -97,11 +97,12 @@ img {
   border: 1px solid rgba(117, 123, 138, 0.2);
   flex-direction: column;
   overflow: auto;
+  font-family: "Pretendard";
 }
-._SettingTemplate_6q8n6_1._View_6q8n6_17 {
+._SettingTemplate_1esbo_1._View_1esbo_18 {
   display: flex;
 }
-._SettingTemplate_6q8n6_1 ._Header_6q8n6_20 {
+._SettingTemplate_1esbo_1 ._Header_1esbo_21 {
   display: flex;
   align-items: center;
   width: 100%;
@@ -112,15 +113,15 @@ img {
   background-color: rgba(0, 0, 0, 0.02);
   padding-left: 12px;
 }
-._SettingTemplate_6q8n6_1 ._Header_6q8n6_20 ._Title_6q8n6_31 p {
+._SettingTemplate_1esbo_1 ._Header_1esbo_21 ._Title_1esbo_32 p {
   font-size: 14px;
 }
-._SettingTemplate_6q8n6_1 ._Header_6q8n6_20 ._Menus_6q8n6_34 {
+._SettingTemplate_1esbo_1 ._Header_1esbo_21 ._Menus_1esbo_35 {
   height: 100%;
   position: absolute;
   right: 0;
 }
-._SettingTemplate_6q8n6_1 ._Header_6q8n6_20 ._Menus_6q8n6_34 ._Menu_6q8n6_34 {
+._SettingTemplate_1esbo_1 ._Header_1esbo_21 ._Menus_1esbo_35 ._Menu_1esbo_35 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -128,32 +129,32 @@ img {
   height: 100%;
   transition-duration: 0.1s;
 }
-._SettingTemplate_6q8n6_1 ._Header_6q8n6_20 ._Menus_6q8n6_34 ._Menu_6q8n6_34 svg {
+._SettingTemplate_1esbo_1 ._Header_1esbo_21 ._Menus_1esbo_35 ._Menu_1esbo_35 svg {
   width: 60%;
   height: 100%;
 }
-._SettingTemplate_6q8n6_1 ._Header_6q8n6_20 ._Menus_6q8n6_34 ._Menu_6q8n6_34:hover {
+._SettingTemplate_1esbo_1 ._Header_1esbo_21 ._Menus_1esbo_35 ._Menu_1esbo_35:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.05);
 }
-._SettingTemplate_6q8n6_1 ._Content_6q8n6_55 {
+._SettingTemplate_1esbo_1 ._Content_1esbo_56 {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
-._SettingTemplate_6q8n6_1 ._Content_6q8n6_55::-webkit-scrollbar-track,
-._SettingTemplate_6q8n6_1 ._Content_6q8n6_55::-webkit-scrollbar {
+._SettingTemplate_1esbo_1 ._Content_1esbo_56::-webkit-scrollbar-track,
+._SettingTemplate_1esbo_1 ._Content_1esbo_56::-webkit-scrollbar {
   background-color: transparent;
   width: 10px;
 }
-._SettingTemplate_6q8n6_1 ._Content_6q8n6_55::-webkit-scrollbar-thumb {
+._SettingTemplate_1esbo_1 ._Content_1esbo_56::-webkit-scrollbar-thumb {
   background: rgba(63, 63, 63, 0.8) !important;
   border-radius: 20px;
   background-clip: padding-box !important;
   border: 3px solid transparent !important;
 }
-._SettingTemplate_6q8n6_1 ._Content_6q8n6_55:hover::-webkit-scrollbar-thumb {
+._SettingTemplate_1esbo_1 ._Content_1esbo_56:hover::-webkit-scrollbar-thumb {
   background: rgba(63, 63, 63, 0.8) !important;
   background-clip: padding-box !important;
   border: 3px solid transparent !important;
@@ -362,70 +363,71 @@ img {
   color: #fff;
   font-weight: 600;
 }
-._FrameChat_19cdu_1 {
+._FrameChat_1q9va_1 {
   z-index: 1;
   display: flex;
   flex-direction: column;
   position: absolute;
   gap: 4px;
+  font-family: "Pretendard";
 }
-._FrameChat_19cdu_1._LeftTop_19cdu_8 {
+._FrameChat_1q9va_1._LeftTop_1q9va_9 {
   top: 0;
 }
-._FrameChat_19cdu_1._LeftBottom_19cdu_11 {
+._FrameChat_1q9va_1._LeftBottom_1q9va_12 {
   bottom: 0;
 }
-._FrameChat_19cdu_1._RightTop_19cdu_14 {
+._FrameChat_1q9va_1._RightTop_1q9va_15 {
   right: 0;
   top: 0;
 }
-._FrameChat_19cdu_1._RightBottom_19cdu_18 {
+._FrameChat_1q9va_1._RightBottom_1q9va_19 {
   right: 0;
   bottom: 0;
 }
-._FrameChat_19cdu_1 ._Chat_19cdu_22 {
+._FrameChat_1q9va_1 ._Chat_1q9va_23 {
   display: flex;
   position: relative;
   z-index: 1;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-._FrameChat_19cdu_1 ._Chat_19cdu_22._Sorted_19cdu_28 ._MessageContainer_19cdu_28 {
+._FrameChat_1q9va_1 ._Chat_1q9va_23._Sorted_1q9va_29 ._MessageContainer_1q9va_29 {
   display: flex;
   flex-direction: row;
 }
-._FrameChat_19cdu_1 ._Chat_19cdu_22._Sorted_19cdu_28 ._MessageContainer_19cdu_28 ._Username_19cdu_32 {
+._FrameChat_1q9va_1 ._Chat_1q9va_23._Sorted_1q9va_29 ._MessageContainer_1q9va_29 ._Username_1q9va_33 {
   width: 126px;
 }
-._FrameChat_19cdu_1 ._Chat_19cdu_22._Sorted_19cdu_28 ._MessageContainer_19cdu_28 ._Message_19cdu_28 {
+._FrameChat_1q9va_1 ._Chat_1q9va_23._Sorted_1q9va_29 ._MessageContainer_1q9va_29 ._Message_1q9va_29 {
   flex: 1;
 }
-._FrameChat_19cdu_1 ._Chat_19cdu_22 ._MessageContainer_19cdu_28 {
+._FrameChat_1q9va_1 ._Chat_1q9va_23 ._MessageContainer_1q9va_29 {
   padding: 2px 8px;
   border-radius: 8px;
 }
-._FrameChat_19cdu_1 ._Chat_19cdu_22 ._MessageContainer_19cdu_28 ._Username_19cdu_32 {
+._FrameChat_1q9va_1 ._Chat_1q9va_23 ._MessageContainer_1q9va_29 ._Username_1q9va_33 {
   display: inline;
   word-break: break-all;
   white-space: nowrap;
   margin-right: 8px;
 }
-._FrameChat_19cdu_1 ._Chat_19cdu_22 ._MessageContainer_19cdu_28 ._Username_19cdu_32 p {
+._FrameChat_1q9va_1 ._Chat_1q9va_23 ._MessageContainer_1q9va_29 ._Username_1q9va_33 p {
   display: inline;
   font-weight: 700;
 }
-._FrameChat_19cdu_1 ._Chat_19cdu_22 ._MessageContainer_19cdu_28 ._Message_19cdu_28 {
+._FrameChat_1q9va_1 ._Chat_1q9va_23 ._MessageContainer_1q9va_29 ._Message_1q9va_29 {
   display: inline;
   word-break: break-all;
 }
-._FrameChat_19cdu_1 ._Chat_19cdu_22 ._MessageContainer_19cdu_28 ._Message_19cdu_28 p {
+._FrameChat_1q9va_1 ._Chat_1q9va_23 ._MessageContainer_1q9va_29 ._Message_1q9va_29 p {
   display: inline;
   font-weight: 500;
   color: #f6f9ff;
 }
-._FrameChat_19cdu_1 ._Chat_19cdu_22._Background_19cdu_61 ._MessageContainer_19cdu_28 {
+._FrameChat_1q9va_1 ._Chat_1q9va_23._Background_1q9va_62 ._MessageContainer_1q9va_29 {
   padding: 4px 8px;
 }
-._OverlayChat_xa9av_1 {
+._OverlayChat_1momb_1 {
   position: fixed;
   flex-direction: column;
   z-index: 13000;
@@ -436,48 +438,49 @@ img {
   display: none;
   gap: 4px;
   padding: 8px 4px;
+  font-family: "Pretendard";
 }
-._OverlayChat_xa9av_1._View_xa9av_13 {
+._OverlayChat_1momb_1._View_1momb_14 {
   display: flex;
 }
-._OverlayChat_xa9av_1 ._Chat_xa9av_16 {
+._OverlayChat_1momb_1 ._Chat_1momb_17 {
   display: flex;
   position: relative;
   z-index: 1;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-._OverlayChat_xa9av_1 ._Chat_xa9av_16._Sorted_xa9av_22 ._MessageContainer_xa9av_22 {
+._OverlayChat_1momb_1 ._Chat_1momb_17._Sorted_1momb_23 ._MessageContainer_1momb_23 {
   display: flex;
   flex-direction: row;
 }
-._OverlayChat_xa9av_1 ._Chat_xa9av_16._Sorted_xa9av_22 ._MessageContainer_xa9av_22 ._Username_xa9av_26 {
+._OverlayChat_1momb_1 ._Chat_1momb_17._Sorted_1momb_23 ._MessageContainer_1momb_23 ._Username_1momb_27 {
   width: 126px;
 }
-._OverlayChat_xa9av_1 ._Chat_xa9av_16._Sorted_xa9av_22 ._MessageContainer_xa9av_22 ._Message_xa9av_22 {
+._OverlayChat_1momb_1 ._Chat_1momb_17._Sorted_1momb_23 ._MessageContainer_1momb_23 ._Message_1momb_23 {
   flex: 1;
 }
-._OverlayChat_xa9av_1 ._Chat_xa9av_16._Background_xa9av_32 ._MessageContainer_xa9av_22 {
+._OverlayChat_1momb_1 ._Chat_1momb_17._Background_1momb_33 ._MessageContainer_1momb_23 {
   padding: 4px 8px;
 }
-._OverlayChat_xa9av_1 ._Chat_xa9av_16 ._MessageContainer_xa9av_22 {
+._OverlayChat_1momb_1 ._Chat_1momb_17 ._MessageContainer_1momb_23 {
   padding: 2px 8px;
   border-radius: 8px;
 }
-._OverlayChat_xa9av_1 ._Chat_xa9av_16 ._MessageContainer_xa9av_22 ._Username_xa9av_26 {
+._OverlayChat_1momb_1 ._Chat_1momb_17 ._MessageContainer_1momb_23 ._Username_1momb_27 {
   display: inline;
   word-break: break-all;
   white-space: nowrap;
   margin-right: 8px;
 }
-._OverlayChat_xa9av_1 ._Chat_xa9av_16 ._MessageContainer_xa9av_22 ._Username_xa9av_26 p {
+._OverlayChat_1momb_1 ._Chat_1momb_17 ._MessageContainer_1momb_23 ._Username_1momb_27 p {
   display: inline;
   font-weight: 700;
 }
-._OverlayChat_xa9av_1 ._Chat_xa9av_16 ._MessageContainer_xa9av_22 ._Message_xa9av_22 {
+._OverlayChat_1momb_1 ._Chat_1momb_17 ._MessageContainer_1momb_23 ._Message_1momb_23 {
   display: inline;
   word-break: break-all;
 }
-._OverlayChat_xa9av_1 ._Chat_xa9av_16 ._MessageContainer_xa9av_22 ._Message_xa9av_22 p {
+._OverlayChat_1momb_1 ._Chat_1momb_17 ._MessageContainer_1momb_23 ._Message_1momb_23 p {
   display: inline;
   font-weight: 500;
   color: #f6f9ff;
@@ -7459,7 +7462,7 @@ img {
       createRoot = m$1.createRoot;
       m$1.hydrateRoot;
     }
-    const SettingMenu = "_SettingMenu_1u5wd_1";
+    const SettingMenu = "_SettingMenu_go8op_1";
     const styles$8 = {
       SettingMenu
     };
@@ -7515,13 +7518,13 @@ img {
       }, []);
       return null;
     };
-    const SettingTemplate$1 = "_SettingTemplate_6q8n6_1";
-    const View$3 = "_View_6q8n6_17";
-    const Header = "_Header_6q8n6_20";
-    const Title = "_Title_6q8n6_31";
-    const Menus$1 = "_Menus_6q8n6_34";
-    const Menu$1 = "_Menu_6q8n6_34";
-    const Content = "_Content_6q8n6_55";
+    const SettingTemplate$1 = "_SettingTemplate_1esbo_1";
+    const View$3 = "_View_1esbo_18";
+    const Header = "_Header_1esbo_21";
+    const Title = "_Title_1esbo_32";
+    const Menus$1 = "_Menus_1esbo_35";
+    const Menu$1 = "_Menu_1esbo_35";
+    const Content = "_Content_1esbo_56";
     const styles$7 = {
       SettingTemplate: SettingTemplate$1,
       View: View$3,
@@ -12763,17 +12766,17 @@ img {
         document.body
       );
     };
-    const FrameChat$1 = "_FrameChat_19cdu_1";
-    const LeftTop = "_LeftTop_19cdu_8";
-    const LeftBottom = "_LeftBottom_19cdu_11";
-    const RightTop = "_RightTop_19cdu_14";
-    const RightBottom = "_RightBottom_19cdu_18";
-    const Chat$2 = "_Chat_19cdu_22";
-    const Sorted$1 = "_Sorted_19cdu_28";
-    const MessageContainer$1 = "_MessageContainer_19cdu_28";
-    const Username$1 = "_Username_19cdu_32";
-    const Message$1 = "_Message_19cdu_28";
-    const Background$1 = "_Background_19cdu_61";
+    const FrameChat$1 = "_FrameChat_1q9va_1";
+    const LeftTop = "_LeftTop_1q9va_9";
+    const LeftBottom = "_LeftBottom_1q9va_12";
+    const RightTop = "_RightTop_1q9va_15";
+    const RightBottom = "_RightBottom_1q9va_19";
+    const Chat$2 = "_Chat_1q9va_23";
+    const Sorted$1 = "_Sorted_1q9va_29";
+    const MessageContainer$1 = "_MessageContainer_1q9va_29";
+    const Username$1 = "_Username_1q9va_33";
+    const Message$1 = "_Message_1q9va_29";
+    const Background$1 = "_Background_1q9va_62";
     const styles$1 = {
       FrameChat: FrameChat$1,
       LeftTop,
@@ -12892,14 +12895,14 @@ img {
         playerSizeDiv
       ) : null;
     });
-    const OverlayChat$1 = "_OverlayChat_xa9av_1";
-    const View = "_View_xa9av_13";
-    const Chat$1 = "_Chat_xa9av_16";
-    const Sorted = "_Sorted_xa9av_22";
-    const MessageContainer = "_MessageContainer_xa9av_22";
-    const Username = "_Username_xa9av_26";
-    const Message = "_Message_xa9av_22";
-    const Background = "_Background_xa9av_32";
+    const OverlayChat$1 = "_OverlayChat_1momb_1";
+    const View = "_View_1momb_14";
+    const Chat$1 = "_Chat_1momb_17";
+    const Sorted = "_Sorted_1momb_23";
+    const MessageContainer = "_MessageContainer_1momb_23";
+    const Username = "_Username_1momb_27";
+    const Message = "_Message_1momb_23";
+    const Background = "_Background_1momb_33";
     const styles = {
       OverlayChat: OverlayChat$1,
       View,
