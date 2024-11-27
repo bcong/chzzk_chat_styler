@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241127214950
+// @version      20241127215608
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
