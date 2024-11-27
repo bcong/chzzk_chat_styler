@@ -4,14 +4,12 @@ import SettingTemplate from '@Templates/SettingTemplate';
 import { useMainStore } from './Stores';
 import { T_SETTING } from './@types';
 import ChatTemplate from '@Templates/ChatTemplate';
-import { observer } from 'mobx-react-lite';
 
-const App = observer(() => {
+const App = () => {
     const mainStore = useMainStore();
     const [isSetting, IsSetting] = useState(false);
     const [isInit, IsInit] = useState(false);
     const chatUpdate = useRef<number | null>(null);
-    const defalut_chat_enable = mainStore.setting.get('defalut_chat_enable');
     let colorIdx = 0;
 
     const colors = [
@@ -52,11 +50,7 @@ const App = observer(() => {
     };
 
     const updateChatMessages = () => {
-        const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
-
-        if (sideElement)
-            sideElement.style.width = defalut_chat_enable ? '' : '0';
-
+        addZIndexToElements();
         const closeButton = document.querySelector('div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]') as HTMLElement | null;
 
         if (closeButton && closeButton.style.display != 'none')
@@ -101,7 +95,6 @@ const App = observer(() => {
 
     useEffect(() => {
         initSetting();
-        addZIndexToElements();
 
         chatUpdate.current = setInterval(() => {
             updateChatMessages();
@@ -119,6 +112,6 @@ const App = observer(() => {
             <ChatTemplate />
         </>
     );
-});
+};
 
 export default App;

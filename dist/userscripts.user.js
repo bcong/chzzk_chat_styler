@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241128015124
+// @version      20241128015755
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13068,6 +13068,22 @@ img {
       const mainStore = useMainStore();
       const enable = mainStore.setting.get("enable");
       const chat_style = mainStore.setting.get("chat_style");
+      const defalut_chat_enable = mainStore.setting.get("defalut_chat_enable");
+      const chatUpdate = reactExports.useRef(null);
+      const isEnableChat = () => {
+        const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
+        if (sideElement)
+          sideElement.style.width = defalut_chat_enable ? "" : "0";
+      };
+      reactExports.useEffect(() => {
+        isEnableChat();
+        chatUpdate.current = setInterval(() => {
+          isEnableChat();
+        }, 100);
+        return () => {
+          if (chatUpdate.current) clearInterval(chatUpdate.current);
+        };
+      }, [defalut_chat_enable]);
       let chatElem;
       switch (chat_style) {
         case 0:
@@ -13079,12 +13095,11 @@ img {
       }
       return enable && chatElem;
     });
-    const App = observer(() => {
+    const App = () => {
       const mainStore = useMainStore();
       const [isSetting, IsSetting] = reactExports.useState(false);
       const [isInit, IsInit] = reactExports.useState(false);
       const chatUpdate = reactExports.useRef(null);
-      const defalut_chat_enable = mainStore.setting.get("defalut_chat_enable");
       let colorIdx = 0;
       const colors = [
         "#f28ca5",
@@ -13118,9 +13133,7 @@ img {
         IsInit(true);
       };
       const updateChatMessages = () => {
-        const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
-        if (sideElement)
-          sideElement.style.width = defalut_chat_enable ? "" : "0";
+        addZIndexToElements();
         const closeButton = document.querySelector('div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]');
         if (closeButton && closeButton.style.display != "none")
           closeButton.style.display = "none";
@@ -13151,7 +13164,6 @@ img {
       };
       reactExports.useEffect(() => {
         initSetting();
-        addZIndexToElements();
         chatUpdate.current = setInterval(() => {
           updateChatMessages();
         }, 300);
@@ -13164,7 +13176,7 @@ img {
         /* @__PURE__ */ jsxRuntimeExports.jsx(SettingTemplate, { isSetting, toggleSetting }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(Chat, {})
       ] });
-    });
+    };
     log("CHZZK 채팅 스타일러 - 비콩");
     let root = null;
     async function main() {
