@@ -1,5 +1,5 @@
-- ### [SOOP (숲) - 채팅 스타일러](https://greasyfork.org/ko/scripts/517201)
-- ### [CHZZK (치지직) - 채팅 스타일러](https://greasyfork.org/ko/scripts/519045)
+### [SOOP (숲) - 채팅 스타일러](https://greasyfork.org/ko/scripts/517201)
+### [CHZZK (치지직) - 채팅 스타일러](https://greasyfork.org/ko/scripts/519045)
 # 📦 CHZZK 채팅 스타일러 설치 및 사용 방법
 
 ## 사용자 스크립트 관리자 설치
