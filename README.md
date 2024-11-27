@@ -19,7 +19,8 @@
 
 ### 스타일러 설정
 - 사이트 우측 상단에 나타나는 **S 버튼**을 클릭하여 스타일러 설정 페이지에 접근할 수 있습니다.
-- ![image](https://github.com/user-attachments/assets/de05b22c-7ec1-49e3-a479-582d480ca3ce)
+- ![image](https://github.com/user-attachments/assets/8ceec593-a365-4689-b7ca-0f630a28c7dd)
+
 
 ### 스타일 선택 및 설정
 - 표시할 채팅 스타일을 선택한 후 세부적인 설정을 변경할 수 있습니다.
@@ -27,7 +28,8 @@
 ## 사용 전 필독 사항
 - 해당 스크립트를 설치하면 **기존 채팅창의 닫기 버튼이 삭제**됩니다. 대신, 스타일러 설정 내에서 **채팅창을 보이기/숨기기**할 수 있습니다.
 - 방송 화면에 **해당 버튼**이 보이는 경우, 버튼을 클릭하여 기존 채팅창을 표시해 주세요.
-- ![image](https://github.com/user-attachments/assets/b659c4d1-023c-40d0-95c9-2ec67fc1566c)
+- ![image](https://github.com/user-attachments/assets/6a60ea54-7323-4245-aa59-62946159b256)
+
 
 ## 사용 예시
 ![image](https://github.com/user-attachments/assets/3f08c15d-2a5a-4343-b112-ee85f5d6cbb6)
