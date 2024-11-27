@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241128004040
+// @version      20241128012754
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -7467,32 +7467,51 @@ img {
       toggleSetting
     }) => {
       const id2 = "chatStylerSetting";
-      reactExports.useEffect(() => {
-        const checkAndInsertElement = () => {
-          const serviceUtilElement = document.querySelector("div[class^='toolbar_section__']");
-          if (!serviceUtilElement) {
-            setTimeout(checkAndInsertElement, 1e3);
-            return;
-          }
-          const existingItem = document.getElementById(id2);
-          if (existingItem)
-            existingItem.remove();
-          const newDivElement = document.createElement("div");
-          newDivElement.id = id2;
-          newDivElement.className = styles$8.SettingMenu;
-          const buttonElement = document.createElement("button");
-          buttonElement.setAttribute("tip", "채팅 스타일러 설정");
-          const spanElement = document.createElement("p");
-          spanElement.textContent = "S";
-          buttonElement.appendChild(spanElement);
-          newDivElement.appendChild(buttonElement);
-          serviceUtilElement.insertBefore(newDivElement, serviceUtilElement.firstChild);
-          newDivElement.addEventListener("click", toggleSetting);
-          return () => {
-            newDivElement.removeEventListener("click", toggleSetting);
-          };
+      const checkAndInsertElement = () => {
+        const serviceUtilElement = document.querySelector("div[class^='toolbar_section__']");
+        if (!serviceUtilElement) {
+          setTimeout(checkAndInsertElement, 1e3);
+          return;
+        }
+        const existingItem = document.getElementById(id2);
+        if (existingItem)
+          existingItem.remove();
+        const newDivElement = document.createElement("div");
+        newDivElement.id = id2;
+        newDivElement.className = styles$8.SettingMenu;
+        const buttonElement = document.createElement("button");
+        buttonElement.setAttribute("tip", "채팅 스타일러 설정");
+        const spanElement = document.createElement("p");
+        spanElement.textContent = "S";
+        buttonElement.appendChild(spanElement);
+        newDivElement.appendChild(buttonElement);
+        serviceUtilElement.insertBefore(newDivElement, serviceUtilElement.firstChild);
+        newDivElement.addEventListener("click", toggleSetting);
+        return () => {
+          newDivElement.removeEventListener("click", toggleSetting);
         };
+      };
+      reactExports.useEffect(() => {
         checkAndInsertElement();
+        const observerCallback = (mutationsList) => {
+          for (const mutation of mutationsList) {
+            if (mutation.type == "childList") {
+              mutation.addedNodes.forEach((node) => {
+                if (node.nodeType == 1 && node.classList.contains("toolbar_container__k2trF")) {
+                  checkAndInsertElement();
+                }
+              });
+            }
+          }
+        };
+        const observer2 = new MutationObserver(observerCallback);
+        observer2.observe(document.body, {
+          childList: true,
+          subtree: true
+        });
+        return () => {
+          observer2.disconnect();
+        };
       }, []);
       return null;
     };
