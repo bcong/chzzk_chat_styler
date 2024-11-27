@@ -11,9 +11,9 @@ const Chat = observer(() => {
     const defalut_chat_enable = mainStore.setting.get('defalut_chat_enable');
 
     useEffect(() => {
-        const sideElement = document.querySelector('#webplayer_contents .wrapping.side') as HTMLElement;
+        const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
         if (sideElement)
-            sideElement.style.display = defalut_chat_enable ? 'block' : 'none';
+            sideElement.style.width = defalut_chat_enable ? '' : '0';
     }, [defalut_chat_enable]);
 
     let chatElem;

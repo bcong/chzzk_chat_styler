@@ -12,16 +12,19 @@ const SettingMenuComponent: React.FC<I_PROPS> = ({
     const id = 'chatStylerSetting';
 
     useEffect(() => {
-        const closeElement = document.getElementById('setbox_close');
+        const closeButton = document.querySelector('button[aria-label="채팅 접기"]');
 
-        if (closeElement) {
-            closeElement.remove();
+        if (closeButton) {
+            const parentDiv = closeButton.closest('div');
+            if (parentDiv) {
+                parentDiv.remove();
+            }
         }
     }, []);
 
     useEffect(() => {
         const checkAndInsertElement = () => {
-            const serviceUtilElement = document.querySelector('.serviceUtil');
+            const serviceUtilElement = document.querySelector("div[class^='toolbar_section__']");
 
             if (!serviceUtilElement) {
                 setTimeout(checkAndInsertElement, 1000);

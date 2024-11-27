@@ -37,51 +37,45 @@ const App = () => {
     };
 
     const updateChatMessages = () => {
-        const chatAreaElements = document.querySelectorAll('#chat_area');
-
+        const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
         const chatArea = chatAreaElements[chatAreaElements.length - 1];
 
         if (!chatArea) return;
 
-        const chatItems = chatArea.querySelectorAll('.chatting-list-item');
-        const recentChats = Array.from(chatItems).slice(-10);
+        const chatItems = chatArea.querySelectorAll('[class*="live_chatting_list_item"]');
+        const recentChats = Array.from(chatItems).slice(-mainStore.maxChats);
 
         if (recentChats.length <= 1) return;
 
         const lastChat = mainStore.lastChat();
 
         recentChats.forEach(chat => {
-            const username = chat.querySelector('.username .author')?.textContent || null;
-            const message = chat.querySelector('.message-text');
+            const usernameElement = chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
+            const username = usernameElement?.textContent || null;
+            const messageElement = chat.querySelector('[class*="live_chatting_message_text"]');
 
-            if (!username || !message) return;
+            if (!username || !messageElement) return;
 
-            const id = Number(message?.id) || 0;
+            if (messageElement instanceof HTMLElement) {
+                let id = Number(chat.id);
 
-            if (lastChat.id >= id) return;
+                if (!id) {
+                    id = mainStore.chatId + 1;
+                    chat.setAttribute('id', id.toString());
+                }
 
-            const messageText = chat.querySelector('.msg')?.textContent || '';
+                if (lastChat.id >= id) return;
 
-            mainStore.addChat({ id, username, messageText, color: colors[colorIdx] });
-            colorIdx == colors.length - 1 ? colorIdx = 0 : colorIdx++;
+                const messageText = messageElement.textContent || '';
+
+                mainStore.addChat({ id, username, messageText, color: colors[colorIdx] });
+                colorIdx == colors.length - 1 ? colorIdx = 0 : colorIdx++;
+            }
         });
-    };
-
-    const checkViewChat = () => {
-        const buttonElement = document.querySelector(".view_ctrl .btn_chat") as HTMLLIElement;
-
-        if (!buttonElement) return;
-        const computedStyle = window.getComputedStyle(buttonElement) as CSSStyleDeclaration;
-        const button = buttonElement.querySelector("button") as HTMLButtonElement;
-
-        if (!button) return;
-
-        computedStyle.display == 'block' && button.click();
     };
 
     useEffect(() => {
         initSetting();
-        checkViewChat();
 
         chatUpdate.current = setInterval(() => {
             updateChatMessages();
