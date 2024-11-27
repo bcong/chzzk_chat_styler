@@ -4,8 +4,9 @@ import SettingTemplate from '@Templates/SettingTemplate';
 import { useMainStore } from './Stores';
 import { T_SETTING } from './@types';
 import ChatTemplate from '@Templates/ChatTemplate';
+import { observer } from 'mobx-react-lite';
 
-const App = () => {
+const App = observer(() => {
     const mainStore = useMainStore();
     const [isSetting, IsSetting] = useState(false);
     const [isInit, IsInit] = useState(false);
@@ -118,6 +119,6 @@ const App = () => {
             <ChatTemplate />
         </>
     );
-};
+});
 
 export default App;
