@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241128014413
+// @version      20241128015124
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13079,7 +13079,7 @@ img {
       }
       return enable && chatElem;
     });
-    const App = () => {
+    const App = observer(() => {
       const mainStore = useMainStore();
       const [isSetting, IsSetting] = reactExports.useState(false);
       const [isInit, IsInit] = reactExports.useState(false);
@@ -13164,7 +13164,7 @@ img {
         /* @__PURE__ */ jsxRuntimeExports.jsx(SettingTemplate, { isSetting, toggleSetting }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(Chat, {})
       ] });
-    };
+    });
     log("CHZZK 채팅 스타일러 - 비콩");
     let root = null;
     async function main() {
