@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241215153740
+// @version      20241215200237
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13108,20 +13108,34 @@ img {
       const chat_style = mainStore.setting.get("chat_style");
       const defalut_chat_enable = mainStore.setting.get("defalut_chat_enable");
       const chatUpdate = reactExports.useRef(null);
-      const isEnableChat = () => {
-        const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
-        if (sideElement)
-          sideElement.style.maxWidth = defalut_chat_enable ? "" : "1px";
+      const [pathname, setPathname] = reactExports.useState("");
+      const checkEnableChat = () => {
+        try {
+          const newPathname = window.location.pathname;
+          const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']");
+          if (chatElement) {
+            chatElement.scrollTop = chatElement.scrollHeight;
+          }
+          if (pathname != newPathname) {
+            const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
+            if (sideElement) {
+              sideElement.style.maxWidth = defalut_chat_enable ? "" : "0px";
+              setPathname(newPathname);
+            }
+          }
+        } catch (e2) {
+          console.error(e2);
+        }
       };
       reactExports.useEffect(() => {
-        isEnableChat();
+        checkEnableChat();
         chatUpdate.current = setInterval(() => {
-          isEnableChat();
+          checkEnableChat();
         }, 100);
         return () => {
           if (chatUpdate.current) clearInterval(chatUpdate.current);
         };
-      }, [defalut_chat_enable]);
+      }, [defalut_chat_enable, pathname]);
       let chatElem;
       switch (chat_style) {
         case 0:
