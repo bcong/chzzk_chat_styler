@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241215150630
+// @version      20241215153208
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -363,7 +363,7 @@ img {
   color: #fff;
   font-weight: 600;
 }
-._FrameChat_7mckk_1 {
+._FrameChat_zo050_1 {
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -371,63 +371,65 @@ img {
   gap: 4px;
   font-family: "Pretendard";
 }
-._FrameChat_7mckk_1._LeftTop_7mckk_9 {
+._FrameChat_zo050_1._LeftTop_zo050_9 {
   top: 0;
 }
-._FrameChat_7mckk_1._LeftBottom_7mckk_12 {
+._FrameChat_zo050_1._LeftBottom_zo050_12 {
   bottom: 0;
 }
-._FrameChat_7mckk_1._RightTop_7mckk_15 {
+._FrameChat_zo050_1._RightTop_zo050_15 {
   right: 0;
   top: 0;
 }
-._FrameChat_7mckk_1._RightBottom_7mckk_19 {
+._FrameChat_zo050_1._RightBottom_zo050_19 {
   right: 0;
   bottom: 0;
 }
-._FrameChat_7mckk_1 ._Chat_7mckk_23 {
+._FrameChat_zo050_1 ._Chat_zo050_23 {
   display: flex;
   position: relative;
   z-index: 1;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-._FrameChat_7mckk_1 ._Chat_7mckk_23._Sorted_7mckk_29 ._MessageContainer_7mckk_29 {
+._FrameChat_zo050_1 ._Chat_zo050_23._Sorted_zo050_29 ._MessageContainer_zo050_29 {
   display: flex;
   flex-direction: row;
 }
-._FrameChat_7mckk_1 ._Chat_7mckk_23._Sorted_7mckk_29 ._MessageContainer_7mckk_29 ._Username_7mckk_33 {
+._FrameChat_zo050_1 ._Chat_zo050_23._Sorted_zo050_29 ._MessageContainer_zo050_29 ._Username_zo050_33 {
   width: 126px;
 }
-._FrameChat_7mckk_1 ._Chat_7mckk_23._Sorted_7mckk_29 ._MessageContainer_7mckk_29 ._Message_7mckk_29 {
+._FrameChat_zo050_1 ._Chat_zo050_23._Sorted_zo050_29 ._MessageContainer_zo050_29 ._Message_zo050_29 {
   flex: 1;
 }
-._FrameChat_7mckk_1 ._Chat_7mckk_23 ._MessageContainer_7mckk_29 {
+._FrameChat_zo050_1 ._Chat_zo050_23 ._MessageContainer_zo050_29 {
   padding: 2px 8px;
   border-radius: 8px;
 }
-._FrameChat_7mckk_1 ._Chat_7mckk_23 ._MessageContainer_7mckk_29 ._Username_7mckk_33 {
+._FrameChat_zo050_1 ._Chat_zo050_23 ._MessageContainer_zo050_29 ._Username_zo050_33 {
   display: inline-block;
   word-break: break-all;
   white-space: nowrap;
   margin-right: 8px;
 }
-._FrameChat_7mckk_1 ._Chat_7mckk_23 ._MessageContainer_7mckk_29 ._Username_7mckk_33 p {
+._FrameChat_zo050_1 ._Chat_zo050_23 ._MessageContainer_zo050_29 ._Username_zo050_33 p {
   display: inline;
+  vertical-align: top;
   font-weight: 700;
 }
-._FrameChat_7mckk_1 ._Chat_7mckk_23 ._MessageContainer_7mckk_29 ._Message_7mckk_29 {
+._FrameChat_zo050_1 ._Chat_zo050_23 ._MessageContainer_zo050_29 ._Message_zo050_29 {
   display: inline;
   word-break: break-all;
 }
-._FrameChat_7mckk_1 ._Chat_7mckk_23 ._MessageContainer_7mckk_29 ._Message_7mckk_29 p {
+._FrameChat_zo050_1 ._Chat_zo050_23 ._MessageContainer_zo050_29 ._Message_zo050_29 p {
   display: inline;
+  vertical-align: top;
   font-weight: 500;
   color: #f6f9ff;
 }
-._FrameChat_7mckk_1 ._Chat_7mckk_23._Background_7mckk_62 ._MessageContainer_7mckk_29 {
+._FrameChat_zo050_1 ._Chat_zo050_23._Background_zo050_64 ._MessageContainer_zo050_29 {
   padding: 4px 8px;
 }
-._OverlayChat_1aasj_1 {
+._OverlayChat_18pdb_1 {
   position: fixed;
   flex-direction: column;
   z-index: 13000;
@@ -440,50 +442,52 @@ img {
   padding: 8px 4px;
   font-family: "Pretendard";
 }
-._OverlayChat_1aasj_1._View_1aasj_14 {
+._OverlayChat_18pdb_1._View_18pdb_14 {
   display: flex;
 }
-._OverlayChat_1aasj_1 ._Chat_1aasj_17 {
+._OverlayChat_18pdb_1 ._Chat_18pdb_17 {
   display: flex;
   position: relative;
   z-index: 1;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-._OverlayChat_1aasj_1 ._Chat_1aasj_17._Sorted_1aasj_23 ._MessageContainer_1aasj_23 {
+._OverlayChat_18pdb_1 ._Chat_18pdb_17._Sorted_18pdb_23 ._MessageContainer_18pdb_23 {
   display: flex;
   flex-direction: row;
 }
-._OverlayChat_1aasj_1 ._Chat_1aasj_17._Sorted_1aasj_23 ._MessageContainer_1aasj_23 ._Username_1aasj_27 {
+._OverlayChat_18pdb_1 ._Chat_18pdb_17._Sorted_18pdb_23 ._MessageContainer_18pdb_23 ._Username_18pdb_27 {
   width: 126px;
 }
-._OverlayChat_1aasj_1 ._Chat_1aasj_17._Sorted_1aasj_23 ._MessageContainer_1aasj_23 ._Message_1aasj_23 {
+._OverlayChat_18pdb_1 ._Chat_18pdb_17._Sorted_18pdb_23 ._MessageContainer_18pdb_23 ._Message_18pdb_23 {
   flex: 1;
 }
-._OverlayChat_1aasj_1 ._Chat_1aasj_17._Background_1aasj_33 ._MessageContainer_1aasj_23 {
-  padding: 4px 8px;
-}
-._OverlayChat_1aasj_1 ._Chat_1aasj_17 ._MessageContainer_1aasj_23 {
+._OverlayChat_18pdb_1 ._Chat_18pdb_17 ._MessageContainer_18pdb_23 {
   padding: 2px 8px;
   border-radius: 8px;
 }
-._OverlayChat_1aasj_1 ._Chat_1aasj_17 ._MessageContainer_1aasj_23 ._Username_1aasj_27 {
+._OverlayChat_18pdb_1 ._Chat_18pdb_17 ._MessageContainer_18pdb_23 ._Username_18pdb_27 {
   display: inline-block;
   word-break: break-all;
   white-space: nowrap;
   margin-right: 8px;
 }
-._OverlayChat_1aasj_1 ._Chat_1aasj_17 ._MessageContainer_1aasj_23 ._Username_1aasj_27 p {
+._OverlayChat_18pdb_1 ._Chat_18pdb_17 ._MessageContainer_18pdb_23 ._Username_18pdb_27 p {
   display: inline;
+  vertical-align: top;
   font-weight: 700;
 }
-._OverlayChat_1aasj_1 ._Chat_1aasj_17 ._MessageContainer_1aasj_23 ._Message_1aasj_23 {
+._OverlayChat_18pdb_1 ._Chat_18pdb_17 ._MessageContainer_18pdb_23 ._Message_18pdb_23 {
   display: inline;
   word-break: break-all;
 }
-._OverlayChat_1aasj_1 ._Chat_1aasj_17 ._MessageContainer_1aasj_23 ._Message_1aasj_23 p {
+._OverlayChat_18pdb_1 ._Chat_18pdb_17 ._MessageContainer_18pdb_23 ._Message_18pdb_23 p {
   display: inline;
+  vertical-align: top;
   font-weight: 500;
   color: #f6f9ff;
+}
+._OverlayChat_18pdb_1 ._Chat_18pdb_17._Background_18pdb_58 ._MessageContainer_18pdb_23 {
+  padding: 4px 8px;
 } `);
 
 (function () {
@@ -12289,12 +12293,13 @@ img {
     }) => {
       const sliderRef = reactExports.useRef(null);
       const handleMouseMove = (e2) => {
-        if (!sliderRef.current) return;
+        if (!sliderRef.current || max <= min) return;
         const slider = sliderRef.current;
         const rect = slider.getBoundingClientRect();
         const offsetX = e2.clientX - rect.left;
-        const newValue = Math.min(Math.max(min, offsetX / rect.width * max), max);
-        setValue(Math.round(newValue));
+        const percentage = Math.min(Math.max(0, offsetX / rect.width), 1);
+        const newValue = Math.round(percentage * (max - min) + min);
+        setValue(newValue);
       };
       const handleMouseDown = (e2) => {
         handleMouseMove(e2.nativeEvent);
@@ -12307,10 +12312,31 @@ img {
           { once: true }
         );
       };
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.SliderBar, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$2.SliderTrack, ref: sliderRef, onMouseDown: handleMouseDown, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.SliderThumb, "data-value": value, style: { left: `${value / max * 100}%` } }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.SliderFilled, style: { width: `${value / max * 100}%` } })
-      ] }) });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.SliderBar, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: styles$2.SliderTrack,
+          ref: sliderRef,
+          onMouseDown: handleMouseDown,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "div",
+              {
+                className: styles$2.SliderThumb,
+                "data-value": value,
+                style: { left: `${(value - min) / (max - min) * 100}%` }
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "div",
+              {
+                className: styles$2.SliderFilled,
+                style: { width: `${(value - min) / (max - min) * 100}%` }
+              }
+            )
+          ]
+        }
+      ) });
     };
     const Setting = observer(() => {
       const mainStore = useMainStore();
@@ -12396,7 +12422,7 @@ img {
             {
               type: "slider",
               value: mainStore.setting.get("overlay_view_width"),
-              min: 0,
+              min: 100,
               max: 500,
               cb: (value) => mainStore.setSetting("overlay_view_width", value, true)
             }
@@ -12409,7 +12435,7 @@ img {
             {
               type: "slider",
               value: mainStore.setting.get("overlay_font_size"),
-              min: 0,
+              min: 10,
               max: 28,
               cb: (value) => mainStore.setSetting("overlay_font_size", value, true)
             }
@@ -12531,7 +12557,7 @@ img {
             {
               type: "slider",
               value: mainStore.setting.get("frame_view_width"),
-              min: 0,
+              min: 100,
               max: 500,
               cb: (value) => mainStore.setSetting("frame_view_width", value, true)
             }
@@ -12544,7 +12570,7 @@ img {
             {
               type: "slider",
               value: mainStore.setting.get("frame_font_size"),
-              min: 0,
+              min: 10,
               max: 28,
               cb: (value) => mainStore.setSetting("frame_font_size", value, true)
             }
@@ -12766,17 +12792,17 @@ img {
         document.body
       );
     };
-    const FrameChat$1 = "_FrameChat_7mckk_1";
-    const LeftTop = "_LeftTop_7mckk_9";
-    const LeftBottom = "_LeftBottom_7mckk_12";
-    const RightTop = "_RightTop_7mckk_15";
-    const RightBottom = "_RightBottom_7mckk_19";
-    const Chat$2 = "_Chat_7mckk_23";
-    const Sorted$1 = "_Sorted_7mckk_29";
-    const MessageContainer$1 = "_MessageContainer_7mckk_29";
-    const Username$1 = "_Username_7mckk_33";
-    const Message$1 = "_Message_7mckk_29";
-    const Background$1 = "_Background_7mckk_62";
+    const FrameChat$1 = "_FrameChat_zo050_1";
+    const LeftTop = "_LeftTop_zo050_9";
+    const LeftBottom = "_LeftBottom_zo050_12";
+    const RightTop = "_RightTop_zo050_15";
+    const RightBottom = "_RightBottom_zo050_19";
+    const Chat$2 = "_Chat_zo050_23";
+    const Sorted$1 = "_Sorted_zo050_29";
+    const MessageContainer$1 = "_MessageContainer_zo050_29";
+    const Username$1 = "_Username_zo050_33";
+    const Message$1 = "_Message_zo050_29";
+    const Background$1 = "_Background_zo050_64";
     const styles$1 = {
       FrameChat: FrameChat$1,
       LeftTop,
@@ -12902,14 +12928,14 @@ img {
         playerSizeDiv
       ) : null;
     });
-    const OverlayChat$1 = "_OverlayChat_1aasj_1";
-    const View = "_View_1aasj_14";
-    const Chat$1 = "_Chat_1aasj_17";
-    const Sorted = "_Sorted_1aasj_23";
-    const MessageContainer = "_MessageContainer_1aasj_23";
-    const Username = "_Username_1aasj_27";
-    const Message = "_Message_1aasj_23";
-    const Background = "_Background_1aasj_33";
+    const OverlayChat$1 = "_OverlayChat_18pdb_1";
+    const View = "_View_18pdb_14";
+    const Chat$1 = "_Chat_18pdb_17";
+    const Sorted = "_Sorted_18pdb_23";
+    const MessageContainer = "_MessageContainer_18pdb_23";
+    const Username = "_Username_18pdb_27";
+    const Message = "_Message_18pdb_23";
+    const Background = "_Background_18pdb_58";
     const styles = {
       OverlayChat: OverlayChat$1,
       View,

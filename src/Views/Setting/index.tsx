@@ -95,7 +95,7 @@ const Setting = observer(() => {
                 {
                     type: 'slider',
                     value: mainStore.setting.get('overlay_view_width'),
-                    min: 0,
+                    min: 100,
                     max: 500,
                     cb: (value: unknown) => mainStore.setSetting('overlay_view_width', value, true)
                 }
@@ -108,7 +108,7 @@ const Setting = observer(() => {
                 {
                     type: 'slider',
                     value: mainStore.setting.get('overlay_font_size'),
-                    min: 0,
+                    min: 10,
                     max: 28,
                     cb: (value: unknown) => mainStore.setSetting('overlay_font_size', value, true)
                 }
@@ -231,7 +231,7 @@ const Setting = observer(() => {
                 {
                     type: 'slider',
                     value: mainStore.setting.get('frame_view_width'),
-                    min: 0,
+                    min: 100,
                     max: 500,
                     cb: (value: unknown) => mainStore.setSetting('frame_view_width', value, true)
                 }
@@ -244,7 +244,7 @@ const Setting = observer(() => {
                 {
                     type: 'slider',
                     value: mainStore.setting.get('frame_font_size'),
-                    min: 0,
+                    min: 10,
                     max: 28,
                     cb: (value: unknown) => mainStore.setSetting('frame_font_size', value, true)
                 }
