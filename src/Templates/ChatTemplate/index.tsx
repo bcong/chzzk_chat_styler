@@ -10,12 +10,12 @@ const Chat = observer(() => {
     const chat_style = mainStore.setting.get('chat_style');
     const defalut_chat_enable = mainStore.setting.get('defalut_chat_enable');
     const chatUpdate = useRef<number | null>(null);
-    
+
     const isEnableChat = () => {
         const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
 
         if (sideElement)
-            sideElement.style.width = defalut_chat_enable ? '' : '0';
+            sideElement.style.width = defalut_chat_enable ? '' : '1px';
     };
 
     useEffect(() => {
