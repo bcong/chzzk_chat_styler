@@ -15,7 +15,7 @@ const Chat = observer(() => {
         const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
 
         if (sideElement)
-            sideElement.style.maxWidth = defalut_chat_enable ? '' : '0px';
+            sideElement.style.maxWidth = defalut_chat_enable ? '' : '1px';
     };
 
     useEffect(() => {
