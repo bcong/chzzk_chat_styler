@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241215141250
+// @version      20241215143456
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -12819,16 +12819,23 @@ img {
         };
         addFrameChat();
       }, [window.location.href]);
-      const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id: id2, username, messageText, color }) => {
+      const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id: id2, username, contentArray, color }) => {
         const background = frameChatBackground ? `rgba(0, 0, 0, ${frameChatOpacity}%)` : "";
         const fontSize = `${frameFontSize}px`;
         const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: {
           color: frameRandomUsername ? color : "#9dd9a5",
           fontSize
         }, children: username }) });
+        const messageContent = contentArray.map((content, index) => {
+          if (content.startsWith("https://")) {
+            return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: content, alt: "chat image", style: { width: fontSize, height: fontSize } }, index);
+          } else {
+            return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize }, children: content }, index);
+          }
+        });
         const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Message, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: {
           fontSize
-        }, children: messageText }) });
+        }, children: messageContent }) });
         return /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
@@ -13007,16 +13014,21 @@ img {
         chatRef.current.style.top = `${top}px`;
         IsView(true);
       }, []);
-      const chatsElem = mainStore.chats.slice(-overlayViewCount).map(({ id: id2, username, messageText, color }) => {
+      const chatsElem = mainStore.chats.slice(-overlayViewCount).map(({ id: id2, username, contentArray, color }) => {
         const background = overlayChatBackground ? `rgba(0, 0, 0, ${overlayViewOpacity}%)` : "";
         const fontSize = `${overlayFontSize}px`;
         const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: {
           color: overlayRandomUsername ? color : "#9dd9a5",
           fontSize
         }, children: username }) });
-        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.Message, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: {
-          fontSize
-        }, children: messageText }) });
+        const messageContent = contentArray.map((content, index) => {
+          if (content.startsWith("https://")) {
+            return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: content, alt: "chat image", style: { width: fontSize, height: fontSize } }, index);
+          } else {
+            return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize }, children: content }, index);
+          }
+        });
+        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.Message, children: messageContent });
         return /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
@@ -13129,7 +13141,7 @@ img {
         GM_listValues().map((v2) => {
           mainStore.setSetting(v2, GM_getValue(v2), false);
         });
-        mainStore.addChat({ id: -1, username: "제작자", messageText: "비콩 (github.com/bcong)", color: "#e9ab00" });
+        mainStore.addChat({ id: -1, username: "제작자", contentArray: ["비콩 (github.com/bcong)"], color: "#e9ab00" });
         IsInit(true);
       };
       const updateChatMessages = () => {
@@ -13156,8 +13168,22 @@ img {
               chat.setAttribute("id", id2.toString());
             }
             if (lastChat.id >= id2) return;
-            const messageText = messageElement.textContent || "";
-            mainStore.addChat({ id: id2, username, messageText, color: colors[colorIdx] });
+            const contentArray = [];
+            messageElement.childNodes.forEach((node) => {
+              var _a2;
+              if (node.nodeType === Node.TEXT_NODE) {
+                const textContent = (_a2 = node.textContent) == null ? void 0 : _a2.trim();
+                if (textContent) {
+                  contentArray.push(textContent);
+                }
+              } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "IMG") {
+                const imgSrc = node.getAttribute("src");
+                if (imgSrc) {
+                  contentArray.push(imgSrc);
+                }
+              }
+            });
+            mainStore.addChat({ id: id2, username, contentArray, color: colors[colorIdx] });
             colorIdx == colors.length - 1 ? colorIdx = 0 : colorIdx++;
           }
         });

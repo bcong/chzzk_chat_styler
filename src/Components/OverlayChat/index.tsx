@@ -125,7 +125,7 @@ const OverlayChat = observer(() => {
 
     const chatsElem = mainStore.chats
         .slice(-overlayViewCount)
-        .map(({ id, username, messageText, color }) => {
+        .map(({ id, username, contentArray, color }) => {
             const background = overlayChatBackground ? `rgba(0, 0, 0, ${overlayViewOpacity}%)` : '';
             const fontSize = `${overlayFontSize}px`;
 
@@ -140,13 +140,17 @@ const OverlayChat = observer(() => {
                 </div>
             );
 
+            const messageContent = contentArray.map((content, index) => {
+                if (content.startsWith('https://')) {
+                    return <img key={index} src={content} alt="chat image" style={{ width: fontSize, height: fontSize }} />;
+                } else {
+                    return <p style={{ fontSize: fontSize }} key={index}>{content}</p>;
+                }
+            });
+
             const messageElem = (
                 <div className={styles.Message}>
-                    <p style={{
-                        fontSize: fontSize
-                    }}>
-                        {messageText}
-                    </p>
+                    {messageContent}
                 </div>
             );
 

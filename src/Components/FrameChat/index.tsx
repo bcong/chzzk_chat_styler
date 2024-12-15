@@ -25,7 +25,7 @@ const FrameChat = observer(() => {
     useEffect(() => {
         const addFrameChat = () => {
             const div = document.querySelector('#live_player_layout');
-            
+
             if (!div) {
                 setTimeout(addFrameChat, 1000);
                 return;
@@ -41,7 +41,7 @@ const FrameChat = observer(() => {
 
     const chatsElem = mainStore.chats
         .slice(-frameViewCount)
-        .map(({ id, username, messageText, color }) => {
+        .map(({ id, username, contentArray, color }) => {
             const background = frameChatBackground ? `rgba(0, 0, 0, ${frameChatOpacity}%)` : '';
             const fontSize = `${frameFontSize}px`;
 
@@ -56,12 +56,20 @@ const FrameChat = observer(() => {
                 </div>
             );
 
+            const messageContent = contentArray.map((content, index) => {
+                if (content.startsWith('https://')) {
+                    return <img key={index} src={content} alt="chat image" style={{ width: fontSize, height: fontSize }} />;
+                } else {
+                    return <p style={{ fontSize: fontSize }} key={index}>{content}</p>;
+                }
+            });
+
             const messageElem = (
                 <div className={styles.Message}>
                     <p style={{
                         fontSize: fontSize
                     }}>
-                        {messageText}
+                        {messageContent}
                     </p>
                 </div>
             );

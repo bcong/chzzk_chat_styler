@@ -68,7 +68,7 @@ export interface I_SETTINGS {
 export interface I_CHAT {
     id: number
     username: string
-    messageText: string
+    contentArray: string[]
     color: string
 }
 
