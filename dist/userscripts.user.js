@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241215143456
+// @version      20241215143851
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -12828,7 +12828,7 @@ img {
         }, children: username }) });
         const messageContent = contentArray.map((content, index) => {
           if (content.startsWith("https://")) {
-            return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: content, alt: "chat image", style: { width: fontSize, height: fontSize } }, index);
+            return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: content, style: { width: fontSize, height: fontSize } }, index);
           } else {
             return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize }, children: content }, index);
           }
@@ -13023,7 +13023,7 @@ img {
         }, children: username }) });
         const messageContent = contentArray.map((content, index) => {
           if (content.startsWith("https://")) {
-            return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: content, alt: "chat image", style: { width: fontSize, height: fontSize } }, index);
+            return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: content, style: { width: fontSize, height: fontSize } }, index);
           } else {
             return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize }, children: content }, index);
           }
