@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241215153208
+// @version      20241215153740
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -59,7 +59,7 @@ img {
   user-select: none;
   -webkit-user-drag: none;
 }
-._SettingMenu_go8op_1 {
+._SettingMenu_u7u24_1 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,9 +69,9 @@ img {
   margin-right: 8px;
   font-family: "Pretendard";
 }
-._SettingMenu_go8op_1 button p {
+._SettingMenu_u7u24_1 button p {
   font-size: 24px !important;
-  background: #00fda4;
+  background: #16cf9c;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
@@ -79,7 +79,7 @@ img {
   line-height: 1;
   padding: 8px !important;
 }
-._SettingMenu_go8op_1:hover {
+._SettingMenu_u7u24_1:hover {
   background-color: rgba(255, 255, 255, 0.25);
 }
 ._SettingTemplate_1esbo_1 {
@@ -159,7 +159,7 @@ img {
   background-clip: padding-box !important;
   border: 3px solid transparent !important;
 }
-._ToggleButton_1ur8z_1 {
+._ToggleButton_1j7w4_1 {
   width: 46px;
   height: 24px;
   border-radius: 36px;
@@ -167,16 +167,16 @@ img {
   position: relative;
   transition-duration: 0.2s;
 }
-._ToggleButton_1ur8z_1:hover {
+._ToggleButton_1j7w4_1:hover {
   cursor: pointer;
 }
-._ToggleButton_1ur8z_1._Enable_1ur8z_12 {
-  background-color: #00fda4;
+._ToggleButton_1j7w4_1._Enable_1j7w4_12 {
+  background-color: #16cf9c;
 }
-._ToggleButton_1ur8z_1._Enable_1ur8z_12 ._Circle_1ur8z_15 {
+._ToggleButton_1j7w4_1._Enable_1j7w4_12 ._Circle_1j7w4_15 {
   transform: translate(134%, -50%);
 }
-._ToggleButton_1ur8z_1 ._Circle_1ur8z_15 {
+._ToggleButton_1j7w4_1 ._Circle_1j7w4_15 {
   position: absolute;
   width: 18px;
   height: 18px;
@@ -322,30 +322,30 @@ img {
 ._InputBox_1a5to_1 ._Tip_1a5to_25._View_1a5to_39 {
   display: flex;
 }
-._SliderBar_9iii2_1 {
+._SliderBar_1p3hs_1 {
   width: 150px;
   margin: 20px auto;
 }
-._SliderBar_9iii2_1 ._SliderTrack_9iii2_5 {
+._SliderBar_1p3hs_1 ._SliderTrack_1p3hs_5 {
   position: relative;
   width: 100%;
   height: 6px;
   background-color: #d8dadf;
   border-radius: 4px;
 }
-._SliderBar_9iii2_1 ._SliderTrack_9iii2_5 ._SliderFilled_9iii2_12 {
+._SliderBar_1p3hs_1 ._SliderTrack_1p3hs_5 ._SliderFilled_1p3hs_12 {
   position: absolute;
   height: 100%;
-  background-color: #00fda4;
+  background-color: #16cf9c;
   border-radius: inherit;
   transition-duration: 0.1s;
 }
-._SliderBar_9iii2_1 ._SliderTrack_9iii2_5 ._SliderThumb_9iii2_19 {
+._SliderBar_1p3hs_1 ._SliderTrack_1p3hs_5 ._SliderThumb_1p3hs_19 {
   position: absolute;
   top: -4px;
   width: 28px;
   height: 14px;
-  background-color: #00fda4;
+  background-color: #16cf9c;
   border-radius: 6px;
   cursor: pointer;
   z-index: 10;
@@ -353,10 +353,10 @@ img {
   transition-duration: 0.1s;
   transform-origin: 0;
 }
-._SliderBar_9iii2_1 ._SliderTrack_9iii2_5 ._SliderThumb_9iii2_19:hover {
+._SliderBar_1p3hs_1 ._SliderTrack_1p3hs_5 ._SliderThumb_1p3hs_19:hover {
   scale: 1.15;
 }
-._SliderBar_9iii2_1 ._SliderTrack_9iii2_5 ._SliderThumb_9iii2_19::after {
+._SliderBar_1p3hs_1 ._SliderTrack_1p3hs_5 ._SliderThumb_1p3hs_19::after {
   display: flex;
   justify-content: center;
   content: attr(data-value);
@@ -7466,7 +7466,7 @@ img {
       createRoot = m$1.createRoot;
       m$1.hydrateRoot;
     }
-    const SettingMenu = "_SettingMenu_go8op_1";
+    const SettingMenu = "_SettingMenu_u7u24_1";
     const styles$8 = {
       SettingMenu
     };
@@ -7588,9 +7588,9 @@ img {
         delayedProbe();
       });
     }
-    const ToggleButton$1 = "_ToggleButton_1ur8z_1";
-    const Enable = "_Enable_1ur8z_12";
-    const Circle = "_Circle_1ur8z_15";
+    const ToggleButton$1 = "_ToggleButton_1j7w4_1";
+    const Enable = "_Enable_1j7w4_12";
+    const Circle = "_Circle_1j7w4_15";
     const styles$6 = {
       ToggleButton: ToggleButton$1,
       Enable,
@@ -12275,10 +12275,10 @@ img {
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$3.Tip, tip.length > 0 ? styles$3.View : false), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: tip }) })
       ] });
     };
-    const SliderBar$1 = "_SliderBar_9iii2_1";
-    const SliderTrack = "_SliderTrack_9iii2_5";
-    const SliderFilled = "_SliderFilled_9iii2_12";
-    const SliderThumb = "_SliderThumb_9iii2_19";
+    const SliderBar$1 = "_SliderBar_1p3hs_1";
+    const SliderTrack = "_SliderTrack_1p3hs_5";
+    const SliderFilled = "_SliderFilled_1p3hs_12";
+    const SliderThumb = "_SliderThumb_1p3hs_19";
     const styles$2 = {
       SliderBar: SliderBar$1,
       SliderTrack,
