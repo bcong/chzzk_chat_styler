@@ -27,7 +27,7 @@ export default class MainStore {
         },
         {
             key: 'overlay_chat_opacity',
-            value: 80
+            value: 50
         },
         {
             key: 'overlay_background_area',
@@ -77,7 +77,7 @@ export default class MainStore {
         },
         {
             key: 'frame_chat_opacity',
-            value: 80
+            value: 50
         },
         {
             key: 'frame_background_opacity',
