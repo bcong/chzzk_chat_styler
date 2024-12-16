@@ -49,6 +49,15 @@ const App = () => {
         IsInit(true);
     };
 
+    const checkViewChat = () => {
+        const buttonElement = document.querySelector("button[class^='live_information_player_folded_button__']") as HTMLButtonElement;
+
+        if (!buttonElement) return;
+
+        if (buttonElement?.textContent == '채팅')
+            buttonElement.click();
+    };
+
     const updateChatMessages = () => {
         addZIndexToElements();
         const closeButton = document.querySelector('div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]') as HTMLElement | null;
@@ -108,10 +117,12 @@ const App = () => {
 
     useEffect(() => {
         initSetting();
+        checkViewChat();
 
         chatUpdate.current = setInterval(() => {
             updateChatMessages();
-        }, 300);
+            checkViewChat();
+        }, 100);
 
         return () => {
             if (chatUpdate.current) clearInterval(chatUpdate.current);

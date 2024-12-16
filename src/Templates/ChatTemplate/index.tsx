@@ -11,6 +11,7 @@ const Chat = observer(() => {
     const defalut_chat_enable = mainStore.setting.get('defalut_chat_enable');
     const chatUpdate = useRef<number | null>(null);
     const [pathname, setPathname] = useState('');
+    const [chatEnable, setChatEnable] = useState(null);
 
     const checkEnableChat = () => {
         try {
@@ -21,11 +22,13 @@ const Chat = observer(() => {
                 chatElement.scrollTop = chatElement.scrollHeight;
             }
 
-            if (pathname != newPathname) {
+            if (pathname != newPathname || chatEnable != defalut_chat_enable) {
                 const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
                 if (sideElement) {
                     sideElement.style.maxWidth = defalut_chat_enable ? '' : '0px';
+                    sideElement.style.opacity = defalut_chat_enable ? '' : '0';
                     setPathname(newPathname);
+                    setChatEnable(defalut_chat_enable);
                 }
             }
         } catch (e) {
@@ -43,7 +46,7 @@ const Chat = observer(() => {
         return () => {
             if (chatUpdate.current) clearInterval(chatUpdate.current);
         };
-    }, [defalut_chat_enable, pathname]);
+    }, [defalut_chat_enable, chatEnable, pathname]);
 
     let chatElem;
     switch (chat_style) {

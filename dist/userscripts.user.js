@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241215200237
+// @version      20241216215107
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13109,6 +13109,7 @@ img {
       const defalut_chat_enable = mainStore.setting.get("defalut_chat_enable");
       const chatUpdate = reactExports.useRef(null);
       const [pathname, setPathname] = reactExports.useState("");
+      const [chatEnable, setChatEnable] = reactExports.useState(null);
       const checkEnableChat = () => {
         try {
           const newPathname = window.location.pathname;
@@ -13116,11 +13117,13 @@ img {
           if (chatElement) {
             chatElement.scrollTop = chatElement.scrollHeight;
           }
-          if (pathname != newPathname) {
+          if (pathname != newPathname || chatEnable != defalut_chat_enable) {
             const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
             if (sideElement) {
               sideElement.style.maxWidth = defalut_chat_enable ? "" : "0px";
+              sideElement.style.opacity = defalut_chat_enable ? "" : "0";
               setPathname(newPathname);
+              setChatEnable(defalut_chat_enable);
             }
           }
         } catch (e2) {
@@ -13135,7 +13138,7 @@ img {
         return () => {
           if (chatUpdate.current) clearInterval(chatUpdate.current);
         };
-      }, [defalut_chat_enable, pathname]);
+      }, [defalut_chat_enable, chatEnable, pathname]);
       let chatElem;
       switch (chat_style) {
         case 0:
@@ -13184,6 +13187,12 @@ img {
         mainStore.addChat({ id: -1, username: "제작자", contentArray: ["비콩 (github.com/bcong)"], color: "#e9ab00" });
         IsInit(true);
       };
+      const checkViewChat = () => {
+        const buttonElement = document.querySelector("button[class^='live_information_player_folded_button__']");
+        if (!buttonElement) return;
+        if ((buttonElement == null ? void 0 : buttonElement.textContent) == "채팅")
+          buttonElement.click();
+      };
       const updateChatMessages = () => {
         addZIndexToElements();
         const closeButton = document.querySelector('div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]');
@@ -13230,9 +13239,11 @@ img {
       };
       reactExports.useEffect(() => {
         initSetting();
+        checkViewChat();
         chatUpdate.current = setInterval(() => {
           updateChatMessages();
-        }, 300);
+          checkViewChat();
+        }, 100);
         return () => {
           if (chatUpdate.current) clearInterval(chatUpdate.current);
         };
