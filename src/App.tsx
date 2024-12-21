@@ -96,7 +96,7 @@ const App = () => {
 
                 if (!id) {
                     id = mainStore.chatId + 1;
-                    chat.setAttribute('id', id.toString());
+                    chat?.setAttribute('id', id.toString());
                 }
 
                 if (lastChat.id >= id) return;

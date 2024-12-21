@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241221140354
+// @version      20241222024412
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -7484,7 +7484,7 @@ img {
         }
         const existingItem = document.getElementById(id2);
         if (existingItem)
-          existingItem.remove();
+          existingItem == null ? void 0 : existingItem.remove();
         const newDivElement = document.createElement("div");
         newDivElement.id = id2;
         newDivElement.className = styles$8.SettingMenu;
@@ -13223,7 +13223,7 @@ img {
             let id2 = Number(chat.id);
             if (!id2) {
               id2 = mainStore.chatId + 1;
-              chat.setAttribute("id", id2.toString());
+              chat == null ? void 0 : chat.setAttribute("id", id2.toString());
             }
             if (lastChat.id >= id2) return;
             const contentArray = [];

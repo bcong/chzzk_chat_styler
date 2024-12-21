@@ -22,7 +22,7 @@ const SettingMenuComponent: React.FC<I_PROPS> = ({
         const existingItem = document.getElementById(id);
 
         if (existingItem)
-            existingItem.remove();
+            existingItem?.remove();
 
         const newDivElement = document.createElement('div');
         newDivElement.id = id;
