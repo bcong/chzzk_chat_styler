@@ -51,11 +51,18 @@ const App = () => {
 
     const checkViewChat = () => {
         const buttonElement = document.querySelector("button[class^='live_information_player_folded_button__']") as HTMLButtonElement;
+        const fullScreenbuttonElement = document.querySelector("div[class^='live_information_player_control__']") as HTMLButtonElement;
 
-        if (!buttonElement) return;
+        if (fullScreenbuttonElement) {
+            const chatButton = fullScreenbuttonElement?.children[0] as HTMLButtonElement;
+            chatButton?.click();
+        }
 
-        if (buttonElement?.textContent == '채팅')
-            buttonElement.click();
+        if (buttonElement) {
+            if (buttonElement?.textContent == '채팅') {
+                buttonElement?.click();
+            }
+        }
     };
 
     const updateChatMessages = () => {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241216232500
+// @version      20241221140354
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13191,9 +13191,16 @@ img {
       };
       const checkViewChat = () => {
         const buttonElement = document.querySelector("button[class^='live_information_player_folded_button__']");
-        if (!buttonElement) return;
-        if ((buttonElement == null ? void 0 : buttonElement.textContent) == "채팅")
-          buttonElement.click();
+        const fullScreenbuttonElement = document.querySelector("div[class^='live_information_player_control__']");
+        if (fullScreenbuttonElement) {
+          const chatButton = fullScreenbuttonElement == null ? void 0 : fullScreenbuttonElement.children[0];
+          chatButton == null ? void 0 : chatButton.click();
+        }
+        if (buttonElement) {
+          if ((buttonElement == null ? void 0 : buttonElement.textContent) == "채팅") {
+            buttonElement == null ? void 0 : buttonElement.click();
+          }
+        }
       };
       const updateChatMessages = () => {
         addZIndexToElements();
