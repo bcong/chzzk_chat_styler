@@ -51,12 +51,12 @@ const App = () => {
 
     const checkViewChat = () => {
         const buttonElement = document.querySelector("button[class^='live_information_player_folded_button__']") as HTMLButtonElement;
-        const fullScreenbuttonElement = document.querySelector("div[class^='live_information_player_control__']") as HTMLButtonElement;
+        // const fullScreenbuttonElement = document.querySelector("div[class^='live_information_player_control__']") as HTMLButtonElement;
 
-        if (fullScreenbuttonElement) {
-            const chatButton = fullScreenbuttonElement?.children?.[0] as HTMLButtonElement;
-            chatButton?.click();
-        }
+        // if (fullScreenbuttonElement) {
+        //     const chatButton = fullScreenbuttonElement?.children?.[0] as HTMLButtonElement;
+        //     chatButton?.click();
+        // }
 
         if (buttonElement) {
             if (buttonElement?.textContent == '채팅') {
@@ -102,7 +102,7 @@ const App = () => {
                 if (lastChat?.id >= id) return;
 
                 const contentArray: string[] = [];
-                messageElement?.childNodes.forEach((node: ChildNode) => {
+                messageElement?.childNodes?.forEach((node: ChildNode) => {
                     if (node.nodeType === Node.TEXT_NODE) {
                         const textContent = node.textContent?.trim();
                         if (textContent) {
