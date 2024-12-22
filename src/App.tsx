@@ -99,10 +99,10 @@ const App = () => {
                     chat?.setAttribute('id', id.toString());
                 }
 
-                if (lastChat.id >= id) return;
+                if (lastChat?.id >= id) return;
 
                 const contentArray: string[] = [];
-                messageElement.childNodes.forEach((node: ChildNode) => {
+                messageElement?.childNodes.forEach((node: ChildNode) => {
                     if (node.nodeType === Node.TEXT_NODE) {
                         const textContent = node.textContent?.trim();
                         if (textContent) {

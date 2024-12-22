@@ -37,7 +37,7 @@ const SettingMenuComponent: React.FC<I_PROPS> = ({
 
         newDivElement.appendChild(buttonElement);
 
-        serviceUtilElement.insertBefore(newDivElement, serviceUtilElement.firstChild);
+        serviceUtilElement.insertBefore(newDivElement, serviceUtilElement?.firstChild);
 
         newDivElement.addEventListener('click', toggleSetting);
 

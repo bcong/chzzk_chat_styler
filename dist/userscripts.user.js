@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241222024412
+// @version      20241222114457
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -7494,7 +7494,7 @@ img {
         spanElement.textContent = "S";
         buttonElement.appendChild(spanElement);
         newDivElement.appendChild(buttonElement);
-        serviceUtilElement.insertBefore(newDivElement, serviceUtilElement.firstChild);
+        serviceUtilElement.insertBefore(newDivElement, serviceUtilElement == null ? void 0 : serviceUtilElement.firstChild);
         newDivElement.addEventListener("click", toggleSetting);
         return () => {
           newDivElement.removeEventListener("click", toggleSetting);
@@ -13225,9 +13225,9 @@ img {
               id2 = mainStore.chatId + 1;
               chat == null ? void 0 : chat.setAttribute("id", id2.toString());
             }
-            if (lastChat.id >= id2) return;
+            if ((lastChat == null ? void 0 : lastChat.id) >= id2) return;
             const contentArray = [];
-            messageElement.childNodes.forEach((node) => {
+            messageElement == null ? void 0 : messageElement.childNodes.forEach((node) => {
               var _a2;
               if (node.nodeType === Node.TEXT_NODE) {
                 const textContent = (_a2 = node.textContent) == null ? void 0 : _a2.trim();
