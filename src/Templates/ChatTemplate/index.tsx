@@ -15,16 +15,16 @@ const Chat = observer(() => {
 
     const checkEnableChat = () => {
         try {
-            const newPathname = window.location.pathname;
             const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']") as HTMLElement;
             if (chatElement) {
                 if (chatElement.scrollHeight && chatElement.scrollTop && chatElement.scrollHeight - chatElement.scrollTop > 500)
                     chatElement.scrollTop = chatElement.scrollHeight;
             }
 
+            const newPathname = window.location.pathname;
             if (pathname != newPathname || chatEnable != defalut_chat_enable) {
                 const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
-                if (sideElement) {
+                if (sideElement && sideElement.style) {
                     sideElement.style.maxWidth = defalut_chat_enable ? '' : '0px';
                     sideElement.style.opacity = defalut_chat_enable ? '' : '0';
                     setPathname(newPathname);

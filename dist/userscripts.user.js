@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241222132024
+// @version      20241222201710
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13114,15 +13114,15 @@ img {
       const [chatEnable, setChatEnable] = reactExports.useState(null);
       const checkEnableChat = () => {
         try {
-          const newPathname = window.location.pathname;
           const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']");
           if (chatElement) {
             if (chatElement.scrollHeight && chatElement.scrollTop && chatElement.scrollHeight - chatElement.scrollTop > 500)
               chatElement.scrollTop = chatElement.scrollHeight;
           }
+          const newPathname = window.location.pathname;
           if (pathname != newPathname || chatEnable != defalut_chat_enable) {
             const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
-            if (sideElement) {
+            if (sideElement && sideElement.style) {
               sideElement.style.maxWidth = defalut_chat_enable ? "" : "0px";
               sideElement.style.opacity = defalut_chat_enable ? "" : "0";
               setPathname(newPathname);
