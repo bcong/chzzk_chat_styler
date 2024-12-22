@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241222122935
+// @version      20241222132024
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13117,7 +13117,8 @@ img {
           const newPathname = window.location.pathname;
           const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']");
           if (chatElement) {
-            chatElement.scrollTop = chatElement.scrollHeight;
+            if (chatElement.scrollHeight && chatElement.scrollTop && chatElement.scrollHeight - chatElement.scrollTop > 500)
+              chatElement.scrollTop = chatElement.scrollHeight;
           }
           if (pathname != newPathname || chatEnable != defalut_chat_enable) {
             const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
@@ -13136,7 +13137,7 @@ img {
         checkEnableChat();
         chatUpdate.current = setInterval(() => {
           checkEnableChat();
-        }, 100);
+        }, 500);
         return () => {
           if (chatUpdate.current) clearInterval(chatUpdate.current);
         };
@@ -13254,7 +13255,7 @@ img {
         chatUpdate.current = setInterval(() => {
           updateChatMessages();
           checkViewChat();
-        }, 100);
+        }, 500);
         return () => {
           if (chatUpdate.current) clearInterval(chatUpdate.current);
         };

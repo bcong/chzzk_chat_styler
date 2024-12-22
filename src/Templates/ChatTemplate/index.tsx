@@ -17,9 +17,9 @@ const Chat = observer(() => {
         try {
             const newPathname = window.location.pathname;
             const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']") as HTMLElement;
-
             if (chatElement) {
-                chatElement.scrollTop = chatElement.scrollHeight;
+                if (chatElement.scrollHeight && chatElement.scrollTop && chatElement.scrollHeight - chatElement.scrollTop > 500)
+                    chatElement.scrollTop = chatElement.scrollHeight;
             }
 
             if (pathname != newPathname || chatEnable != defalut_chat_enable) {
@@ -41,7 +41,7 @@ const Chat = observer(() => {
 
         chatUpdate.current = setInterval(() => {
             checkEnableChat();
-        }, 100);
+        }, 500);
 
         return () => {
             if (chatUpdate.current) clearInterval(chatUpdate.current);
