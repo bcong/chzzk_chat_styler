@@ -54,7 +54,7 @@ const App = () => {
         const fullScreenbuttonElement = document.querySelector("div[class^='live_information_player_control__']") as HTMLButtonElement;
 
         if (fullScreenbuttonElement) {
-            const chatButton = fullScreenbuttonElement?.children[0] as HTMLButtonElement;
+            const chatButton = fullScreenbuttonElement?.children?.[0] as HTMLButtonElement;
             chatButton?.click();
         }
 
