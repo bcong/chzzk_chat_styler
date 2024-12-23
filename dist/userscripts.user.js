@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241222201710
+// @version      20241223162856
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13116,7 +13116,7 @@ img {
         try {
           const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']");
           if (chatElement) {
-            if (chatElement.scrollHeight && chatElement.scrollTop && chatElement.scrollHeight - chatElement.scrollTop > 500)
+            if (chatElement.scrollHeight)
               chatElement.scrollTop = chatElement.scrollHeight;
           }
           const newPathname = window.location.pathname;
@@ -13205,6 +13205,7 @@ img {
         }
       };
       const updateChatMessages = () => {
+        var _a2;
         addZIndexToElements();
         const closeButton = document.querySelector('div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]');
         if (closeButton && closeButton.style.display != "none")
@@ -13213,11 +13214,11 @@ img {
         const chatArea = chatAreaElements[chatAreaElements.length - 1];
         if (!chatArea) return;
         const chatItems = chatArea.querySelectorAll('[class*="live_chatting_list_item"]');
-        const recentChats = Array.from(chatItems).slice(-mainStore.maxChats);
-        if (recentChats.length <= 1) return;
+        const recentChats = (_a2 = Array.from(chatItems)) == null ? void 0 : _a2.slice(-mainStore.maxChats);
+        if (!recentChats || recentChats.length <= 1) return;
         const lastChat = mainStore.lastChat();
-        recentChats.forEach((chat) => {
-          var _a2;
+        recentChats == null ? void 0 : recentChats.forEach((chat) => {
+          var _a3;
           const usernameElement = chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
           const username = (usernameElement == null ? void 0 : usernameElement.textContent) || null;
           const messageElement = chat.querySelector('[class*="live_chatting_message_text"]');
@@ -13230,10 +13231,10 @@ img {
             }
             if ((lastChat == null ? void 0 : lastChat.id) >= id2) return;
             const contentArray = [];
-            (_a2 = messageElement == null ? void 0 : messageElement.childNodes) == null ? void 0 : _a2.forEach((node) => {
-              var _a3;
+            (_a3 = messageElement == null ? void 0 : messageElement.childNodes) == null ? void 0 : _a3.forEach((node) => {
+              var _a4;
               if (node.nodeType === Node.TEXT_NODE) {
-                const textContent = (_a3 = node.textContent) == null ? void 0 : _a3.trim();
+                const textContent = (_a4 = node.textContent) == null ? void 0 : _a4.trim();
                 if (textContent) {
                   contentArray.push(textContent);
                 }

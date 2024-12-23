@@ -78,13 +78,13 @@ const App = () => {
         if (!chatArea) return;
 
         const chatItems = chatArea.querySelectorAll('[class*="live_chatting_list_item"]');
-        const recentChats = Array.from(chatItems).slice(-mainStore.maxChats);
+        const recentChats = Array.from(chatItems)?.slice(-mainStore.maxChats);
 
-        if (recentChats.length <= 1) return;
+        if (!recentChats || recentChats.length <= 1) return;
 
         const lastChat = mainStore.lastChat();
 
-        recentChats.forEach(chat => {
+        recentChats?.forEach(chat => {
             const usernameElement = chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
             const username = usernameElement?.textContent || null;
             const messageElement = chat.querySelector('[class*="live_chatting_message_text"]');

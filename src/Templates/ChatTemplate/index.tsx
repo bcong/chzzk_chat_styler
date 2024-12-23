@@ -17,7 +17,7 @@ const Chat = observer(() => {
         try {
             const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']") as HTMLElement;
             if (chatElement) {
-                if (chatElement.scrollHeight && chatElement.scrollTop && chatElement.scrollHeight - chatElement.scrollTop > 500)
+                if (chatElement.scrollHeight)
                     chatElement.scrollTop = chatElement.scrollHeight;
             }
 
