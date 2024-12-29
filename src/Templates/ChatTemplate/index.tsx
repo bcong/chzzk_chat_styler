@@ -38,10 +38,10 @@ const Chat = observer(() => {
         try {
             const newPathname = window.location.pathname;
             const extractedID = extractID(newPathname);
-
+            
+            addZIndexToElements();
             if (mainStore.pathName != extractedID) {
                 mainStore.setPathName(extractedID);
-                addZIndexToElements();
                 connectChat(extractedID);
             }
         } catch (e) {

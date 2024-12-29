@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241229210206
+// @version      20241229211302
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -14436,9 +14436,9 @@ img {
         try {
           const newPathname = window.location.pathname;
           const extractedID = extractID(newPathname);
+          addZIndexToElements();
           if (mainStore.pathName != extractedID) {
             mainStore.setPathName(extractedID);
-            addZIndexToElements();
             connectChat(extractedID);
           }
         } catch (e2) {
