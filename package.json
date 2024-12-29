@@ -13,6 +13,7 @@
         "build": "vite build"
     },
     "dependencies": {
+        "chzzk": "^1.10.4",
         "less": "^4.2.0",
         "mobx": "^6.10.0",
         "mobx-react-lite": "^4.0.3",

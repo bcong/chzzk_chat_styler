@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241227012212
+// @version      20241229210206
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -499,8 +499,33 @@ img {
   var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
   var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   (function() {
+    var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
     function getDefaultExportFromCjs(x2) {
       return x2 && x2.__esModule && Object.prototype.hasOwnProperty.call(x2, "default") ? x2["default"] : x2;
+    }
+    function getAugmentedNamespace(n2) {
+      if (n2.__esModule) return n2;
+      var f2 = n2.default;
+      if (typeof f2 == "function") {
+        var a = function a2() {
+          if (this instanceof a2) {
+            return Reflect.construct(f2, arguments, this.constructor);
+          }
+          return f2.apply(this, arguments);
+        };
+        a.prototype = f2.prototype;
+      } else a = {};
+      Object.defineProperty(a, "__esModule", { value: true });
+      Object.keys(n2).forEach(function(k2) {
+        var d = Object.getOwnPropertyDescriptor(n2, k2);
+        Object.defineProperty(a, k2, d.get ? d : {
+          enumerable: true,
+          get: function() {
+            return n2[k2];
+          }
+        });
+      });
+      return a;
     }
     var jsxRuntime = { exports: {} };
     var reactJsxRuntime_production_min = {};
@@ -7590,6 +7615,32 @@ img {
         delayedProbe();
       });
     }
+    const extractID = (pathname) => {
+      const match = pathname == null ? void 0 : pathname.match(/\/live\/([a-f0-9]{32})/);
+      return match ? match[1] : "";
+    };
+    const parseMessage = (chat2) => {
+      const { message, extras } = chat2;
+      const parts = message == null ? void 0 : message.split(/({:[^:]+:})/);
+      return parts.map((part) => {
+        if (part.startsWith("{:") && part.endsWith(":}")) {
+          const emojiKey = part.slice(2, -2);
+          return (extras == null ? void 0 : extras.emojis) && (extras == null ? void 0 : extras.emojis[emojiKey]) || part;
+        }
+        return part;
+      }).filter((part) => part.trim() !== "");
+    };
+    const colors = [
+      "#f28ca5",
+      "#9dd9a5",
+      "#fff08c",
+      "#a1b1eb",
+      "#fac098",
+      "#c88ed9",
+      "#a2f7f7",
+      "#f798f2",
+      "#ddfa85"
+    ];
     const ToggleButton$1 = "_ToggleButton_1j7w4_1";
     const Enable = "_Enable_1j7w4_12";
     const Circle = "_Circle_1j7w4_15";
@@ -11845,7 +11896,8 @@ img {
         __publicField(this, "_setting", /* @__PURE__ */ new Map());
         __publicField(this, "_chats", []);
         __publicField(this, "_maxChats", 20);
-        __publicField(this, "_chatId", 0);
+        __publicField(this, "_pathName", "");
+        __publicField(this, "_currentChat", null);
         __publicField(this, "init", () => {
           for (const setting of this.initSetting) {
             this.setting.set(setting.key, setting.value);
@@ -11855,14 +11907,22 @@ img {
           this.setting.set(key, value);
           save && GM_setValue(key, value);
         });
-        __publicField(this, "addChat", (chat) => {
-          this.chats.push(chat);
+        __publicField(this, "addChat", (chat2) => {
+          this.chats.push(chat2);
           if (this.chats.length >= this.maxChats)
             this.chats.shift();
-          this._chatId++;
+        });
+        __publicField(this, "clearChat", () => {
+          this.chats.length = 0;
         });
         __publicField(this, "lastChat", () => {
           return this.chats[this.chats.length - 1];
+        });
+        __publicField(this, "setPathName", (pathName) => {
+          this._pathName = pathName;
+        });
+        __publicField(this, "setCurrentChat", (currentChat) => {
+          this._currentChat = currentChat;
         });
         makeObservable(this);
         this.init();
@@ -11879,8 +11939,11 @@ img {
       get maxChats() {
         return this._maxChats;
       }
-      get chatId() {
-        return this._chatId;
+      get pathName() {
+        return this._pathName;
+      }
+      get currentChat() {
+        return this._currentChat;
       }
     }
     __decorateClass([
@@ -11894,7 +11957,10 @@ img {
     ], MainStore.prototype, "_maxChats", 2);
     __decorateClass([
       observable
-    ], MainStore.prototype, "_chatId", 2);
+    ], MainStore.prototype, "_pathName", 2);
+    __decorateClass([
+      observable
+    ], MainStore.prototype, "_currentChat", 2);
     __decorateClass([
       action
     ], MainStore.prototype, "init", 2);
@@ -11906,7 +11972,16 @@ img {
     ], MainStore.prototype, "addChat", 2);
     __decorateClass([
       action
+    ], MainStore.prototype, "clearChat", 2);
+    __decorateClass([
+      action
     ], MainStore.prototype, "lastChat", 2);
+    __decorateClass([
+      action
+    ], MainStore.prototype, "setPathName", 2);
+    __decorateClass([
+      action
+    ], MainStore.prototype, "setCurrentChat", 2);
     __decorateClass([
       computed
     ], MainStore.prototype, "initSetting", 1);
@@ -11921,7 +11996,10 @@ img {
     ], MainStore.prototype, "maxChats", 1);
     __decorateClass([
       computed
-    ], MainStore.prototype, "chatId", 1);
+    ], MainStore.prototype, "pathName", 1);
+    __decorateClass([
+      computed
+    ], MainStore.prototype, "currentChat", 1);
     class RootStore {
       constructor() {
         __publicField(this, "mainStore");
@@ -12382,16 +12460,16 @@ img {
             }
           ]
         },
-        {
-          name: "기존 채팅 표시",
-          values: [
-            {
-              type: "toggle",
-              value: mainStore.setting.get("defalut_chat_enable"),
-              cb: (value) => mainStore.setSetting("defalut_chat_enable", value, true)
-            }
-          ]
-        },
+        // {
+        //     name: '기존 채팅 표시',
+        //     values: [
+        //         {
+        //             type: 'toggle',
+        //             value: mainStore.setting.get('defalut_chat_enable'),
+        //             cb: (value: unknown) => mainStore.setSetting('defalut_chat_enable', value, true)
+        //         }
+        //     ]
+        // },
         {
           name: "채팅창 스타일",
           values: [
@@ -13104,44 +13182,1328 @@ img {
         document.body
       );
     });
+    var dist = {};
+    var api = {};
+    var search = {};
+    (function(exports) {
+      var __awaiter2 = commonjsGlobal && commonjsGlobal.__awaiter || function(thisArg, _arguments, P2, generator) {
+        function adopt(value) {
+          return value instanceof P2 ? value : new P2(function(resolve) {
+            resolve(value);
+          });
+        }
+        return new (P2 || (P2 = Promise))(function(resolve, reject) {
+          function fulfilled(value) {
+            try {
+              step(generator.next(value));
+            } catch (e2) {
+              reject(e2);
+            }
+          }
+          function rejected(value) {
+            try {
+              step(generator["throw"](value));
+            } catch (e2) {
+              reject(e2);
+            }
+          }
+          function step(result) {
+            result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          }
+          step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ChzzkSearch = exports.DEFAULT_LOUNGE_SEARCH_OPTIONS = exports.DEFAULT_SEARCH_OPTIONS = void 0;
+      exports.DEFAULT_SEARCH_OPTIONS = {
+        size: 13,
+        offset: 0
+      };
+      exports.DEFAULT_LOUNGE_SEARCH_OPTIONS = {
+        limit: 50,
+        offset: 0
+      };
+      class ChzzkSearch {
+        constructor(client2) {
+          this.client = client2;
+        }
+        videos(keyword, options = exports.DEFAULT_SEARCH_OPTIONS) {
+          return __awaiter2(this, void 0, void 0, function* () {
+            return this.search("videos", keyword, options).then((r2) => {
+              return {
+                size: r2.size,
+                nextOffset: r2.nextOffset,
+                videos: r2.data.map((data) => {
+                  const video2 = data["video"];
+                  const channel2 = data["channel"];
+                  return Object.assign(Object.assign({}, video2), { channel: channel2 });
+                })
+              };
+            });
+          });
+        }
+        lives(keyword, options = exports.DEFAULT_SEARCH_OPTIONS) {
+          return __awaiter2(this, void 0, void 0, function* () {
+            return this.search("lives", keyword, options).then((r2) => {
+              return {
+                size: r2.size,
+                nextOffset: r2.nextOffset,
+                lives: r2.data.map((data) => {
+                  const live2 = data["live"];
+                  const channel2 = data["channel"];
+                  const livePlaybackJson = live2["livePlaybackJson"];
+                  const livePlayback = livePlaybackJson ? JSON.parse(livePlaybackJson) : null;
+                  delete live2["livePlaybackJson"];
+                  return Object.assign(Object.assign({}, live2), {
+                    livePlayback,
+                    channel: channel2
+                  });
+                })
+              };
+            });
+          });
+        }
+        channels(keyword, options = exports.DEFAULT_SEARCH_OPTIONS) {
+          return __awaiter2(this, void 0, void 0, function* () {
+            return this.search("channels", keyword, options).then((r2) => {
+              return {
+                size: r2.size,
+                nextOffset: r2.nextOffset,
+                channels: r2.data.map((data) => data["channel"])
+              };
+            });
+          });
+        }
+        autoComplete(keyword, options = exports.DEFAULT_SEARCH_OPTIONS) {
+          return __awaiter2(this, void 0, void 0, function* () {
+            const params = new URLSearchParams({
+              keyword,
+              size: options.size.toString(),
+              offset: options.offset.toString()
+            }).toString();
+            return this.client.fetch(`${this.client.options.baseUrls.gameBaseUrl}/v2/search/lounges/auto-complete?${params}`).then((r2) => r2.json()).then((data) => data["content"]["data"]);
+          });
+        }
+        lounges(keyword, options = exports.DEFAULT_LOUNGE_SEARCH_OPTIONS) {
+          return __awaiter2(this, void 0, void 0, function* () {
+            const params = new URLSearchParams({
+              keyword,
+              limit: options.limit.toString(),
+              offset: options.offset.toString()
+            }).toString();
+            return this.client.fetch(`${this.client.options.baseUrls.gameBaseUrl}/v2/search/lounges?${params}`).then((r2) => r2.json()).then((data) => data["content"]);
+          });
+        }
+        categories(keyword, options = exports.DEFAULT_SEARCH_OPTIONS) {
+          return __awaiter2(this, void 0, void 0, function* () {
+            const params = new URLSearchParams({
+              keyword,
+              size: options.size.toString(),
+              offset: options.offset.toString()
+            }).toString();
+            return this.client.fetch(`/manage/v1/auto-complete/categories?${params}`).then((r2) => r2.json()).then((data) => data["content"]);
+          });
+        }
+        search(type, keyword, options = exports.DEFAULT_SEARCH_OPTIONS) {
+          return __awaiter2(this, void 0, void 0, function* () {
+            const params = new URLSearchParams({
+              keyword,
+              size: options.size.toString(),
+              offset: options.offset.toString()
+            }).toString();
+            return this.client.fetch(`/service/v1/search/${type}?${params}`).then((r2) => r2.json()).then((data) => {
+              var _a2, _b2, _c;
+              const content = data["content"];
+              if (!content)
+                return null;
+              return {
+                size: content["size"],
+                nextOffset: (_c = (_b2 = (_a2 = content["page"]) === null || _a2 === void 0 ? void 0 : _a2["next"]) === null || _b2 === void 0 ? void 0 : _b2["offset"]) !== null && _c !== void 0 ? _c : 0,
+                data: content["data"]
+              };
+            });
+          });
+        }
+      }
+      exports.ChzzkSearch = ChzzkSearch;
+    })(search);
+    var channel = {};
+    var __awaiter$3 = commonjsGlobal && commonjsGlobal.__awaiter || function(thisArg, _arguments, P2, generator) {
+      function adopt(value) {
+        return value instanceof P2 ? value : new P2(function(resolve) {
+          resolve(value);
+        });
+      }
+      return new (P2 || (P2 = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e2) {
+            reject(e2);
+          }
+        }
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e2) {
+            reject(e2);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+    };
+    Object.defineProperty(channel, "__esModule", { value: true });
+    channel.recommendations = void 0;
+    function recommendations(client2) {
+      return __awaiter$3(this, void 0, void 0, function* () {
+        const r2 = yield client2.fetch("/service/v1/home/recommendation-channels");
+        const data = yield r2.json();
+        const content = data["content"];
+        if (!content)
+          return null;
+        return content["recommendationChannels"].map((channel2) => {
+          const contentLineage = JSON.parse(channel2["contentLineage"]);
+          const contentTag = JSON.parse(contentLineage["contentTag"]);
+          return Object.assign(Object.assign({}, channel2), { contentLineage: Object.assign(Object.assign({}, contentLineage), { contentTag }) });
+        });
+      });
+    }
+    channel.recommendations = recommendations;
+    var live = {};
+    var __awaiter$2 = commonjsGlobal && commonjsGlobal.__awaiter || function(thisArg, _arguments, P2, generator) {
+      function adopt(value) {
+        return value instanceof P2 ? value : new P2(function(resolve) {
+          resolve(value);
+        });
+      }
+      return new (P2 || (P2 = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e2) {
+            reject(e2);
+          }
+        }
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e2) {
+            reject(e2);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+    };
+    Object.defineProperty(live, "__esModule", { value: true });
+    live.ChzzkLive = void 0;
+    class ChzzkLive {
+      constructor(client2) {
+        this.client = client2;
+      }
+      status(channelId) {
+        return __awaiter$2(this, void 0, void 0, function* () {
+          return this.client.fetch(`/polling/v2/channels/${channelId}/live-status`).then((r2) => r2.json()).then((data) => {
+            const content = data["content"];
+            if (!content)
+              return null;
+            const livePollingStatusJson = content["livePollingStatusJson"];
+            const livePollingStatus = JSON.parse(livePollingStatusJson);
+            delete content["livePollingStatusJson"];
+            return Object.assign(Object.assign({}, content), { livePollingStatus });
+          });
+        });
+      }
+      detail(channelId) {
+        return __awaiter$2(this, void 0, void 0, function* () {
+          return this.client.fetch(`/service/v2/channels/${channelId}/live-detail`).then((r2) => r2.json()).then((data) => {
+            const content = data["content"];
+            if (!content)
+              return null;
+            const livePollingStatusJson = content["livePollingStatusJson"];
+            const livePollingStatus = JSON.parse(livePollingStatusJson);
+            delete content["livePollingStatusJson"];
+            const livePlaybackJson = content["livePlaybackJson"];
+            const livePlayback = livePlaybackJson ? JSON.parse(livePlaybackJson) : null;
+            delete content["livePlaybackJson"];
+            return Object.assign(Object.assign({}, content), {
+              livePollingStatus,
+              livePlayback
+            });
+          });
+        });
+      }
+    }
+    live.ChzzkLive = ChzzkLive;
+    var video = {};
+    Object.defineProperty(video, "__esModule", { value: true });
+    var manage = {};
+    var __awaiter$1 = commonjsGlobal && commonjsGlobal.__awaiter || function(thisArg, _arguments, P2, generator) {
+      function adopt(value) {
+        return value instanceof P2 ? value : new P2(function(resolve) {
+          resolve(value);
+        });
+      }
+      return new (P2 || (P2 = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e2) {
+            reject(e2);
+          }
+        }
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e2) {
+            reject(e2);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+    };
+    Object.defineProperty(manage, "__esModule", { value: true });
+    manage.ChzzkManage = void 0;
+    const DEFAULT_SUBSCRIBER_SEARCH_OPTIONS = {
+      page: 0,
+      size: 50,
+      sortType: "RECENT"
+    };
+    const DEFAULT_FOLLOWER_SEARCH_OPTIONS = {
+      page: 0,
+      size: 50
+    };
+    const DEFAULT_MANAGE_VIDEO_SEARCH_OPTIONS = {
+      videoType: "REPLAY",
+      page: 0,
+      size: 50
+    };
+    class ChzzkManage {
+      constructor(client2) {
+        this.client = client2;
+      }
+      temporaryRestrict(channelId, chatChannelId, targetId) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/temporary-restrict-users`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chatChannelId, targetId })
+          }).then((r2) => r2.json()).then((data) => {
+            var _a2;
+            return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+          }).catch(() => null);
+        });
+      }
+      restrict(channelId, targetId) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/restrict-users`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ targetId })
+          }).then((r2) => r2.json()).then((data) => {
+            var _a2;
+            return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+          }).catch(() => null);
+        });
+      }
+      removeRestrict(channelId, targetId) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/restrict-users/${targetId}`, {
+            method: "DELETE"
+          });
+        });
+      }
+      chatActivityCount(channelId, targetId) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/users/${targetId}/chat-activity-count`).then((r2) => r2.json()).then((data) => {
+            var _a2;
+            return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+          }).catch(() => null);
+        });
+      }
+      setRole(channelId, targetId, userRoleType) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/streaming-roles`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ targetId, userRoleType })
+          }).then((r2) => r2.json()).then((data) => {
+            var _a2;
+            return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+          }).catch(() => null);
+        });
+      }
+      removeRole(channelId, targetId) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/streaming-roles/${targetId}`, {
+            method: "DELETE"
+          });
+        });
+      }
+      setting(channelId, params) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          const options = params ? {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(params)
+          } : null;
+          return this.client.fetch(`/manage/v1/channels/${channelId}/live-setting`, options).then((r2) => r2.json()).then((data) => {
+            var _a2;
+            return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+          });
+        });
+      }
+      chatRule(channelId) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/chat-rules`).then((r2) => r2.json()).then((data) => {
+            var _a2;
+            return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+          });
+        });
+      }
+      setChatRule(channelId, rule) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/chat-rules`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ rule })
+          });
+        });
+      }
+      prohibitWords(channelId) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/chats/prohibit-words`).then((r2) => r2.json()).then((data) => {
+            var _a2;
+            return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+          }).then((content) => content["prohibitWords"]).catch(() => null);
+        });
+      }
+      addProhibitWord(channelId, prohibitWord) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/chats/prohibit-words`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prohibitWord })
+          });
+        });
+      }
+      removeProhibitWord(channelId, prohibitWordNo) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/chats/prohibit-words/${prohibitWordNo}`, {
+            method: "DELETE"
+          });
+        });
+      }
+      removeAllProhibitWords(channelId) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/chats/prohibit-words`, {
+            method: "DELETE"
+          });
+        });
+      }
+      editProhibitWord(channelId, prohibitWordNo, prohibitWord) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/chats/prohibit-words/${prohibitWordNo}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prohibitWord })
+          });
+        });
+      }
+      stream(channelId) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          return this.client.fetch(`/manage/v1/channels/${channelId}/streams`).then((r2) => r2.json()).then((data) => {
+            var _a2;
+            return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+          }).catch(() => null);
+        });
+      }
+      subscribers(channelId, options) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          options = Object.assign(Object.assign({}, DEFAULT_SUBSCRIBER_SEARCH_OPTIONS), options);
+          const params = new URLSearchParams({
+            page: options.page.toString(),
+            size: options.size.toString(),
+            sortType: options.sortType
+          });
+          if (options === null || options === void 0 ? void 0 : options.publishPeriod) {
+            params.set("publishPeriod", options.publishPeriod.toString());
+          }
+          if (options === null || options === void 0 ? void 0 : options.tier) {
+            params.set("tier", options.tier);
+          }
+          if (options === null || options === void 0 ? void 0 : options.userNickname) {
+            params.set("userNickname", options.userNickname);
+          }
+          return this.client.fetch(`/manage/v1/channels/${channelId}/subscribers?${params.toString()}`).then((r2) => r2.json()).then((data) => {
+            var _a2;
+            return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+          }).catch(() => null);
+        });
+      }
+      followers(channelId, options) {
+        var _a2;
+        return __awaiter$1(this, void 0, void 0, function* () {
+          options = Object.assign(Object.assign({}, DEFAULT_FOLLOWER_SEARCH_OPTIONS), options);
+          const params = new URLSearchParams({
+            page: options.page.toString(),
+            size: options.size.toString(),
+            userNickname: (_a2 = options.userNickname) !== null && _a2 !== void 0 ? _a2 : ""
+          });
+          return this.client.fetch(`/manage/v1/channels/${channelId}/followers?${params.toString()}`).then((r2) => r2.json()).then((data) => {
+            var _a3;
+            return (_a3 = data["content"]) !== null && _a3 !== void 0 ? _a3 : null;
+          }).catch(() => null);
+        });
+      }
+      videos(channelId, options) {
+        return __awaiter$1(this, void 0, void 0, function* () {
+          options = Object.assign(Object.assign({}, DEFAULT_MANAGE_VIDEO_SEARCH_OPTIONS), options);
+          const params = new URLSearchParams({
+            page: options.page.toString(),
+            size: options.size.toString(),
+            videoType: options.videoType
+          });
+          return this.client.fetch(`/manage/v1/channels/${channelId}/videos?${params.toString()}`).then((r2) => r2.json()).then((data) => {
+            var _a2;
+            return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+          }).catch(() => null);
+        });
+      }
+    }
+    manage.ChzzkManage = ChzzkManage;
+    (function(exports) {
+      var __createBinding = commonjsGlobal && commonjsGlobal.__createBinding || (Object.create ? function(o, m2, k2, k22) {
+        if (k22 === void 0) k22 = k2;
+        var desc = Object.getOwnPropertyDescriptor(m2, k2);
+        if (!desc || ("get" in desc ? !m2.__esModule : desc.writable || desc.configurable)) {
+          desc = { enumerable: true, get: function() {
+            return m2[k2];
+          } };
+        }
+        Object.defineProperty(o, k22, desc);
+      } : function(o, m2, k2, k22) {
+        if (k22 === void 0) k22 = k2;
+        o[k22] = m2[k2];
+      });
+      var __exportStar = commonjsGlobal && commonjsGlobal.__exportStar || function(m2, exports2) {
+        for (var p2 in m2) if (p2 !== "default" && !Object.prototype.hasOwnProperty.call(exports2, p2)) __createBinding(exports2, m2, p2);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      __exportStar(search, exports);
+      __exportStar(channel, exports);
+      __exportStar(live, exports);
+      __exportStar(video, exports);
+      __exportStar(manage, exports);
+    })(api);
+    var chat$2 = {};
+    var chat$1 = {};
+    var ws = null;
+    if (typeof WebSocket !== "undefined") {
+      ws = WebSocket;
+    } else if (typeof MozWebSocket !== "undefined") {
+      ws = MozWebSocket;
+    } else if (typeof global !== "undefined") {
+      ws = global.WebSocket || global.MozWebSocket;
+    } else if (typeof window !== "undefined") {
+      ws = window.WebSocket || window.MozWebSocket;
+    } else if (typeof self !== "undefined") {
+      ws = self.WebSocket || self.MozWebSocket;
+    }
+    const ws$1 = ws;
+    const browser = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+      __proto__: null,
+      default: ws$1
+    }, Symbol.toStringTag, { value: "Module" }));
+    const require$$0 = /* @__PURE__ */ getAugmentedNamespace(browser);
+    var types$1 = {};
+    (function(exports) {
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ChatType = exports.ChatCmd = void 0;
+      (function(ChatCmd) {
+        ChatCmd[ChatCmd["PING"] = 0] = "PING";
+        ChatCmd[ChatCmd["PONG"] = 1e4] = "PONG";
+        ChatCmd[ChatCmd["CONNECT"] = 100] = "CONNECT";
+        ChatCmd[ChatCmd["CONNECTED"] = 10100] = "CONNECTED";
+        ChatCmd[ChatCmd["REQUEST_RECENT_CHAT"] = 5101] = "REQUEST_RECENT_CHAT";
+        ChatCmd[ChatCmd["RECENT_CHAT"] = 15101] = "RECENT_CHAT";
+        ChatCmd[ChatCmd["EVENT"] = 93006] = "EVENT";
+        ChatCmd[ChatCmd["CHAT"] = 93101] = "CHAT";
+        ChatCmd[ChatCmd["DONATION"] = 93102] = "DONATION";
+        ChatCmd[ChatCmd["KICK"] = 94005] = "KICK";
+        ChatCmd[ChatCmd["BLOCK"] = 94006] = "BLOCK";
+        ChatCmd[ChatCmd["BLIND"] = 94008] = "BLIND";
+        ChatCmd[ChatCmd["NOTICE"] = 94010] = "NOTICE";
+        ChatCmd[ChatCmd["PENALTY"] = 94015] = "PENALTY";
+        ChatCmd[ChatCmd["SEND_CHAT"] = 3101] = "SEND_CHAT";
+      })(exports.ChatCmd || (exports.ChatCmd = {}));
+      (function(ChatType) {
+        ChatType[ChatType["TEXT"] = 1] = "TEXT";
+        ChatType[ChatType["IMAGE"] = 2] = "IMAGE";
+        ChatType[ChatType["STICKER"] = 3] = "STICKER";
+        ChatType[ChatType["VIDEO"] = 4] = "VIDEO";
+        ChatType[ChatType["RICH"] = 5] = "RICH";
+        ChatType[ChatType["DONATION"] = 10] = "DONATION";
+        ChatType[ChatType["SUBSCRIPTION"] = 11] = "SUBSCRIPTION";
+        ChatType[ChatType["SYSTEM_MESSAGE"] = 30] = "SYSTEM_MESSAGE";
+      })(exports.ChatType || (exports.ChatType = {}));
+    })(types$1);
+    var client = {};
+    var chat = {};
+    var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function(thisArg, _arguments, P2, generator) {
+      function adopt(value) {
+        return value instanceof P2 ? value : new P2(function(resolve) {
+          resolve(value);
+        });
+      }
+      return new (P2 || (P2 = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e2) {
+            reject(e2);
+          }
+        }
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e2) {
+            reject(e2);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+    };
+    Object.defineProperty(chat, "__esModule", { value: true });
+    chat.blind = chat.notice = chat.profileCard = chat.accessToken = void 0;
+    function accessToken(client2, chatChannelId) {
+      var _a2;
+      return __awaiter(this, void 0, void 0, function* () {
+        const r2 = yield client2.fetch(`${client2.options.baseUrls.gameBaseUrl}/v1/chats/access-token?channelId=${chatChannelId}&chatType=STREAMING`);
+        const data = yield r2.json();
+        if (data["code"] === 42601) {
+          throw new Error("Broadcast is age-restricted, nidAuth, nidSession is required");
+        }
+        return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+      });
+    }
+    chat.accessToken = accessToken;
+    function profileCard(client2, chatChannelId, userIdHash) {
+      var _a2;
+      return __awaiter(this, void 0, void 0, function* () {
+        const r2 = yield client2.fetch(`${client2.options.baseUrls.gameBaseUrl}/v1/chats/${chatChannelId}/users/${userIdHash}/profile-card?chatType=STREAMING`);
+        const data = yield r2.json();
+        return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+      });
+    }
+    chat.profileCard = profileCard;
+    function notice(client2, chatChannelId, options) {
+      return __awaiter(this, void 0, void 0, function* () {
+        return client2.fetch(`${client2.options.baseUrls.gameBaseUrl}/v1/chats/notices`, {
+          method: options ? "POST" : "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(Object.assign(Object.assign({ channelId: chatChannelId, chatType: "STREAMING" }, options || {}), { extras: (options === null || options === void 0 ? void 0 : options.extras) ? typeof options.extras === "string" ? options.extras : JSON.stringify(options.extras) : null }))
+        });
+      });
+    }
+    chat.notice = notice;
+    function blind(client2, chatChannelId, options) {
+      return __awaiter(this, void 0, void 0, function* () {
+        return client2.fetch(`${client2.options.baseUrls.gameBaseUrl}/v1/chats/blind-message`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(Object.assign({ channelId: chatChannelId, chatType: "STREAMING" }, options || {}))
+        });
+      });
+    }
+    chat.blind = blind;
+    var _const = {};
+    Object.defineProperty(_const, "__esModule", { value: true });
+    _const.DEFAULT_USER_AGENT = _const.IS_BROWSER = _const.DEFAULT_BASE_URLS = void 0;
+    _const.DEFAULT_BASE_URLS = {
+      chzzkBaseUrl: "https://api.chzzk.naver.com",
+      gameBaseUrl: "https://comm-api.game.naver.com/nng_main"
+    };
+    _const.IS_BROWSER = typeof window !== "undefined";
+    _const.DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36";
+    var hasRequiredClient;
+    function requireClient() {
+      if (hasRequiredClient) return client;
+      hasRequiredClient = 1;
+      var __awaiter2 = commonjsGlobal && commonjsGlobal.__awaiter || function(thisArg, _arguments, P2, generator) {
+        function adopt(value) {
+          return value instanceof P2 ? value : new P2(function(resolve) {
+            resolve(value);
+          });
+        }
+        return new (P2 || (P2 = Promise))(function(resolve, reject) {
+          function fulfilled(value) {
+            try {
+              step(generator.next(value));
+            } catch (e2) {
+              reject(e2);
+            }
+          }
+          function rejected(value) {
+            try {
+              step(generator["throw"](value));
+            } catch (e2) {
+              reject(e2);
+            }
+          }
+          function step(result) {
+            result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          }
+          step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+      };
+      Object.defineProperty(client, "__esModule", { value: true });
+      client.ChzzkClient = void 0;
+      const chat_1 = requireChat();
+      const api_1 = api;
+      const chat_2 = chat;
+      const const_1 = _const;
+      class ChzzkClient {
+        constructor(options = {}) {
+          this.live = new api_1.ChzzkLive(this);
+          this.search = new api_1.ChzzkSearch(this);
+          this.manage = new api_1.ChzzkManage(this);
+          options.baseUrls = options.baseUrls || const_1.DEFAULT_BASE_URLS;
+          options.userAgent = options.userAgent || const_1.DEFAULT_USER_AGENT;
+          this.options = options;
+        }
+        get hasAuth() {
+          return !!(this.options.nidAuth && this.options.nidSession);
+        }
+        get chat() {
+          const func = (options) => {
+            if (typeof options == "string") {
+              if (options.length != 6) {
+                throw new Error("Invalid chat channel ID");
+              }
+              return chat_1.ChzzkChat.fromClient(options, this);
+            }
+            return new chat_1.ChzzkChat(Object.assign({ client: this, baseUrls: this.options.baseUrls, pollInterval: 30 * 1e3 }, options));
+          };
+          func.accessToken = (chatChannelId) => __awaiter2(this, void 0, void 0, function* () {
+            return (0, chat_2.accessToken)(this, chatChannelId);
+          });
+          func.profileCard = (chatChannelId, userIdHash) => __awaiter2(this, void 0, void 0, function* () {
+            return (0, chat_2.profileCard)(this, chatChannelId, userIdHash);
+          });
+          func.notice = (chatChannelId, options) => __awaiter2(this, void 0, void 0, function* () {
+            return (0, chat_2.notice)(this, chatChannelId, options);
+          });
+          func.blind = (chatChannelId, options) => __awaiter2(this, void 0, void 0, function* () {
+            return (0, chat_2.blind)(this, chatChannelId, options);
+          });
+          return func;
+        }
+        get channel() {
+          const func = (channelId) => __awaiter2(this, void 0, void 0, function* () {
+            const r2 = yield this.fetch(`/service/v1/channels/${channelId}`);
+            const data = yield r2.json();
+            const content = data["content"];
+            return (content === null || content === void 0 ? void 0 : content.channelId) ? content : null;
+          });
+          func.recommendations = () => __awaiter2(this, void 0, void 0, function* () {
+            return (0, api_1.recommendations)(this);
+          });
+          return func;
+        }
+        user() {
+          return __awaiter2(this, void 0, void 0, function* () {
+            return this.fetch(`${this.options.baseUrls.gameBaseUrl}/v1/user/getUserStatus`).then((r2) => r2.json()).then((data) => {
+              var _a2;
+              return (_a2 = data["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+            });
+          });
+        }
+        video(videoNo) {
+          return __awaiter2(this, void 0, void 0, function* () {
+            return this.fetch(`/service/v1/videos/${videoNo}`).then((r2) => r2.json()).then((r2) => {
+              var _a2;
+              return (_a2 = r2["content"]) !== null && _a2 !== void 0 ? _a2 : null;
+            });
+          });
+        }
+        fetch(pathOrUrl, options) {
+          const headers = Object.assign({ "User-Agent": this.options.userAgent }, (options === null || options === void 0 ? void 0 : options.headers) || {});
+          if (this.hasAuth) {
+            headers["Cookie"] = `NID_AUT=${this.options.nidAuth}; NID_SES=${this.options.nidSession}`;
+          }
+          if (pathOrUrl.startsWith("/") && !pathOrUrl.startsWith(this.options.baseUrls.gameBaseUrl)) {
+            pathOrUrl = `${this.options.baseUrls.chzzkBaseUrl}${pathOrUrl}`;
+          }
+          return fetch(pathOrUrl, Object.assign(Object.assign({}, options), { headers }));
+        }
+      }
+      client.ChzzkClient = ChzzkClient;
+      return client;
+    }
+    var hasRequiredChat$1;
+    function requireChat$1() {
+      if (hasRequiredChat$1) return chat$1;
+      hasRequiredChat$1 = 1;
+      var __awaiter2 = commonjsGlobal && commonjsGlobal.__awaiter || function(thisArg, _arguments, P2, generator) {
+        function adopt(value) {
+          return value instanceof P2 ? value : new P2(function(resolve) {
+            resolve(value);
+          });
+        }
+        return new (P2 || (P2 = Promise))(function(resolve, reject) {
+          function fulfilled(value) {
+            try {
+              step(generator.next(value));
+            } catch (e2) {
+              reject(e2);
+            }
+          }
+          function rejected(value) {
+            try {
+              step(generator["throw"](value));
+            } catch (e2) {
+              reject(e2);
+            }
+          }
+          function step(result) {
+            result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          }
+          step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+      };
+      var __importDefault = commonjsGlobal && commonjsGlobal.__importDefault || function(mod) {
+        return mod && mod.__esModule ? mod : { "default": mod };
+      };
+      Object.defineProperty(chat$1, "__esModule", { value: true });
+      chat$1.ChzzkChat = void 0;
+      const isomorphic_ws_1 = __importDefault(require$$0);
+      const types_1 = types$1;
+      const client_1 = requireClient();
+      const const_1 = _const;
+      class ChzzkChat {
+        constructor(options) {
+          var _a2, _b2;
+          this.handlers = [];
+          this.defaults = {};
+          this.pingTimeoutId = null;
+          this.pollIntervalId = null;
+          this.isReconnect = false;
+          this._connected = false;
+          if (options.pollInterval && !options.channelId) {
+            throw new Error("channelId is required for polling");
+          }
+          if (!options.chatChannelId && !options.channelId) {
+            throw new Error("channelId or chatChannelId is required");
+          }
+          if (const_1.IS_BROWSER && options.baseUrls == const_1.DEFAULT_BASE_URLS) {
+            if (options.pollInterval) {
+              throw new Error("Custom baseUrls are required for polling in browser");
+            }
+            if (!options.chatChannelId) {
+              throw new Error("chatChannelId is required in browser if not using custom baseUrls");
+            }
+            if (!options.accessToken) {
+              throw new Error("accessToken is required in browser if not using custom baseUrls");
+            }
+          }
+          this.options = options;
+          this.options.baseUrls = (_a2 = options.baseUrls) !== null && _a2 !== void 0 ? _a2 : const_1.DEFAULT_BASE_URLS;
+          this.client = (_b2 = options.client) !== null && _b2 !== void 0 ? _b2 : new client_1.ChzzkClient({ baseUrls: options.baseUrls });
+        }
+        get connected() {
+          return this._connected;
+        }
+        get chatChannelId() {
+          return this.options.chatChannelId;
+        }
+        static fromClient(chatChannelId, client2) {
+          return new ChzzkChat({
+            chatChannelId,
+            client: client2,
+            baseUrls: client2.options.baseUrls
+          });
+        }
+        static fromAccessToken(chatChannelId, accessToken2, uid, baseUrls) {
+          const chzzkChat = new ChzzkChat({
+            chatChannelId,
+            accessToken: accessToken2,
+            baseUrls
+          });
+          chzzkChat.uid = uid;
+          return chzzkChat;
+        }
+        connect() {
+          return __awaiter2(this, void 0, void 0, function* () {
+            if (this._connected) {
+              throw new Error("Already connected");
+            }
+            if (this.options.channelId && !this.options.chatChannelId) {
+              const status = yield this.client.live.status(this.options.channelId);
+              this.options.chatChannelId = status.chatChannelId;
+            }
+            if (this.options.chatChannelId && !this.options.accessToken) {
+              this.uid = this.client.hasAuth ? yield this.client.user().then((user) => user.userIdHash) : null;
+              this.options.accessToken = yield this.client.chat.accessToken(this.options.chatChannelId).then((token) => token.accessToken);
+            }
+            this.defaults = {
+              cid: this.options.chatChannelId,
+              svcid: "game",
+              ver: "2"
+            };
+            const serverId = Math.abs(this.options.chatChannelId.split("").map((c) => c.charCodeAt(0)).reduce((a, b) => a + b)) % 9 + 1;
+            this.ws = new isomorphic_ws_1.default(`wss://kr-ss${serverId}.chat.naver.com/chat`);
+            this.ws.onopen = () => {
+              this.ws.send(JSON.stringify(Object.assign({ bdy: {
+                accTkn: this.options.accessToken,
+                auth: this.uid ? "SEND" : "READ",
+                devType: 2001,
+                uid: this.uid
+              }, cmd: types_1.ChatCmd.CONNECT, tid: 1 }, this.defaults)));
+              if (!this.isReconnect) {
+                this.startPolling();
+              }
+            };
+            this.ws.onmessage = this.handleMessage.bind(this);
+            this.ws.onclose = () => {
+              if (!this.isReconnect) {
+                this.emit("disconnect", this.options.chatChannelId);
+                this.stopPolling();
+                this.options.chatChannelId = null;
+              }
+              this.stopPingTimer();
+              this.ws = null;
+              if (this._connected) {
+                this.disconnect();
+              }
+            };
+          });
+        }
+        disconnect() {
+          var _a2;
+          return __awaiter2(this, void 0, void 0, function* () {
+            if (!this._connected) {
+              throw new Error("Not connected");
+            }
+            (_a2 = this.ws) === null || _a2 === void 0 ? void 0 : _a2.close();
+            this.ws = null;
+            this.sid = null;
+            if (this.client) {
+              this.options.accessToken = null;
+              this.uid = null;
+            }
+            this._connected = false;
+          });
+        }
+        reconnect() {
+          return __awaiter2(this, void 0, void 0, function* () {
+            this.isReconnect = true;
+            if (this._connected) {
+              yield this.disconnect();
+              yield this.connect();
+            }
+          });
+        }
+        requestRecentChat(count = 50) {
+          if (!this._connected) {
+            throw new Error("Not connected");
+          }
+          this.ws.send(JSON.stringify(Object.assign({ bdy: { recentMessageCount: count }, cmd: types_1.ChatCmd.REQUEST_RECENT_CHAT, sid: this.sid, tid: 2 }, this.defaults)));
+        }
+        sendChat(message, emojis = {}) {
+          if (!this._connected) {
+            throw new Error("Not connected");
+          }
+          if (!this.uid) {
+            throw new Error("Not logged in");
+          }
+          const extras = {
+            chatType: "STREAMING",
+            emojis,
+            osType: "PC",
+            streamingChannelId: this.options.chatChannelId
+          };
+          this.ws.send(JSON.stringify(Object.assign({ bdy: {
+            extras: JSON.stringify(extras),
+            msg: message,
+            msgTime: Date.now(),
+            msgTypeCode: types_1.ChatType.TEXT
+          }, retry: false, cmd: types_1.ChatCmd.SEND_CHAT, sid: this.sid, tid: 3 }, this.defaults)));
+        }
+        selfProfile() {
+          return __awaiter2(this, void 0, void 0, function* () {
+            if (!this.uid) {
+              throw new Error("Not logged in");
+            }
+            return yield this.profile(this.uid);
+          });
+        }
+        profile(uid) {
+          return __awaiter2(this, void 0, void 0, function* () {
+            if (!this._connected) {
+              throw new Error("Not connected");
+            }
+            return yield this.client.chat.profileCard(this.options.chatChannelId, uid);
+          });
+        }
+        emit(event, data) {
+          if (this.handlers[event]) {
+            for (const handler of this.handlers[event]) {
+              handler(data);
+            }
+          }
+        }
+        on(event, handler) {
+          const e2 = event;
+          this.handlers[e2] = this.handlers[e2] || [];
+          this.handlers[e2].push(handler);
+        }
+        handleMessage(data) {
+          return __awaiter2(this, void 0, void 0, function* () {
+            const json = JSON.parse(data.data);
+            const body = json["bdy"];
+            this.emit("raw", json);
+            switch (json.cmd) {
+              case types_1.ChatCmd.CONNECTED:
+                this._connected = true;
+                this.sid = body["sid"];
+                if (this.isReconnect) {
+                  this.emit("reconnect", this.options.chatChannelId);
+                  this.isReconnect = false;
+                } else {
+                  this.emit("connect", null);
+                }
+                break;
+              case types_1.ChatCmd.PING:
+                this.ws.send(JSON.stringify({
+                  cmd: types_1.ChatCmd.PONG,
+                  ver: "2"
+                }));
+                break;
+              case types_1.ChatCmd.CHAT:
+              case types_1.ChatCmd.RECENT_CHAT:
+              case types_1.ChatCmd.DONATION:
+                const isRecent = json.cmd == types_1.ChatCmd.RECENT_CHAT;
+                const chats = body["messageList"] || body;
+                const notice2 = body["notice"];
+                if (notice2) {
+                  this.emit("notice", this.parseChat(notice2, isRecent));
+                }
+                for (const chat2 of chats) {
+                  const type = chat2["msgTypeCode"] || chat2["messageTypeCode"] || "";
+                  const parsed = this.parseChat(chat2, isRecent);
+                  switch (type) {
+                    case types_1.ChatType.TEXT:
+                      this.emit("chat", parsed);
+                      break;
+                    case types_1.ChatType.DONATION:
+                      this.emit("donation", parsed);
+                      break;
+                    case types_1.ChatType.SUBSCRIPTION:
+                      this.emit("subscription", parsed);
+                      break;
+                    case types_1.ChatType.SYSTEM_MESSAGE:
+                      this.emit("systemMessage", parsed);
+                      break;
+                  }
+                }
+                break;
+              case types_1.ChatCmd.NOTICE:
+                this.emit("notice", Object.keys(body).length != 0 ? this.parseChat(body) : null);
+                break;
+              case types_1.ChatCmd.BLIND:
+                this.emit("blind", body);
+            }
+            if (json.cmd != types_1.ChatCmd.PONG) {
+              this.startPingTimer();
+            }
+          });
+        }
+        parseChat(chat2, isRecent = false) {
+          const profile = JSON.parse(chat2["profile"]);
+          const extras = chat2["extras"] ? JSON.parse(chat2["extras"]) : null;
+          const params = extras === null || extras === void 0 ? void 0 : extras["params"];
+          const registerChatProfileJson = params === null || params === void 0 ? void 0 : params["registerChatProfileJson"];
+          const targetChatProfileJson = params === null || params === void 0 ? void 0 : params["targetChatProfileJson"];
+          if (registerChatProfileJson && targetChatProfileJson) {
+            params["registerChatProfile"] = JSON.parse(registerChatProfileJson);
+            params["targetChatProfile"] = JSON.parse(targetChatProfileJson);
+            delete params["registerChatProfileJson"];
+            delete params["targetChatProfileJson"];
+            extras["params"] = params;
+          }
+          const message = chat2["msg"] || chat2["content"];
+          const memberCount = chat2["mbrCnt"] || chat2["memberCount"];
+          const time = chat2["msgTime"] || chat2["messageTime"];
+          const hidden = (chat2["msgStatusType"] || chat2["messageStatusType"]) == "HIDDEN";
+          const parsed = {
+            profile,
+            extras,
+            hidden,
+            message,
+            time,
+            isRecent
+          };
+          if (memberCount) {
+            parsed["memberCount"] = memberCount;
+          }
+          return parsed;
+        }
+        startPolling() {
+          if (!this.options.pollInterval || this.pollIntervalId)
+            return;
+          this.pollIntervalId = setInterval(() => __awaiter2(this, void 0, void 0, function* () {
+            const chatChannelId = yield this.client.live.status(this.options.channelId).then((status) => status === null || status === void 0 ? void 0 : status.chatChannelId).catch(() => null);
+            if (chatChannelId && chatChannelId != this.options.chatChannelId) {
+              this.options.chatChannelId = chatChannelId;
+              yield this.reconnect();
+            }
+          }), this.options.pollInterval);
+        }
+        stopPolling() {
+          if (this.pollIntervalId) {
+            clearInterval(this.pollIntervalId);
+          }
+          this.pollIntervalId = null;
+        }
+        startPingTimer() {
+          if (this.pingTimeoutId) {
+            clearTimeout(this.pingTimeoutId);
+          }
+          this.pingTimeoutId = setTimeout(() => this.sendPing(), 2e4);
+        }
+        stopPingTimer() {
+          if (this.pingTimeoutId) {
+            clearTimeout(this.pingTimeoutId);
+          }
+          this.pingTimeoutId = null;
+        }
+        sendPing() {
+          if (!this.ws)
+            return;
+          this.ws.send(JSON.stringify({
+            cmd: types_1.ChatCmd.PING,
+            ver: "2"
+          }));
+          this.pingTimeoutId = setTimeout(() => this.sendPing(), 2e4);
+        }
+      }
+      chat$1.ChzzkChat = ChzzkChat;
+      return chat$1;
+    }
+    var hasRequiredChat;
+    function requireChat() {
+      if (hasRequiredChat) return chat$2;
+      hasRequiredChat = 1;
+      (function(exports) {
+        var __createBinding = commonjsGlobal && commonjsGlobal.__createBinding || (Object.create ? function(o, m2, k2, k22) {
+          if (k22 === void 0) k22 = k2;
+          var desc = Object.getOwnPropertyDescriptor(m2, k2);
+          if (!desc || ("get" in desc ? !m2.__esModule : desc.writable || desc.configurable)) {
+            desc = { enumerable: true, get: function() {
+              return m2[k2];
+            } };
+          }
+          Object.defineProperty(o, k22, desc);
+        } : function(o, m2, k2, k22) {
+          if (k22 === void 0) k22 = k2;
+          o[k22] = m2[k2];
+        });
+        var __exportStar = commonjsGlobal && commonjsGlobal.__exportStar || function(m2, exports2) {
+          for (var p2 in m2) if (p2 !== "default" && !Object.prototype.hasOwnProperty.call(exports2, p2)) __createBinding(exports2, m2, p2);
+        };
+        Object.defineProperty(exports, "__esModule", { value: true });
+        __exportStar(requireChat$1(), exports);
+        __exportStar(types$1, exports);
+      })(chat$2);
+      return chat$2;
+    }
+    var types = {};
+    Object.defineProperty(types, "__esModule", { value: true });
+    var utils = {};
+    Object.defineProperty(utils, "__esModule", { value: true });
+    utils.donationTypeName = utils.userRoleName = utils.isModerator = utils.isManager = utils.isChannelManager = utils.isChatManager = utils.isStreamer = void 0;
+    function isStreamer(profile) {
+      return profile.userRoleCode == "streamer";
+    }
+    utils.isStreamer = isStreamer;
+    function isChatManager(profile) {
+      return profile.userRoleCode == "streaming_chat_manager";
+    }
+    utils.isChatManager = isChatManager;
+    function isChannelManager(profile) {
+      return profile.userRoleCode == "streaming_channel_manager";
+    }
+    utils.isChannelManager = isChannelManager;
+    function isManager(profile) {
+      return profile.userRoleCode == "manager";
+    }
+    utils.isManager = isManager;
+    function isModerator(profile) {
+      return isStreamer(profile) || isChatManager(profile) || isChannelManager(profile) || isManager(profile);
+    }
+    utils.isModerator = isModerator;
+    function userRoleName(userRoleCode) {
+      switch (userRoleCode) {
+        case "streamer":
+          return "스트리머";
+        case "streaming_chat_manager":
+          return "채팅 운영자";
+        case "streaming_channel_manager":
+          return "채널 관리자";
+        case "manager":
+          return "운영자";
+        case "common_user":
+          return "일반 사용자";
+        default:
+          return "알 수 없음";
+      }
+    }
+    utils.userRoleName = userRoleName;
+    function donationTypeName(donationType) {
+      switch (donationType) {
+        case "CHAT":
+          return "채팅 후원";
+        case "VIDEO":
+          return "영상 후원";
+        case "MISSION":
+          return "미션 후원";
+        default:
+          return "알 수 없음";
+      }
+    }
+    utils.donationTypeName = donationTypeName;
+    (function(exports) {
+      var __createBinding = commonjsGlobal && commonjsGlobal.__createBinding || (Object.create ? function(o, m2, k2, k22) {
+        if (k22 === void 0) k22 = k2;
+        var desc = Object.getOwnPropertyDescriptor(m2, k2);
+        if (!desc || ("get" in desc ? !m2.__esModule : desc.writable || desc.configurable)) {
+          desc = { enumerable: true, get: function() {
+            return m2[k2];
+          } };
+        }
+        Object.defineProperty(o, k22, desc);
+      } : function(o, m2, k2, k22) {
+        if (k22 === void 0) k22 = k2;
+        o[k22] = m2[k2];
+      });
+      var __exportStar = commonjsGlobal && commonjsGlobal.__exportStar || function(m2, exports2) {
+        for (var p2 in m2) if (p2 !== "default" && !Object.prototype.hasOwnProperty.call(exports2, p2)) __createBinding(exports2, m2, p2);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      __exportStar(api, exports);
+      __exportStar(requireChat(), exports);
+      __exportStar(requireClient(), exports);
+      __exportStar(types, exports);
+      __exportStar(utils, exports);
+    })(dist);
     const Chat = observer(() => {
       const mainStore = useMainStore();
       const enable = mainStore.setting.get("enable");
       const chat_style = mainStore.setting.get("chat_style");
-      const defalut_chat_enable = mainStore.setting.get("defalut_chat_enable");
       const chatUpdate = reactExports.useRef(null);
-      const [pathname, setPathname] = reactExports.useState("");
-      const [chatEnable, setChatEnable] = reactExports.useState(null);
-      const checkEnableChat = () => {
-        try {
-          const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']");
-          if (chatElement) {
-            if (chatElement.scrollHeight)
-              chatElement.scrollTop = chatElement.scrollHeight;
+      let colorIdx = 0;
+      const client2 = reactExports.useMemo(() => {
+        return new dist.ChzzkClient({
+          baseUrls: {
+            chzzkBaseUrl: "https://api.chzzk.naver.com",
+            gameBaseUrl: "https://comm-api.game.naver.com/nng_main"
           }
+        });
+      }, []);
+      const addZIndexToElements = () => {
+        const bottomButtonsElement = document.querySelector(".pzp-pc__bottom-buttons");
+        const bottomShadowElement = document.querySelector(".pzp-pc-ui-bottom-shadow.pzp-pc__bottom-shadow");
+        if (bottomButtonsElement) {
+          bottomButtonsElement.style.zIndex = "2";
+        }
+        if (bottomShadowElement) {
+          bottomShadowElement.style.zIndex = "2";
+        }
+      };
+      const checkPathName = () => {
+        try {
           const newPathname = window.location.pathname;
-          if (pathname != newPathname || chatEnable != defalut_chat_enable) {
-            const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
-            if (sideElement && sideElement.style) {
-              sideElement.style.maxWidth = defalut_chat_enable ? "" : "0px";
-              sideElement.style.opacity = defalut_chat_enable ? "" : "0";
-              setPathname(newPathname);
-              setChatEnable(defalut_chat_enable);
-            }
+          const extractedID = extractID(newPathname);
+          if (mainStore.pathName != extractedID) {
+            mainStore.setPathName(extractedID);
+            addZIndexToElements();
+            connectChat(extractedID);
           }
         } catch (e2) {
           console.error(e2);
         }
       };
+      const fetchLiveStatus = async (newChannelId) => {
+        try {
+          const url = `https://api.chzzk.naver.com/polling/v3/channels/${newChannelId}/live-status?includePlayerRecommendContent=true`;
+          const response = await fetch(url, {
+            method: "GET",
+            credentials: "include"
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const result = await response.json();
+          return result;
+        } catch (err) {
+          return null;
+        }
+      };
+      const connectChat = async (newChannelId) => {
+        if (mainStore.currentChat) {
+          console.log("Disconnecting from current chat...");
+          mainStore.currentChat.connected && await mainStore.currentChat.disconnect();
+          mainStore.setCurrentChat(null);
+          mainStore.clearChat();
+        }
+        if (!newChannelId) throw Error("Not Channel Id");
+        if (!client2) throw Error("Not Client");
+        const status = await fetchLiveStatus(newChannelId);
+        if (!status) throw Error("Not status");
+        const chatChannelId = status.content.chatChannelId;
+        if (!chatChannelId) throw Error("Not chatChannelId");
+        const newCurrentChat = client2.chat({
+          channelId: newChannelId,
+          chatChannelId,
+          pollInterval: 30 * 1e3
+        });
+        mainStore.setCurrentChat(newCurrentChat);
+        newCurrentChat.on("chat", (chat2) => {
+          const message = parseMessage(chat2);
+          mainStore.addChat({
+            id: Number(`${chat2.time}${Math.random()}`),
+            username: chat2.profile.nickname,
+            contentArray: message,
+            color: colors[colorIdx]
+          });
+          colorIdx = (colorIdx + 1) % colors.length;
+        });
+        console.log("Connecting to new chat...", newChannelId);
+        mainStore.clearChat();
+        mainStore.addChat({ id: -1, username: "제작자", contentArray: ["비콩 (github.com/bcong)"], color: "#e9ab00" });
+        await newCurrentChat.connect();
+      };
       reactExports.useEffect(() => {
-        checkEnableChat();
+        checkPathName();
         chatUpdate.current = setInterval(() => {
-          checkEnableChat();
-        }, 500);
+          checkPathName();
+        }, 1e3);
         return () => {
           if (chatUpdate.current) clearInterval(chatUpdate.current);
         };
-      }, [defalut_chat_enable, chatEnable, pathname]);
+      }, []);
       let chatElem;
       switch (chat_style) {
         case 0:
@@ -13157,109 +14519,17 @@ img {
       const mainStore = useMainStore();
       const [isSetting, IsSetting] = reactExports.useState(false);
       const [isInit, IsInit] = reactExports.useState(false);
-      const chatUpdate = reactExports.useRef(null);
-      let colorIdx = 0;
-      const colors = [
-        "#f28ca5",
-        "#9dd9a5",
-        "#fff08c",
-        "#a1b1eb",
-        "#fac098",
-        "#c88ed9",
-        "#a2f7f7",
-        "#f798f2",
-        "#ddfa85"
-      ];
       const toggleSetting = () => {
         IsSetting((prevIsSetting) => !prevIsSetting);
-      };
-      const addZIndexToElements = () => {
-        const bottomButtonsElement = document.querySelector(".pzp-pc__bottom-buttons");
-        const bottomShadowElement = document.querySelector(".pzp-pc-ui-bottom-shadow.pzp-pc__bottom-shadow");
-        if (bottomButtonsElement) {
-          bottomButtonsElement.style.zIndex = "2";
-        }
-        if (bottomShadowElement) {
-          bottomShadowElement.style.zIndex = "2";
-        }
       };
       const initSetting = () => {
         GM_listValues().map((v2) => {
           mainStore.setSetting(v2, GM_getValue(v2), false);
         });
-        mainStore.addChat({ id: -1, username: "제작자", contentArray: ["비콩 (github.com/bcong)"], color: "#e9ab00" });
         IsInit(true);
-      };
-      const checkViewChat = () => {
-        var _a2;
-        const buttonElement = document.querySelector("button[class^='live_information_player_folded_button__']");
-        const fullScreenbuttonElement = document.querySelector("div[class^='live_information_player_control__']");
-        if (fullScreenbuttonElement) {
-          const chatButton = (_a2 = fullScreenbuttonElement == null ? void 0 : fullScreenbuttonElement.children) == null ? void 0 : _a2[0];
-          chatButton == null ? void 0 : chatButton.click();
-        }
-        if (buttonElement) {
-          if ((buttonElement == null ? void 0 : buttonElement.textContent) == "채팅") {
-            buttonElement == null ? void 0 : buttonElement.click();
-          }
-        }
-      };
-      const updateChatMessages = () => {
-        var _a2;
-        addZIndexToElements();
-        const closeButton = document.querySelector('div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]');
-        if (closeButton && closeButton.style.display != "none")
-          closeButton.style.display = "none";
-        const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
-        const chatArea = chatAreaElements[chatAreaElements.length - 1];
-        if (!chatArea) return;
-        const chatItems = chatArea.querySelectorAll('[class*="live_chatting_list_item"]');
-        const recentChats = (_a2 = Array.from(chatItems)) == null ? void 0 : _a2.slice(-mainStore.maxChats);
-        if (!recentChats || recentChats.length <= 1) return;
-        const lastChat = mainStore.lastChat();
-        recentChats == null ? void 0 : recentChats.forEach((chat) => {
-          var _a3;
-          const usernameElement = chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
-          const username = (usernameElement == null ? void 0 : usernameElement.textContent) || null;
-          const messageElement = chat.querySelector('[class*="live_chatting_message_text"]');
-          if (!username || !messageElement) return;
-          if (messageElement instanceof HTMLElement) {
-            let id2 = Number(chat.id);
-            if (!id2) {
-              id2 = mainStore.chatId + 1;
-              chat == null ? void 0 : chat.setAttribute("id", id2.toString());
-            }
-            if ((lastChat == null ? void 0 : lastChat.id) >= id2) return;
-            const contentArray = [];
-            (_a3 = messageElement == null ? void 0 : messageElement.childNodes) == null ? void 0 : _a3.forEach((node) => {
-              var _a4;
-              if (node.nodeType === Node.TEXT_NODE) {
-                const textContent = (_a4 = node.textContent) == null ? void 0 : _a4.trim();
-                if (textContent) {
-                  contentArray.push(textContent);
-                }
-              } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "IMG") {
-                const imgSrc = node.getAttribute("src");
-                if (imgSrc) {
-                  contentArray.push(imgSrc);
-                }
-              }
-            });
-            mainStore.addChat({ id: id2, username, contentArray, color: colors[colorIdx] });
-            colorIdx == colors.length - 1 ? colorIdx = 0 : colorIdx++;
-          }
-        });
       };
       reactExports.useEffect(() => {
         initSetting();
-        checkViewChat();
-        chatUpdate.current = setInterval(() => {
-          updateChatMessages();
-          checkViewChat();
-        }, 500);
-        return () => {
-          if (chatUpdate.current) clearInterval(chatUpdate.current);
-        };
       }, []);
       return isInit && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(SettingMenuComponent, { isSetting, toggleSetting }),

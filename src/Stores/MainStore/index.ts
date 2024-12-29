@@ -1,4 +1,5 @@
 import { I_CHAT, I_INIT_SETTING, T_SETTING } from "@Types/index";
+import { ChzzkChat } from "chzzk";
 import { makeObservable, observable, action, computed } from "mobx";
 
 export default class MainStore {
@@ -123,7 +124,10 @@ export default class MainStore {
     private _maxChats = 20;
 
     @observable
-    private _chatId = 0;
+    private _pathName = '';
+
+    @observable
+    private _currentChat: ChzzkChat | null = null;
 
     constructor() {
         makeObservable(this);
@@ -149,13 +153,26 @@ export default class MainStore {
 
         if (this.chats.length >= this.maxChats)
             this.chats.shift();
+    };
 
-        this._chatId++;
+    @action
+    clearChat = () => {
+        this.chats.length = 0;
     };
 
     @action
     lastChat = () => {
         return this.chats[this.chats.length - 1];
+    };
+
+    @action
+    setPathName = (pathName: string) => {
+        this._pathName = pathName;
+    };
+
+    @action
+    setCurrentChat = (currentChat: ChzzkChat | null) => {
+        this._currentChat = currentChat;
     };
 
     @computed
@@ -179,7 +196,12 @@ export default class MainStore {
     }
 
     @computed
-    get chatId() {
-        return this._chatId;
+    get pathName() {
+        return this._pathName;
+    }
+
+    @computed
+    get currentChat() {
+        return this._currentChat;
     }
 }
