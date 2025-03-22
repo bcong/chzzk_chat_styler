@@ -1,7 +1,7 @@
 import FrameChat from "@Components/FrameChat";
 import OverlayChat from "@Components/OverlayChat";
 import { useMainStore } from "@Stores/index";
-import { colors, extractID, getCookie, parseMessage } from "@Utils/index";
+import { colors, extractID, parseMessage } from "@Utils/index";
 import { ChzzkClient } from "chzzk";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo, useRef } from "react";
@@ -38,7 +38,7 @@ const Chat = observer(() => {
         try {
             const newPathname = window.location.pathname;
             const extractedID = extractID(newPathname);
-            
+
             addZIndexToElements();
             if (mainStore.pathName != extractedID) {
                 mainStore.setPathName(extractedID);
@@ -84,7 +84,7 @@ const Chat = observer(() => {
 
         const status = await fetchLiveStatus(newChannelId);
 
-        if (!status) throw Error('Not status');
+        if (!status) throw Error('Not Status');
 
         const chatChannelId = status.content.chatChannelId;
 
@@ -110,8 +110,9 @@ const Chat = observer(() => {
         });
 
         console.log('Connecting to new chat...', newChannelId);
+        const receivedTime = new Date().toISOString();
         mainStore.clearChat();
-        mainStore.addChat({ id: -1, username: '제작자', contentArray: ['비콩 (github.com/bcong)'], color: '#e9ab00' });
+        mainStore.addChat({ id: Number(`${Date.parse(receivedTime)}${Math.random()}`), username: '제작자', contentArray: ['비콩 (github.com/bcong)'], color: '#e9ab00' });
         await newCurrentChat.connect();
     };
 

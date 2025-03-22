@@ -128,6 +128,7 @@ export const colors = [
     '#f798f2',
     '#ddfa85',
 ];
+
 export const getCookie = (name: string) => {
     const value = document.cookie
         .split('; ')

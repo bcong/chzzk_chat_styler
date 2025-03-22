@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20241229211302
+// @version      20250323001357
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -14471,7 +14471,7 @@ img {
         if (!newChannelId) throw Error("Not Channel Id");
         if (!client2) throw Error("Not Client");
         const status = await fetchLiveStatus(newChannelId);
-        if (!status) throw Error("Not status");
+        if (!status) throw Error("Not Status");
         const chatChannelId = status.content.chatChannelId;
         if (!chatChannelId) throw Error("Not chatChannelId");
         const newCurrentChat = client2.chat({
@@ -14491,8 +14491,9 @@ img {
           colorIdx = (colorIdx + 1) % colors.length;
         });
         console.log("Connecting to new chat...", newChannelId);
+        const receivedTime = (/* @__PURE__ */ new Date()).toISOString();
         mainStore.clearChat();
-        mainStore.addChat({ id: -1, username: "제작자", contentArray: ["비콩 (github.com/bcong)"], color: "#e9ab00" });
+        mainStore.addChat({ id: Number(`${Date.parse(receivedTime)}${Math.random()}`), username: "제작자", contentArray: ["비콩 (github.com/bcong)"], color: "#e9ab00" });
         await newCurrentChat.connect();
       };
       reactExports.useEffect(() => {
