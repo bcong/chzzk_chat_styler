@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20250323001357
+// @version      20250323012022
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -7641,6 +7641,11 @@ img {
       "#f798f2",
       "#ddfa85"
     ];
+    const generateRandomNumber = (receivedTime) => {
+      const baseNumber = Date.parse(receivedTime);
+      const randomDecimal = Math.random().toFixed(10);
+      return Number(`${baseNumber}${randomDecimal.slice(2)}`);
+    };
     const ToggleButton$1 = "_ToggleButton_1j7w4_1";
     const Enable = "_Enable_1j7w4_12";
     const Circle = "_Circle_1j7w4_15";
@@ -14482,8 +14487,9 @@ img {
         mainStore.setCurrentChat(newCurrentChat);
         newCurrentChat.on("chat", (chat2) => {
           const message = parseMessage(chat2);
+          const randomDecimal = Math.random().toFixed(10);
           mainStore.addChat({
-            id: Number(`${chat2.time}${Math.random()}`),
+            id: Number(`${chat2.time}${randomDecimal.slice(2)}`),
             username: chat2.profile.nickname,
             contentArray: message,
             color: colors[colorIdx]
@@ -14493,7 +14499,7 @@ img {
         console.log("Connecting to new chat...", newChannelId);
         const receivedTime = (/* @__PURE__ */ new Date()).toISOString();
         mainStore.clearChat();
-        mainStore.addChat({ id: Number(`${Date.parse(receivedTime)}${Math.random()}`), username: "제작자", contentArray: ["비콩 (github.com/bcong)"], color: "#e9ab00" });
+        mainStore.addChat({ id: Number(generateRandomNumber(receivedTime)), username: "제작자", contentArray: ["비콩 (github.com/bcong)"], color: "#e9ab00" });
         await newCurrentChat.connect();
       };
       reactExports.useEffect(() => {

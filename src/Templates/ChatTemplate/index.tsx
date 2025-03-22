@@ -1,7 +1,7 @@
 import FrameChat from "@Components/FrameChat";
 import OverlayChat from "@Components/OverlayChat";
 import { useMainStore } from "@Stores/index";
-import { colors, extractID, parseMessage } from "@Utils/index";
+import { colors, extractID, generateRandomNumber, parseMessage } from "@Utils/index";
 import { ChzzkClient } from "chzzk";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo, useRef } from "react";
@@ -100,8 +100,9 @@ const Chat = observer(() => {
 
         newCurrentChat.on('chat', (chat) => {
             const message = parseMessage(chat);
+            const randomDecimal = Math.random().toFixed(10); // 소수점 이하 10자리
             mainStore.addChat({
-                id: Number(`${chat.time}${Math.random()}`),
+                id: Number(`${chat.time}${randomDecimal.slice(2)}`),
                 username: chat.profile.nickname,
                 contentArray: message,
                 color: colors[colorIdx]
@@ -112,7 +113,7 @@ const Chat = observer(() => {
         console.log('Connecting to new chat...', newChannelId);
         const receivedTime = new Date().toISOString();
         mainStore.clearChat();
-        mainStore.addChat({ id: Number(`${Date.parse(receivedTime)}${Math.random()}`), username: '제작자', contentArray: ['비콩 (github.com/bcong)'], color: '#e9ab00' });
+        mainStore.addChat({ id: Number(generateRandomNumber(receivedTime)), username: '제작자', contentArray: ['비콩 (github.com/bcong)'], color: '#e9ab00' });
         await newCurrentChat.connect();
     };
 
