@@ -20,6 +20,10 @@ export default class MainStore {
             key: 'defalut_chat_enable',
             value: true,
         },
+        {
+            key: 'show_nicknames',
+            value: true,
+        },
 
         // 오버레이
         {

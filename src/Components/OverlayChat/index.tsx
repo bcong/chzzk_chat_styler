@@ -24,6 +24,7 @@ const OverlayChat = observer(() => {
     const overlayChatBackground = mainStore.setting.get('overlay_chat_background');
     const overlayBackground = mainStore.setting.get('overlay_background');
     const overlayBackgroundArea = mainStore.setting.get('overlay_background_area');
+    const showNicknames = mainStore.setting.get('show_nicknames');
 
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!chatRef.current) return;
@@ -168,7 +169,7 @@ const OverlayChat = observer(() => {
                         style={{
                             background: background
                         }}>
-                        {userNameElem}
+                        {showNicknames && userNameElem}
                         {messageElem}
                     </div>
                 </div>

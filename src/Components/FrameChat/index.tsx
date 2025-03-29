@@ -21,6 +21,8 @@ const FrameChat = observer(() => {
     const frameBackground = mainStore.setting.get('frame_background');
     const frameOffsetX = mainStore.setting.get('frame_offset_x');
     const frameOffsetY = mainStore.setting.get('frame_offset_y');
+    const id = 'chatStylerFrameChat';
+    const showNicknames = mainStore.setting.get('show_nicknames');
 
     useEffect(() => {
         const addFrameChat = () => {
@@ -88,7 +90,7 @@ const FrameChat = observer(() => {
                         style={{
                             background: background
                         }}>
-                        {userNameElem}
+                        {showNicknames && userNameElem}
                         {messageElem}
                     </div>
                 </div>
@@ -120,6 +122,7 @@ const FrameChat = observer(() => {
     return playerSizeDiv ? ReactDOM.createPortal(
         <div
             className={classes(styles.FrameChat, frameChatPositionCls)}
+            id={id}
             style={{
                 background: frameBackground ? chatBackgroundStyle : '',
                 paddingLeft: `${frameOffsetX}px`,

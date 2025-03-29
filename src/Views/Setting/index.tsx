@@ -63,6 +63,16 @@ const Setting = observer(() => {
         //     ]
         // },
         {
+            name: '닉네임 표시',
+            values: [
+                {
+                    type: 'toggle',
+                    value: mainStore.setting.get('show_nicknames'),
+                    cb: (value: unknown) => mainStore.setSetting('show_nicknames', value, true)
+                }
+            ]
+        },
+        {
             name: '채팅창 스타일',
             values: [
                 {

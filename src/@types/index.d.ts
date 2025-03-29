@@ -7,6 +7,7 @@ export type T_SETTING =
     | 'enable'
     | 'chat_style'
     | 'defalut_chat_enable'
+    | 'show_nicknames'
 
     // 오버레이
     | 'overlay_x'
