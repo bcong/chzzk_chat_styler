@@ -39,6 +39,9 @@ export default defineConfig(({ mode }) => {
                     match: [
                         'https://chzzk.naver.com/*',
                     ],
+                    exclude: [
+                        'https://chzzk.naver.com/video/*'
+                    ],
                     icon: 'https://ssl.pstatic.net/static/nng/glive/icon/favicon.png',
                     connect: ['chzzk.naver.com'],
                     grant: ['GM_setValue', 'GM_getValue', 'GM_listValues'],

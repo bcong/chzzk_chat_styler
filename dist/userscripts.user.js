@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20250329154221
+// @version      20250507021411
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -9,6 +9,7 @@
 // @downloadURL  https://github.com/bcong/chzzk_chat_styler/blob/master/dist/userscripts.user.js
 // @updateURL    https://github.com/bcong/chzzk_chat_styler/blob/master/dist/userscripts.user.js
 // @match        https://chzzk.naver.com/*
+// @exclude      https://chzzk.naver.com/video/*
 // @connect      chzzk.naver.com
 // @grant        GM_addStyle
 // @grant        GM_getValue
