@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20250507021411
+// @version      20250724220925
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -17,7 +17,7 @@
 // @grant        GM_setValue
 // ==/UserScript==
 
-(n=>{if(typeof GM_addStyle=="function"){GM_addStyle(n);return}const _=document.createElement("style");_.textContent=n,document.head.append(_)})(` @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
+(n=>{if(typeof GM_addStyle=="function"){GM_addStyle(n);return}const _=document.createElement("style");_.textContent=n,document.head.append(_)})(` @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css');
 * {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -34,10 +34,12 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+p {
   color: #000000;
 }
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -60,7 +62,7 @@ img {
   user-select: none;
   -webkit-user-drag: none;
 }
-._SettingMenu_u7u24_1 {
+._SettingMenu_sp5yj_1 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,9 +70,8 @@ img {
   height: 40px;
   border-radius: 8px;
   margin-right: 8px;
-  font-family: "Pretendard";
 }
-._SettingMenu_u7u24_1 button p {
+._SettingMenu_sp5yj_1 button p {
   font-size: 24px !important;
   background: #16cf9c;
   -webkit-background-clip: text;
@@ -79,8 +80,9 @@ img {
   font-weight: 800;
   line-height: 1;
   padding: 8px !important;
+  font-family: 'Pretendard' !important;
 }
-._SettingMenu_u7u24_1:hover {
+._SettingMenu_sp5yj_1:hover {
   background-color: rgba(255, 255, 255, 0.25);
 }
 ._SettingTemplate_1esbo_1 {
@@ -7494,7 +7496,7 @@ img {
       createRoot = m$1.createRoot;
       m$1.hydrateRoot;
     }
-    const SettingMenu = "_SettingMenu_u7u24_1";
+    const SettingMenu = "_SettingMenu_sp5yj_1";
     const styles$8 = {
       SettingMenu
     };
