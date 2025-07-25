@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20250724220925
+// @version      20250726045711
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -34,9 +34,6 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-p {
-  color: #000000;
 }
 input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
@@ -85,7 +82,7 @@ img {
 ._SettingMenu_sp5yj_1:hover {
   background-color: rgba(255, 255, 255, 0.25);
 }
-._SettingTemplate_1esbo_1 {
+._SettingTemplate_1q4mo_1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -100,12 +97,12 @@ img {
   border: 1px solid rgba(117, 123, 138, 0.2);
   flex-direction: column;
   overflow: auto;
-  font-family: "Pretendard";
+  font-family: 'Pretendard';
 }
-._SettingTemplate_1esbo_1._View_1esbo_18 {
+._SettingTemplate_1q4mo_1._View_1q4mo_18 {
   display: flex;
 }
-._SettingTemplate_1esbo_1 ._Header_1esbo_21 {
+._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 {
   display: flex;
   align-items: center;
   width: 100%;
@@ -116,15 +113,16 @@ img {
   background-color: rgba(0, 0, 0, 0.02);
   padding-left: 12px;
 }
-._SettingTemplate_1esbo_1 ._Header_1esbo_21 ._Title_1esbo_32 p {
+._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 ._Title_1q4mo_32 p {
+  color: #000;
   font-size: 14px;
 }
-._SettingTemplate_1esbo_1 ._Header_1esbo_21 ._Menus_1esbo_35 {
+._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 ._Menus_1q4mo_36 {
   height: 100%;
   position: absolute;
   right: 0;
 }
-._SettingTemplate_1esbo_1 ._Header_1esbo_21 ._Menus_1esbo_35 ._Menu_1esbo_35 {
+._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 ._Menus_1q4mo_36 ._Menu_1q4mo_36 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -132,32 +130,32 @@ img {
   height: 100%;
   transition-duration: 0.1s;
 }
-._SettingTemplate_1esbo_1 ._Header_1esbo_21 ._Menus_1esbo_35 ._Menu_1esbo_35 svg {
+._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 ._Menus_1q4mo_36 ._Menu_1q4mo_36 svg {
   width: 60%;
   height: 100%;
 }
-._SettingTemplate_1esbo_1 ._Header_1esbo_21 ._Menus_1esbo_35 ._Menu_1esbo_35:hover {
+._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 ._Menus_1q4mo_36 ._Menu_1q4mo_36:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.05);
 }
-._SettingTemplate_1esbo_1 ._Content_1esbo_56 {
+._SettingTemplate_1q4mo_1 ._Content_1q4mo_57 {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
-._SettingTemplate_1esbo_1 ._Content_1esbo_56::-webkit-scrollbar-track,
-._SettingTemplate_1esbo_1 ._Content_1esbo_56::-webkit-scrollbar {
+._SettingTemplate_1q4mo_1 ._Content_1q4mo_57::-webkit-scrollbar-track,
+._SettingTemplate_1q4mo_1 ._Content_1q4mo_57::-webkit-scrollbar {
   background-color: transparent;
   width: 10px;
 }
-._SettingTemplate_1esbo_1 ._Content_1esbo_56::-webkit-scrollbar-thumb {
+._SettingTemplate_1q4mo_1 ._Content_1q4mo_57::-webkit-scrollbar-thumb {
   background: rgba(63, 63, 63, 0.8) !important;
   border-radius: 20px;
   background-clip: padding-box !important;
   border: 3px solid transparent !important;
 }
-._SettingTemplate_1esbo_1 ._Content_1esbo_56:hover::-webkit-scrollbar-thumb {
+._SettingTemplate_1q4mo_1 ._Content_1q4mo_57:hover::-webkit-scrollbar-thumb {
   background: rgba(63, 63, 63, 0.8) !important;
   background-clip: padding-box !important;
   border: 3px solid transparent !important;
@@ -190,37 +188,38 @@ img {
   transform: translate(20%, -50%);
   transition-duration: 0.2s;
 }
-._Setting_1369u_1 {
+._Setting_bt7mm_1 {
   flex: 1;
 }
-._Setting_1369u_1 ._Menus_1369u_4 {
+._Setting_bt7mm_1 ._Menus_bt7mm_4 {
   padding: 0 16px 0 12px;
   margin-bottom: 6px;
 }
-._Setting_1369u_1 ._Menus_1369u_4 ._Menu_1369u_4 {
+._Setting_bt7mm_1 ._Menus_bt7mm_4 ._Menu_bt7mm_4 {
   display: flex;
   align-items: center;
   width: 100%;
   height: 40px;
 }
-._Setting_1369u_1 ._Menus_1369u_4 ._Menu_1369u_4 ._Name_1369u_14 {
+._Setting_bt7mm_1 ._Menus_bt7mm_4 ._Menu_bt7mm_4 ._Name_bt7mm_14 {
   width: 120px;
 }
-._Setting_1369u_1 ._Menus_1369u_4 ._Menu_1369u_4 ._Name_1369u_14 p {
+._Setting_bt7mm_1 ._Menus_bt7mm_4 ._Menu_bt7mm_4 ._Name_bt7mm_14 p {
+  color: #000;
   font-weight: 500;
   font-size: 14px;
 }
-._Setting_1369u_1 ._Menus_1369u_4 ._Menu_1369u_4 ._Value_1369u_21 {
+._Setting_bt7mm_1 ._Menus_bt7mm_4 ._Menu_bt7mm_4 ._Value_bt7mm_22 {
   display: flex;
   justify-content: right;
   align-items: center;
   flex: 1;
   height: 100%;
 }
-._ListBox_g79p9_1 {
+._ListBox_5p09x_1 {
   position: relative;
 }
-._ListBox_g79p9_1 ._ListValue_g79p9_4 {
+._ListBox_5p09x_1 ._ListValue_5p09x_4 {
   display: flex;
   justify-content: right;
   align-items: center;
@@ -232,22 +231,23 @@ img {
   border-radius: 6px;
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
-._ListBox_g79p9_1 ._ListValue_g79p9_4:hover {
+._ListBox_5p09x_1 ._ListValue_5p09x_4:hover {
   cursor: pointer;
 }
-._ListBox_g79p9_1 ._ListValue_g79p9_4 p {
+._ListBox_5p09x_1 ._ListValue_5p09x_4 p {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-weight: 500;
   font-size: 14px;
+  color: #000;
 }
-._ListBox_g79p9_1 ._ListValue_g79p9_4 svg {
+._ListBox_5p09x_1 ._ListValue_5p09x_4 svg {
   top: 0;
   right: 0;
   position: absolute;
 }
-._ListBox_g79p9_1 ._Options_g79p9_31 {
+._ListBox_5p09x_1 ._Options_5p09x_32 {
   display: none;
   position: absolute;
   width: 100px;
@@ -259,7 +259,7 @@ img {
   overflow: hidden;
   z-index: 100;
 }
-._ListBox_g79p9_1 ._Options_g79p9_31 ._Option_g79p9_31 {
+._ListBox_5p09x_1 ._Options_5p09x_32 ._Option_5p09x_32 {
   display: flex;
   justify-content: right;
   align-items: center;
@@ -267,21 +267,22 @@ img {
   height: 30px;
   padding: 0 8px;
 }
-._ListBox_g79p9_1 ._Options_g79p9_31 ._Option_g79p9_31 p {
+._ListBox_5p09x_1 ._Options_5p09x_32 ._Option_5p09x_32 p {
   font-size: 14px;
   font-weight: 500;
+  color: #000;
 }
-._ListBox_g79p9_1 ._Options_g79p9_31 ._Option_g79p9_31._Selected_g79p9_55 {
+._ListBox_5p09x_1 ._Options_5p09x_32 ._Option_5p09x_32._Selected_5p09x_57 {
   background-color: rgba(0, 0, 0, 0.08);
 }
-._ListBox_g79p9_1 ._Options_g79p9_31 ._Option_g79p9_31._Selected_g79p9_55 p {
+._ListBox_5p09x_1 ._Options_5p09x_32 ._Option_5p09x_32._Selected_5p09x_57 p {
   color: #969696;
 }
-._ListBox_g79p9_1 ._Options_g79p9_31 ._Option_g79p9_31:not(._ListBox_g79p9_1 ._Options_g79p9_31 ._Option_g79p9_31._Selected_g79p9_55):hover {
+._ListBox_5p09x_1 ._Options_5p09x_32 ._Option_5p09x_32:not(._ListBox_5p09x_1 ._Options_5p09x_32 ._Option_5p09x_32._Selected_5p09x_57):hover {
   background-color: rgba(0, 0, 0, 0.03);
   cursor: pointer;
 }
-._ListBox_g79p9_1 ._Options_g79p9_31._View_g79p9_65 {
+._ListBox_5p09x_1 ._Options_5p09x_32._View_5p09x_67 {
   display: block;
 }
 ._InputBox_1a5to_1 {
@@ -7552,13 +7553,13 @@ img {
       }, []);
       return null;
     };
-    const SettingTemplate$1 = "_SettingTemplate_1esbo_1";
-    const View$3 = "_View_1esbo_18";
-    const Header = "_Header_1esbo_21";
-    const Title = "_Title_1esbo_32";
-    const Menus$1 = "_Menus_1esbo_35";
-    const Menu$1 = "_Menu_1esbo_35";
-    const Content = "_Content_1esbo_56";
+    const SettingTemplate$1 = "_SettingTemplate_1q4mo_1";
+    const View$3 = "_View_1q4mo_18";
+    const Header = "_Header_1q4mo_21";
+    const Title = "_Title_1q4mo_32";
+    const Menus$1 = "_Menus_1q4mo_36";
+    const Menu$1 = "_Menu_1q4mo_36";
+    const Content = "_Content_1q4mo_57";
     const styles$7 = {
       SettingTemplate: SettingTemplate$1,
       View: View$3,
@@ -7666,11 +7667,11 @@ img {
       };
       return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$6.ToggleButton, enable ? styles$6.Enable : false), onClick: handleToggle, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Circle }) });
     };
-    const Setting$1 = "_Setting_1369u_1";
-    const Menus = "_Menus_1369u_4";
-    const Menu = "_Menu_1369u_4";
-    const Name = "_Name_1369u_14";
-    const Value = "_Value_1369u_21";
+    const Setting$1 = "_Setting_bt7mm_1";
+    const Menus = "_Menus_bt7mm_4";
+    const Menu = "_Menu_bt7mm_4";
+    const Name = "_Name_bt7mm_14";
+    const Value = "_Value_bt7mm_22";
     const styles$5 = {
       Setting: Setting$1,
       Menus,
@@ -7678,12 +7679,12 @@ img {
       Name,
       Value
     };
-    const ListBox$1 = "_ListBox_g79p9_1";
-    const ListValue = "_ListValue_g79p9_4";
-    const Options = "_Options_g79p9_31";
-    const Option = "_Option_g79p9_31";
-    const Selected = "_Selected_g79p9_55";
-    const View$2 = "_View_g79p9_65";
+    const ListBox$1 = "_ListBox_5p09x_1";
+    const ListValue = "_ListValue_5p09x_4";
+    const Options = "_Options_5p09x_32";
+    const Option = "_Option_5p09x_32";
+    const Selected = "_Selected_5p09x_57";
+    const View$2 = "_View_5p09x_67";
     const styles$4 = {
       ListBox: ListBox$1,
       ListValue,

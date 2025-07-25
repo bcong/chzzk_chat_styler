@@ -10,10 +10,10 @@
     z-index: 10001;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 12px;
-    border: 1px solid rgba(117, 123, 138, .2);
+    border: 1px solid rgba(117, 123, 138, 0.2);
     flex-direction: column;
     overflow: auto;
-    font-family: "Pretendard";
+    font-family: 'Pretendard';
 
     &.View {
         display: flex;
@@ -26,12 +26,13 @@
         height: 34px;
         flex-direction: row;
         position: relative;
-        border-bottom: 1px solid rgba(117, 123, 138, .1);
+        border-bottom: 1px solid rgba(117, 123, 138, 0.1);
         background-color: rgba(0, 0, 0, 0.02);
         padding-left: 12px;
 
         .Title {
             p {
+                color: #000;
                 font-size: 14px;
             }
         }
@@ -47,7 +48,7 @@
                 align-items: center;
                 width: 28px;
                 height: 100%;
-                transition-duration: .1s;
+                transition-duration: 0.1s;
 
                 svg {
                     width: 60%;
@@ -86,6 +87,5 @@
             background-clip: padding-box !important;
             border: 3px solid transparent !important;
         }
-
     }
 }
