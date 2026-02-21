@@ -47,11 +47,6 @@ const SettingMenuComponent: React.FC<I_PROPS> = ({ toggleSetting }) => {
         const observerCallback = (mutationsList: MutationRecord[]) => {
             for (const mutation of mutationsList) {
                 if (mutation.type == 'childList') {
-                    mutation.addedNodes.forEach((node) => {
-                        if (node.nodeType == 1 && (node as Element).classList.contains('toolbar_container__k2trF')) {
-                            checkAndInsertElement();
-                        }
-                    });
                     mutation.removedNodes.forEach((node) => {
                         if (node.nodeType == 1 && (node as Element).id === id) {
                             checkAndInsertElement();
