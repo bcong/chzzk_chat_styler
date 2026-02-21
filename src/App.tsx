@@ -26,11 +26,13 @@ const App = () => {
     }, []);
 
     return (
-        isInit && <>
-            <SettingMenu isSetting={isSetting} toggleSetting={toggleSetting} />
-            <SettingTemplate isSetting={isSetting} toggleSetting={toggleSetting} />
-            <ChatTemplate />
-        </>
+        isInit && (
+            <>
+                <SettingMenu isSetting={isSetting} toggleSetting={toggleSetting} />
+                <SettingTemplate isSetting={isSetting} toggleSetting={toggleSetting} />
+                <ChatTemplate />
+            </>
+        )
     );
 };
 

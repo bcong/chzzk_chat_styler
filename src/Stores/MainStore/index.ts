@@ -2,6 +2,14 @@ import { I_CHAT, I_INIT_SETTING, T_SETTING } from "@Types/index";
 import { ChzzkChat } from "chzzk";
 import { makeObservable, observable, action, computed } from "mobx";
 
+// broadcasterId별로 개별 저장하는 키 목록
+export const BROADCASTER_SPECIFIC_KEYS: T_SETTING[] = [
+    'chat_style',
+    'overlay_x',
+    'overlay_y',
+    'frame_chat_position',
+];
+
 export default class MainStore {
     private _initSetting: I_INIT_SETTING[] = [
         {
@@ -148,7 +156,33 @@ export default class MainStore {
     @action
     setSetting = (key: T_SETTING, value: unknown, save: boolean) => {
         this.setting.set(key, value);
-        save && GM_setValue(key, value);
+        if (save) {
+            // 공통 키에도 항상 저장 (마지막 변경값)
+            GM_setValue(key, value);
+            // 브로드캐스터별 키면 개별 저장도 수행
+            if (BROADCASTER_SPECIFIC_KEYS.includes(key) && this._pathName) {
+                GM_setValue(`${key}_${this._pathName}`, value);
+            }
+        }
+    };
+
+    @action
+    loadBroadcasterSettings = (broadcasterId: string) => {
+        if (!broadcasterId) return;
+        for (const key of BROADCASTER_SPECIFIC_KEYS) {
+            const broadcasterKey = `${key}_${broadcasterId}`;
+            const broadcasterValue = GM_getValue(broadcasterKey, undefined);
+            if (broadcasterValue !== undefined) {
+                // 개별 저장값이 있으면 우선 적용
+                this.setting.set(key, broadcasterValue);
+            } else {
+                // 없으면 공통값으로 폴백
+                const commonValue = GM_getValue(key, undefined);
+                if (commonValue !== undefined) {
+                    this.setting.set(key, commonValue);
+                }
+            }
+        }
     };
 
     @action

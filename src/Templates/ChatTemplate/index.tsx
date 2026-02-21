@@ -42,6 +42,7 @@ const Chat = observer(() => {
             addZIndexToElements();
             if (mainStore.pathName != extractedID) {
                 mainStore.setPathName(extractedID);
+                mainStore.loadBroadcasterSettings(extractedID);
                 connectChat(extractedID);
             }
         } catch (e) {

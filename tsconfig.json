@@ -10,42 +10,18 @@
         "baseUrl": ".", // 나중에 module참조 에러시 사용할 path
         "outDir": "./dist", // 출력 데이터(구조적으로) 쌓이는 경로
         "paths": {
-            "@Assets/*": [
-                "src/Assets/*"
-            ],
-            "@Types/*": [
-                "src/@types/*"
-            ],
-            "@Models/*": [
-                "src/Models/*"
-            ],
-            "@Views/*": [
-                "src/Views/*"
-            ],
-            "@Pages/*": [
-                "src/Pages/*"
-            ],
-            "@Templates/*": [
-                "src/Templates/*"
-            ],
-            "@Utils/*": [
-                "src/Utils/*"
-            ],
-            "@Components/*": [
-                "src/Components/*"
-            ],
-            "@Stores/*": [
-                "src/Stores/*"
-            ],
-            "@Styles/*": [
-                "src/Styles/*"
-            ],
-            "@Widgets/*": [
-                "src/Widgets/*"
-            ],
-            "@Module/*": [
-                "src/Module/*"
-            ],
+            "@Assets/*": ["src/Assets/*"],
+            "@Types/*": ["src/@types/*"],
+            "@Models/*": ["src/Models/*"],
+            "@Views/*": ["src/Views/*"],
+            "@Pages/*": ["src/Pages/*"],
+            "@Templates/*": ["src/Templates/*"],
+            "@Utils/*": ["src/Utils/*"],
+            "@Components/*": ["src/Components/*"],
+            "@Stores/*": ["src/Stores/*"],
+            "@Styles/*": ["src/Styles/*"],
+            "@Widgets/*": ["src/Widgets/*"],
+            "@Module/*": ["src/Module/*"]
         },
         ////////// log //////////
         "listFiles": false, // 컴파일 부분에서 생성된 파일의 이름을 로깅함.
@@ -75,16 +51,12 @@
         "newLine": "lf", // new line(\n)의 형태
         "removeComments": true, // 컴파일 결과에 코멘트 삭제
         ////////// more spec //////////
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "ESNext"
-        ], // 컴파일 과정에서 포함될 라이브러리
+        "lib": ["dom", "dom.iterable", "ESNext"], // 컴파일 과정에서 포함될 라이브러리
         ////////// optimization //////////
         "importHelpers": true, // tslib의 helper사용
         ////////// sourceMap //////////
         "inlineSourceMap": false, // sourcemap을 하나만 사용
-        "sourceMap": true, // inspector에서 
+        "sourceMap": true, // inspector에서
         ////////// etc //////////
         "skipLibCheck": true, // .d.ts파일에 대한 타입체크 스킵
         "forceConsistentCasingInFileNames": true, // 파일 참조시 대소문자 구분 철저히 함.
@@ -93,20 +65,10 @@
         // 데코 레이터 기능 활성화
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "types": [
-            "vite-plugin-svgr/client",
-            "@types/tampermonkey"
-        ],
-        "typeRoots": [
-            "./node_modules/@types",
-            "./src/@types"
-        ],
+        "types": ["vite-plugin-svgr/client", "@types/tampermonkey"],
+        "typeRoots": ["./node_modules/@types", "./src/@types"]
     },
-    "include": [
-        "src",
-        "svg.d.ts",
-        "vite-env.d.ts"
-    ],
+    "include": ["src", "svg.d.ts", "vite-env.d.ts"],
     "references": [
         {
             "path": "./tsconfig.node.json"
