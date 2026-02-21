@@ -2,13 +2,9 @@ import React, { useEffect } from 'react';
 import styles from './style.module.less';
 import { I_GLOBAL_PROPS } from '@Types/index';
 
-interface I_PROPS extends I_GLOBAL_PROPS {
+interface I_PROPS extends I_GLOBAL_PROPS {}
 
-}
-
-const SettingMenuComponent: React.FC<I_PROPS> = ({
-    toggleSetting
-}) => {
+const SettingMenuComponent: React.FC<I_PROPS> = ({ toggleSetting }) => {
     const id = 'chatStylerSetting';
 
     const checkAndInsertElement = () => {
@@ -21,8 +17,7 @@ const SettingMenuComponent: React.FC<I_PROPS> = ({
 
         const existingItem = document.getElementById(id);
 
-        if (existingItem)
-            existingItem?.remove();
+        if (existingItem) existingItem?.remove();
 
         const newDivElement = document.createElement('div');
         newDivElement.id = id;
@@ -51,9 +46,21 @@ const SettingMenuComponent: React.FC<I_PROPS> = ({
 
         const observerCallback = (mutationsList: MutationRecord[]) => {
             for (const mutation of mutationsList) {
-                if (mutation.type == "childList") {
+                if (mutation.type == 'childList') {
                     mutation.addedNodes.forEach((node) => {
-                        if (node.nodeType == 1 && (node as Element).classList.contains("toolbar_container__k2trF")) {
+                        if (node.nodeType !== 1) return;
+                        const el = node as Element;
+                        // toolbar 컨테이너 또는 toolbar section이 새로 생성될 때 (전체화면 전환 등)
+                        if (
+                            el.classList.contains('toolbar_container__k2trF') ||
+                            el.className?.toString().startsWith('toolbar_section__') ||
+                            el.querySelector?.("div[class^='toolbar_section__']")
+                        ) {
+                            checkAndInsertElement();
+                        }
+                    });
+                    mutation.removedNodes.forEach((node) => {
+                        if (node.nodeType == 1 && (node as Element).id === id) {
                             checkAndInsertElement();
                         }
                     });

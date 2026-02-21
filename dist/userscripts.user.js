@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260222045459
+// @version      20260222050701
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -7499,9 +7499,7 @@ img {
     const styles$8 = {
       SettingMenu
     };
-    const SettingMenuComponent = ({
-      toggleSetting
-    }) => {
+    const SettingMenuComponent = ({ toggleSetting }) => {
       const id2 = "chatStylerSetting";
       const checkAndInsertElement = () => {
         const serviceUtilElement = document.querySelector("div[class^='toolbar_section__']");
@@ -7510,8 +7508,7 @@ img {
           return;
         }
         const existingItem = document.getElementById(id2);
-        if (existingItem)
-          existingItem == null ? void 0 : existingItem.remove();
+        if (existingItem) existingItem == null ? void 0 : existingItem.remove();
         const newDivElement = document.createElement("div");
         newDivElement.id = id2;
         newDivElement.className = styles$8.SettingMenu;
@@ -7533,7 +7530,15 @@ img {
           for (const mutation of mutationsList) {
             if (mutation.type == "childList") {
               mutation.addedNodes.forEach((node) => {
-                if (node.nodeType == 1 && node.classList.contains("toolbar_container__k2trF")) {
+                var _a2, _b2;
+                if (node.nodeType !== 1) return;
+                const el2 = node;
+                if (el2.classList.contains("toolbar_container__k2trF") || ((_a2 = el2.className) == null ? void 0 : _a2.toString().startsWith("toolbar_section__")) || ((_b2 = el2.querySelector) == null ? void 0 : _b2.call(el2, "div[class^='toolbar_section__']"))) {
+                  checkAndInsertElement();
+                }
+              });
+              mutation.removedNodes.forEach((node) => {
+                if (node.nodeType == 1 && node.id === id2) {
                   checkAndInsertElement();
                 }
               });
