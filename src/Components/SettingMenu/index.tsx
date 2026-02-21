@@ -6,6 +6,7 @@ interface I_PROPS extends I_GLOBAL_PROPS {}
 
 const SettingMenuComponent: React.FC<I_PROPS> = ({ toggleSetting }) => {
     const id = 'chatStylerSetting';
+    let selfRemoving = false;
 
     const checkAndInsertElement = () => {
         const serviceUtilElement = document.querySelector("div[class^='toolbar_section__']");
@@ -17,7 +18,11 @@ const SettingMenuComponent: React.FC<I_PROPS> = ({ toggleSetting }) => {
 
         const existingItem = document.getElementById(id);
 
-        if (existingItem) existingItem?.remove();
+        if (existingItem) {
+            selfRemoving = true;
+            existingItem.remove();
+            selfRemoving = false;
+        }
 
         const newDivElement = document.createElement('div');
         newDivElement.id = id;
@@ -48,7 +53,9 @@ const SettingMenuComponent: React.FC<I_PROPS> = ({ toggleSetting }) => {
             for (const mutation of mutationsList) {
                 if (mutation.type == 'childList') {
                     mutation.removedNodes.forEach((node) => {
-                        if (node.nodeType == 1 && (node as Element).id === id) {
+                        if (selfRemoving || node.nodeType !== 1) return;
+                        const el = node as Element;
+                        if (el.id === id || el.querySelector?.(`#${id}`)) {
                             checkAndInsertElement();
                         }
                     });

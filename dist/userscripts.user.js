@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260222051236
+// @version      20260222051435
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -7501,6 +7501,7 @@ img {
     };
     const SettingMenuComponent = ({ toggleSetting }) => {
       const id2 = "chatStylerSetting";
+      let selfRemoving = false;
       const checkAndInsertElement = () => {
         const serviceUtilElement = document.querySelector("div[class^='toolbar_section__']");
         if (!serviceUtilElement) {
@@ -7508,7 +7509,11 @@ img {
           return;
         }
         const existingItem = document.getElementById(id2);
-        if (existingItem) existingItem == null ? void 0 : existingItem.remove();
+        if (existingItem) {
+          selfRemoving = true;
+          existingItem.remove();
+          selfRemoving = false;
+        }
         const newDivElement = document.createElement("div");
         newDivElement.id = id2;
         newDivElement.className = styles$8.SettingMenu;
@@ -7530,7 +7535,10 @@ img {
           for (const mutation of mutationsList) {
             if (mutation.type == "childList") {
               mutation.removedNodes.forEach((node) => {
-                if (node.nodeType == 1 && node.id === id2) {
+                var _a2;
+                if (selfRemoving || node.nodeType !== 1) return;
+                const el2 = node;
+                if (el2.id === id2 || ((_a2 = el2.querySelector) == null ? void 0 : _a2.call(el2, `#${id2}`))) {
                   checkAndInsertElement();
                 }
               });
