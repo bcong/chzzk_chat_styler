@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260222051435
+// @version      20260222051646
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -7499,60 +7499,60 @@ img {
     const styles$8 = {
       SettingMenu
     };
+    const TOOLBAR_SELECTOR = "div[class^='toolbar_section__']";
     const SettingMenuComponent = ({ toggleSetting }) => {
       const id2 = "chatStylerSetting";
-      let selfRemoving = false;
-      const checkAndInsertElement = () => {
-        const serviceUtilElement = document.querySelector("div[class^='toolbar_section__']");
-        if (!serviceUtilElement) {
-          setTimeout(checkAndInsertElement, 1e3);
-          return;
+      const selfRemoving = reactExports.useRef(false);
+      const insertElement = (toolbar) => {
+        const existing = document.getElementById(id2);
+        if (existing) {
+          selfRemoving.current = true;
+          existing.remove();
+          selfRemoving.current = false;
         }
-        const existingItem = document.getElementById(id2);
-        if (existingItem) {
-          selfRemoving = true;
-          existingItem.remove();
-          selfRemoving = false;
-        }
-        const newDivElement = document.createElement("div");
-        newDivElement.id = id2;
-        newDivElement.className = styles$8.SettingMenu;
-        const buttonElement = document.createElement("button");
-        buttonElement.setAttribute("tip", "채팅 스타일러 설정");
-        const spanElement = document.createElement("p");
-        spanElement.textContent = "S";
-        buttonElement.appendChild(spanElement);
-        newDivElement.appendChild(buttonElement);
-        serviceUtilElement.insertBefore(newDivElement, serviceUtilElement == null ? void 0 : serviceUtilElement.firstChild);
-        newDivElement.addEventListener("click", toggleSetting);
-        return () => {
-          newDivElement.removeEventListener("click", toggleSetting);
-        };
+        const wrapper = document.createElement("div");
+        wrapper.id = id2;
+        wrapper.className = styles$8.SettingMenu;
+        const button = document.createElement("button");
+        button.setAttribute("tip", "채팅 스타일러 설정");
+        const label = document.createElement("p");
+        label.textContent = "S";
+        button.appendChild(label);
+        wrapper.appendChild(button);
+        toolbar.insertBefore(wrapper, toolbar.firstChild);
+        wrapper.addEventListener("click", toggleSetting);
+      };
+      const tryInsert = () => {
+        const toolbar = document.querySelector(TOOLBAR_SELECTOR);
+        if (toolbar) insertElement(toolbar);
       };
       reactExports.useEffect(() => {
-        checkAndInsertElement();
-        const observerCallback = (mutationsList) => {
-          for (const mutation of mutationsList) {
-            if (mutation.type == "childList") {
-              mutation.removedNodes.forEach((node) => {
-                var _a2;
-                if (selfRemoving || node.nodeType !== 1) return;
+        tryInsert();
+        const observer2 = new MutationObserver((mutations) => {
+          for (const mutation of mutations) {
+            if (mutation.type !== "childList") continue;
+            for (const node of mutation.addedNodes) {
+              if (node.nodeType !== 1) continue;
+              const el2 = node;
+              if (el2.matches(TOOLBAR_SELECTOR) || el2.querySelector(TOOLBAR_SELECTOR)) {
+                tryInsert();
+                break;
+              }
+            }
+            if (!selfRemoving.current) {
+              for (const node of mutation.removedNodes) {
+                if (node.nodeType !== 1) continue;
                 const el2 = node;
-                if (el2.id === id2 || ((_a2 = el2.querySelector) == null ? void 0 : _a2.call(el2, `#${id2}`))) {
-                  checkAndInsertElement();
+                if (el2.id === id2 || el2.querySelector(`#${id2}`)) {
+                  tryInsert();
+                  break;
                 }
-              });
+              }
             }
           }
-        };
-        const observer2 = new MutationObserver(observerCallback);
-        observer2.observe(document.body, {
-          childList: true,
-          subtree: true
         });
-        return () => {
-          observer2.disconnect();
-        };
+        observer2.observe(document.body, { childList: true, subtree: true });
+        return () => observer2.disconnect();
       }, []);
       return null;
     };
