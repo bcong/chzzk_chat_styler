@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260222050701
+// @version      20260222050932
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -7530,10 +7530,7 @@ img {
           for (const mutation of mutationsList) {
             if (mutation.type == "childList") {
               mutation.addedNodes.forEach((node) => {
-                var _a2, _b2;
-                if (node.nodeType !== 1) return;
-                const el2 = node;
-                if (el2.classList.contains("toolbar_container__k2trF") || ((_a2 = el2.className) == null ? void 0 : _a2.toString().startsWith("toolbar_section__")) || ((_b2 = el2.querySelector) == null ? void 0 : _b2.call(el2, "div[class^='toolbar_section__']"))) {
+                if (node.nodeType == 1 && node.classList.contains("toolbar_container__k2trF")) {
                   checkAndInsertElement();
                 }
               });
