@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260612145115
+// @version      20260612145748
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13147,18 +13147,22 @@ img {
           const foldButton = document.querySelector("button[aria-label='채팅 접기']");
           if (foldButton && !foldButton.dataset.stylerBound) {
             foldButton.dataset.stylerBound = "1";
-            foldButton.addEventListener("click", () => {
+            foldButton.addEventListener("click", (e) => {
+              e.stopPropagation();
+              e.preventDefault();
               mainStore.setSetting("defalut_chat_enable", false, true);
-            });
+            }, { capture: true });
           }
           const showButtons = document.querySelectorAll("button[class^='live_information_player_folded_button__']");
           showButtons.forEach((btn) => {
             const button = btn;
             if (!button.dataset.stylerBound) {
               button.dataset.stylerBound = "1";
-              button.addEventListener("click", () => {
+              button.addEventListener("click", (e) => {
+                e.stopPropagation();
+                e.preventDefault();
                 mainStore.setSetting("defalut_chat_enable", true, true);
-              });
+              }, { capture: true });
             }
           });
           const newPathname = window.location.pathname;

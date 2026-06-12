@@ -23,9 +23,15 @@ const Chat = observer(() => {
             const foldButton = document.querySelector("button[aria-label='채팅 접기']") as HTMLButtonElement | null;
             if (foldButton && !foldButton.dataset.stylerBound) {
                 foldButton.dataset.stylerBound = '1';
-                foldButton.addEventListener('click', () => {
-                    mainStore.setSetting('defalut_chat_enable', false, true);
-                });
+                foldButton.addEventListener(
+                    'click',
+                    (e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        mainStore.setSetting('defalut_chat_enable', false, true);
+                    },
+                    { capture: true },
+                );
             }
 
             const showButtons = document.querySelectorAll("button[class^='live_information_player_folded_button__']");
@@ -33,9 +39,15 @@ const Chat = observer(() => {
                 const button = btn as HTMLButtonElement;
                 if (!button.dataset.stylerBound) {
                     button.dataset.stylerBound = '1';
-                    button.addEventListener('click', () => {
-                        mainStore.setSetting('defalut_chat_enable', true, true);
-                    });
+                    button.addEventListener(
+                        'click',
+                        (e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            mainStore.setSetting('defalut_chat_enable', true, true);
+                        },
+                        { capture: true },
+                    );
                 }
             });
 
