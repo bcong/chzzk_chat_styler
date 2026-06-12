@@ -14,12 +14,12 @@ const Setting = observer(() => {
     const opitons: I_OPTION[] = [
         {
             key: 0,
-            name: '오버레이'
+            name: '오버레이',
         },
         {
             key: 1,
-            name: '프레임'
-        }
+            name: '프레임',
+        },
     ];
 
     const frameChatPositionOpitons: I_OPTION[] = [
@@ -48,29 +48,29 @@ const Setting = observer(() => {
                 {
                     type: 'toggle',
                     value: mainStore.setting.get('enable'),
-                    cb: (value: unknown) => mainStore.setSetting('enable', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('enable', value, true),
+                },
+            ],
         },
-        // {
-        //     name: '기존 채팅 표시',
-        //     values: [
-        //         {
-        //             type: 'toggle',
-        //             value: mainStore.setting.get('defalut_chat_enable'),
-        //             cb: (value: unknown) => mainStore.setSetting('defalut_chat_enable', value, true)
-        //         }
-        //     ]
-        // },
+        {
+            name: '기존 채팅 표시',
+            values: [
+                {
+                    type: 'toggle',
+                    value: mainStore.setting.get('defalut_chat_enable'),
+                    cb: (value: unknown) => mainStore.setSetting('defalut_chat_enable', value, true),
+                },
+            ],
+        },
         {
             name: '닉네임 표시',
             values: [
                 {
                     type: 'toggle',
                     value: mainStore.setting.get('show_nicknames'),
-                    cb: (value: unknown) => mainStore.setSetting('show_nicknames', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('show_nicknames', value, true),
+                },
+            ],
         },
         {
             name: '채팅창 스타일',
@@ -79,9 +79,9 @@ const Setting = observer(() => {
                     type: 'list',
                     value: mainStore.setting.get('chat_style'),
                     options: opitons,
-                    cb: (value: unknown) => mainStore.setSetting('chat_style', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('chat_style', value, true),
+                },
+            ],
         },
 
         // 오버레이
@@ -94,9 +94,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('overlay_view_count'),
                     min: 1,
                     max: mainStore.maxChats,
-                    cb: (value: unknown) => mainStore.setSetting('overlay_view_count', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('overlay_view_count', value, true),
+                },
+            ],
         },
         {
             name: '채팅 길이',
@@ -107,9 +107,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('overlay_view_width'),
                     min: 100,
                     max: 500,
-                    cb: (value: unknown) => mainStore.setSetting('overlay_view_width', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('overlay_view_width', value, true),
+                },
+            ],
         },
         {
             name: '폰트 크기',
@@ -120,9 +120,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('overlay_font_size'),
                     min: 10,
                     max: 28,
-                    cb: (value: unknown) => mainStore.setSetting('overlay_font_size', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('overlay_font_size', value, true),
+                },
+            ],
         },
         {
             name: '닉네임 랜덤 색상',
@@ -131,9 +131,9 @@ const Setting = observer(() => {
                 {
                     type: 'toggle',
                     value: mainStore.setting.get('overlay_random_username'),
-                    cb: (value: unknown) => mainStore.setSetting('overlay_random_username', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('overlay_random_username', value, true),
+                },
+            ],
         },
         {
             name: '채팅 메시지 정렬',
@@ -142,9 +142,9 @@ const Setting = observer(() => {
                 {
                     type: 'toggle',
                     value: mainStore.setting.get('overlay_sort_chat_messages'),
-                    cb: (value: unknown) => mainStore.setSetting('overlay_sort_chat_messages', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('overlay_sort_chat_messages', value, true),
+                },
+            ],
         },
         {
             name: '채팅 배경 표시',
@@ -153,9 +153,9 @@ const Setting = observer(() => {
                 {
                     type: 'toggle',
                     value: mainStore.setting.get('overlay_chat_background'),
-                    cb: (value: unknown) => mainStore.setSetting('overlay_chat_background', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('overlay_chat_background', value, true),
+                },
+            ],
         },
         {
             name: '채팅 배경 투명도',
@@ -166,9 +166,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('overlay_chat_opacity'),
                     min: 0,
                     max: 100,
-                    cb: (value: unknown) => mainStore.setSetting('overlay_chat_opacity', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('overlay_chat_opacity', value, true),
+                },
+            ],
         },
         {
             name: '배경 표시',
@@ -177,9 +177,9 @@ const Setting = observer(() => {
                 {
                     type: 'toggle',
                     value: mainStore.setting.get('overlay_background'),
-                    cb: (value: unknown) => mainStore.setSetting('overlay_background', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('overlay_background', value, true),
+                },
+            ],
         },
         {
             name: '배경 투명도',
@@ -190,9 +190,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('overlay_background_opacity'),
                     min: 0,
                     max: 100,
-                    cb: (value: unknown) => mainStore.setSetting('overlay_background_opacity', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('overlay_background_opacity', value, true),
+                },
+            ],
         },
         {
             name: '배경 영역',
@@ -203,9 +203,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('overlay_background_area'),
                     min: 0,
                     max: 100,
-                    cb: (value: unknown) => mainStore.setSetting('overlay_background_area', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('overlay_background_area', value, true),
+                },
+            ],
         },
 
         // 프레임
@@ -217,9 +217,9 @@ const Setting = observer(() => {
                     type: 'list',
                     value: mainStore.setting.get('frame_chat_position'),
                     options: frameChatPositionOpitons,
-                    cb: (value: unknown) => mainStore.setSetting('frame_chat_position', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_chat_position', value, true),
+                },
+            ],
         },
         {
             name: '채팅 표시 개수',
@@ -230,9 +230,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('frame_view_count'),
                     min: 1,
                     max: mainStore.maxChats,
-                    cb: (value: unknown) => mainStore.setSetting('frame_view_count', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_view_count', value, true),
+                },
+            ],
         },
         {
             name: '채팅 길이',
@@ -243,9 +243,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('frame_view_width'),
                     min: 100,
                     max: 500,
-                    cb: (value: unknown) => mainStore.setSetting('frame_view_width', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_view_width', value, true),
+                },
+            ],
         },
         {
             name: '폰트 크기',
@@ -256,9 +256,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('frame_font_size'),
                     min: 10,
                     max: 28,
-                    cb: (value: unknown) => mainStore.setSetting('frame_font_size', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_font_size', value, true),
+                },
+            ],
         },
         {
             name: '채팅 오프셋 X축',
@@ -269,9 +269,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('frame_offset_x'),
                     min: 0,
                     max: 50,
-                    cb: (value: unknown) => mainStore.setSetting('frame_offset_x', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_offset_x', value, true),
+                },
+            ],
         },
         {
             name: '채팅 오프셋 Y축',
@@ -282,9 +282,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('frame_offset_y'),
                     min: 0,
                     max: 50,
-                    cb: (value: unknown) => mainStore.setSetting('frame_offset_y', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_offset_y', value, true),
+                },
+            ],
         },
         {
             name: '닉네임 랜덤 색상',
@@ -293,9 +293,9 @@ const Setting = observer(() => {
                 {
                     type: 'toggle',
                     value: mainStore.setting.get('frame_random_username'),
-                    cb: (value: unknown) => mainStore.setSetting('frame_random_username', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_random_username', value, true),
+                },
+            ],
         },
         {
             name: '채팅 메시지 정렬',
@@ -304,9 +304,9 @@ const Setting = observer(() => {
                 {
                     type: 'toggle',
                     value: mainStore.setting.get('frame_sort_chat_messages'),
-                    cb: (value: unknown) => mainStore.setSetting('frame_sort_chat_messages', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_sort_chat_messages', value, true),
+                },
+            ],
         },
         {
             name: '채팅 배경 표시',
@@ -315,9 +315,9 @@ const Setting = observer(() => {
                 {
                     type: 'toggle',
                     value: mainStore.setting.get('frame_chat_background'),
-                    cb: (value: unknown) => mainStore.setSetting('frame_chat_background', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_chat_background', value, true),
+                },
+            ],
         },
         {
             name: '채팅 배경 투명도',
@@ -328,9 +328,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('frame_chat_opacity'),
                     min: 0,
                     max: 100,
-                    cb: (value: unknown) => mainStore.setSetting('frame_chat_opacity', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_chat_opacity', value, true),
+                },
+            ],
         },
         {
             name: '배경 표시',
@@ -339,9 +339,9 @@ const Setting = observer(() => {
                 {
                     type: 'toggle',
                     value: mainStore.setting.get('frame_background'),
-                    cb: (value: unknown) => mainStore.setSetting('frame_background', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_background', value, true),
+                },
+            ],
         },
         {
             name: '배경 투명도',
@@ -352,9 +352,9 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('frame_background_opacity'),
                     min: 0,
                     max: 100,
-                    cb: (value: unknown) => mainStore.setSetting('frame_background_opacity', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_background_opacity', value, true),
+                },
+            ],
         },
         {
             name: '배경 영역',
@@ -365,16 +365,15 @@ const Setting = observer(() => {
                     value: mainStore.setting.get('frame_background_area'),
                     min: 0,
                     max: 100,
-                    cb: (value: unknown) => mainStore.setSetting('frame_background_area', value, true)
-                }
-            ]
+                    cb: (value: unknown) => mainStore.setSetting('frame_background_area', value, true),
+                },
+            ],
         },
     ];
 
     const settingListElem = settingList.map(({ name, disable, values }, idx) => {
         if (disable) return;
         const valueElem = values.map(({ type, value, options, inputType, min, max, cb }, idx) => {
-
             let contentElem;
             switch (type) {
                 case 'toggle':
@@ -392,20 +391,16 @@ const Setting = observer(() => {
             }
 
             return (
-
                 <div key={idx} className={styles.Value}>
                     {contentElem}
                 </div>
-
             );
         });
 
         return (
             <div key={idx} className={styles.Menu}>
                 <div className={styles.Name}>
-                    <p>
-                        {name}
-                    </p>
+                    <p>{name}</p>
                 </div>
                 {valueElem}
             </div>
@@ -414,9 +409,7 @@ const Setting = observer(() => {
 
     return (
         <div className={styles.Setting}>
-            <div className={styles.Menus}>
-                {settingListElem}
-            </div>
+            <div className={styles.Menus}>{settingListElem}</div>
         </div>
     );
 });

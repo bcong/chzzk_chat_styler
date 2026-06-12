@@ -7,7 +7,7 @@ export const sleep = async (ms: number) => {
 };
 
 export const classes = (...classes: (string | false | null)[]): string => {
-    return classes.filter(Boolean).join(" ");
+    return classes.filter(Boolean).join(' ');
 };
 
 export const deepCopy = <T>(obj: T): T => {
@@ -16,7 +16,7 @@ export const deepCopy = <T>(obj: T): T => {
     }
 
     if (Array.isArray(obj)) {
-        return obj.map(item => deepCopy(item)) as T;
+        return obj.map((item) => deepCopy(item)) as T;
     }
 
     const newObj = {} as T;
@@ -30,27 +30,23 @@ export const deepCopy = <T>(obj: T): T => {
 };
 
 export function log(...args: any[]): void {
-    console.log(
-        "%cUserscript (React Mode):",
-        "color: purple; font-weight: bold",
-        ...args
-    );
+    console.log('%cUserscript (React Mode):', 'color: purple; font-weight: bold', ...args);
 }
 
 export function logFetch(arg: string | URL): Promise<Response> {
     const url = new URL(arg, window.location.href);
-    log("fetching", url.toString());
-    return fetch(url.toString(), { credentials: "include" });
+    log('fetching', url.toString());
+    return fetch(url.toString(), { credentials: 'include' });
 }
 
 export function addLocationChangeCallback(callback: () => void): MutationObserver {
     window.setTimeout(callback, 0);
 
     let oldHref = window.location.href;
-    const body = document.querySelector("body");
+    const body = document.querySelector('body');
 
     if (!body) {
-        throw new Error("Body element not found.");
+        throw new Error('Body element not found.');
     }
 
     const observer = new MutationObserver((mutations) => {

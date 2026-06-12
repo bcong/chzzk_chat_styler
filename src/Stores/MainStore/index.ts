@@ -1,5 +1,5 @@
-import { I_CHAT, I_INIT_SETTING, T_SETTING } from "@Types/index";
-import { makeObservable, observable, action, computed } from "mobx";
+import { I_CHAT, I_INIT_SETTING, T_SETTING } from '@Types/index';
+import { makeObservable, observable, action, computed } from 'mobx';
 
 export default class MainStore {
     private _initSetting: I_INIT_SETTING[] = [
@@ -27,15 +27,15 @@ export default class MainStore {
         // 오버레이
         {
             key: 'overlay_background_opacity',
-            value: 0
+            value: 0,
         },
         {
             key: 'overlay_chat_opacity',
-            value: 50
+            value: 50,
         },
         {
             key: 'overlay_background_area',
-            value: 0
+            value: 0,
         },
         {
             key: 'overlay_random_username',
@@ -43,7 +43,7 @@ export default class MainStore {
         },
         {
             key: 'overlay_view_width',
-            value: 500
+            value: 500,
         },
         {
             key: 'overlay_sort_chat_messages',
@@ -81,19 +81,19 @@ export default class MainStore {
         },
         {
             key: 'frame_chat_opacity',
-            value: 50
+            value: 50,
         },
         {
             key: 'frame_background_opacity',
-            value: 70
+            value: 70,
         },
         {
             key: 'frame_background_area',
-            value: 0
+            value: 0,
         },
         {
             key: 'frame_view_width',
-            value: 500
+            value: 500,
         },
         {
             key: 'frame_sort_chat_messages',
@@ -114,7 +114,7 @@ export default class MainStore {
         {
             key: 'frame_offset_y',
             value: 14,
-        }
+        },
     ];
 
     @observable
@@ -151,8 +151,7 @@ export default class MainStore {
     addChat = (chat: I_CHAT) => {
         this.chats.push(chat);
 
-        if (this.chats.length >= this.maxChats)
-            this.chats.shift();
+        if (this.chats.length >= this.maxChats) this.chats.shift();
 
         this._chatId++;
     };

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260612141306
+// @version      20260612141449
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -7551,11 +7551,7 @@ img {
       return classes2.filter(Boolean).join(" ");
     };
     function log(...args) {
-      console.log(
-        "%cUserscript (React Mode):",
-        "color: purple; font-weight: bold",
-        ...args
-      );
+      console.log("%cUserscript (React Mode):", "color: purple; font-weight: bold", ...args);
     }
     function addLocationChangeCallback(callback) {
       window.setTimeout(callback, 0);
@@ -11868,8 +11864,7 @@ img {
         });
         __publicField(this, "addChat", (chat) => {
           this.chats.push(chat);
-          if (this.chats.length >= this.maxChats)
-            this.chats.shift();
+          if (this.chats.length >= this.maxChats) this.chats.shift();
           this._chatId++;
         });
         __publicField(this, "lastChat", () => {
@@ -12399,16 +12394,16 @@ img {
             }
           ]
         },
-        // {
-        //     name: '기존 채팅 표시',
-        //     values: [
-        //         {
-        //             type: 'toggle',
-        //             value: mainStore.setting.get('defalut_chat_enable'),
-        //             cb: (value: unknown) => mainStore.setSetting('defalut_chat_enable', value, true)
-        //         }
-        //     ]
-        // },
+        {
+          name: "기존 채팅 표시",
+          values: [
+            {
+              type: "toggle",
+              value: mainStore.setting.get("defalut_chat_enable"),
+              cb: (value) => mainStore.setSetting("defalut_chat_enable", value, true)
+            }
+          ]
+        },
         {
           name: "닉네임 표시",
           values: [
@@ -13147,8 +13142,7 @@ img {
         try {
           const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']");
           if (chatElement) {
-            if (chatElement.scrollHeight)
-              chatElement.scrollTop = chatElement.scrollHeight;
+            if (chatElement.scrollHeight) chatElement.scrollTop = chatElement.scrollHeight;
           }
           const newPathname = window.location.pathname;
           if (pathname != newPathname || chatEnable != defalut_chat_enable) {
@@ -13190,23 +13184,15 @@ img {
       const [isInit, IsInit] = reactExports.useState(false);
       const chatUpdate = reactExports.useRef(null);
       let colorIdx = 0;
-      const colors = [
-        "#f28ca5",
-        "#9dd9a5",
-        "#fff08c",
-        "#a1b1eb",
-        "#fac098",
-        "#c88ed9",
-        "#a2f7f7",
-        "#f798f2",
-        "#ddfa85"
-      ];
+      const colors = ["#f28ca5", "#9dd9a5", "#fff08c", "#a1b1eb", "#fac098", "#c88ed9", "#a2f7f7", "#f798f2", "#ddfa85"];
       const toggleSetting = () => {
         IsSetting((prevIsSetting) => !prevIsSetting);
       };
       const addZIndexToElements = () => {
         const bottomButtonsElement = document.querySelector(".pzp-pc__bottom-buttons");
-        const bottomShadowElement = document.querySelector(".pzp-pc-ui-bottom-shadow.pzp-pc__bottom-shadow");
+        const bottomShadowElement = document.querySelector(
+          ".pzp-pc-ui-bottom-shadow.pzp-pc__bottom-shadow"
+        );
         if (bottomButtonsElement) {
           bottomButtonsElement.style.zIndex = "2";
         }
@@ -13223,8 +13209,12 @@ img {
       };
       const checkViewChat = () => {
         var _a2;
-        const buttonElement = document.querySelector("button[class^='live_information_player_folded_button__']");
-        const fullScreenbuttonElement = document.querySelector("div[class^='live_information_player_control__']");
+        const buttonElement = document.querySelector(
+          "button[class^='live_information_player_folded_button__']"
+        );
+        const fullScreenbuttonElement = document.querySelector(
+          "div[class^='live_information_player_control__']"
+        );
         if (fullScreenbuttonElement) {
           const chatButton = (_a2 = fullScreenbuttonElement == null ? void 0 : fullScreenbuttonElement.children) == null ? void 0 : _a2[0];
           chatButton == null ? void 0 : chatButton.click();
@@ -13238,9 +13228,10 @@ img {
       const updateChatMessages = () => {
         var _a2;
         addZIndexToElements();
-        const closeButton = document.querySelector('div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]');
-        if (closeButton && closeButton.style.display != "none")
-          closeButton.style.display = "none";
+        const closeButton = document.querySelector(
+          'div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]'
+        );
+        if (closeButton && closeButton.style.display != "none") closeButton.style.display = "none";
         const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
         const chatArea = chatAreaElements[chatAreaElements.length - 1];
         if (!chatArea) return;
@@ -13250,7 +13241,9 @@ img {
         const lastChat = mainStore.lastChat();
         recentChats == null ? void 0 : recentChats.forEach((chat) => {
           var _a3;
-          const usernameElement = chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
+          const usernameElement = chat.querySelector(
+            '[class*="live_chatting_username_nickname"] [class*="name_text"]'
+          );
           const username = (usernameElement == null ? void 0 : usernameElement.textContent) || null;
           const messageElement = chat.querySelector('[class*="live_chatting_message_text"]');
           if (!username || !messageElement) return;

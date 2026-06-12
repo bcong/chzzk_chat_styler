@@ -12,17 +12,7 @@ const App = () => {
     const chatUpdate = useRef<number | null>(null);
     let colorIdx = 0;
 
-    const colors = [
-        '#f28ca5',
-        '#9dd9a5',
-        '#fff08c',
-        '#a1b1eb',
-        '#fac098',
-        '#c88ed9',
-        '#a2f7f7',
-        '#f798f2',
-        '#ddfa85',
-    ];
+    const colors = ['#f28ca5', '#9dd9a5', '#fff08c', '#a1b1eb', '#fac098', '#c88ed9', '#a2f7f7', '#f798f2', '#ddfa85'];
 
     const toggleSetting = () => {
         IsSetting((prevIsSetting) => !prevIsSetting);
@@ -30,7 +20,9 @@ const App = () => {
 
     const addZIndexToElements = () => {
         const bottomButtonsElement = document.querySelector('.pzp-pc__bottom-buttons') as HTMLElement | null;
-        const bottomShadowElement = document.querySelector('.pzp-pc-ui-bottom-shadow.pzp-pc__bottom-shadow') as HTMLElement | null;
+        const bottomShadowElement = document.querySelector(
+            '.pzp-pc-ui-bottom-shadow.pzp-pc__bottom-shadow',
+        ) as HTMLElement | null;
 
         if (bottomButtonsElement) {
             bottomButtonsElement.style.zIndex = '2';
@@ -50,8 +42,12 @@ const App = () => {
     };
 
     const checkViewChat = () => {
-        const buttonElement = document.querySelector("button[class^='live_information_player_folded_button__']") as HTMLButtonElement;
-        const fullScreenbuttonElement = document.querySelector("div[class^='live_information_player_control__']") as HTMLButtonElement;
+        const buttonElement = document.querySelector(
+            "button[class^='live_information_player_folded_button__']",
+        ) as HTMLButtonElement;
+        const fullScreenbuttonElement = document.querySelector(
+            "div[class^='live_information_player_control__']",
+        ) as HTMLButtonElement;
 
         if (fullScreenbuttonElement) {
             const chatButton = fullScreenbuttonElement?.children?.[0] as HTMLButtonElement;
@@ -67,10 +63,11 @@ const App = () => {
 
     const updateChatMessages = () => {
         addZIndexToElements();
-        const closeButton = document.querySelector('div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]') as HTMLElement | null;
+        const closeButton = document.querySelector(
+            'div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]',
+        ) as HTMLElement | null;
 
-        if (closeButton && closeButton.style.display != 'none')
-            closeButton.style.display = 'none';
+        if (closeButton && closeButton.style.display != 'none') closeButton.style.display = 'none';
 
         const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
         const chatArea = chatAreaElements[chatAreaElements.length - 1];
@@ -84,8 +81,10 @@ const App = () => {
 
         const lastChat = mainStore.lastChat();
 
-        recentChats?.forEach(chat => {
-            const usernameElement = chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
+        recentChats?.forEach((chat) => {
+            const usernameElement = chat.querySelector(
+                '[class*="live_chatting_username_nickname"] [class*="name_text"]',
+            );
             const username = usernameElement?.textContent || null;
             const messageElement = chat.querySelector('[class*="live_chatting_message_text"]');
 
@@ -117,7 +116,7 @@ const App = () => {
                 });
 
                 mainStore.addChat({ id, username, contentArray, color: colors[colorIdx] });
-                colorIdx == colors.length - 1 ? colorIdx = 0 : colorIdx++;
+                colorIdx == colors.length - 1 ? (colorIdx = 0) : colorIdx++;
             }
         });
     };
@@ -137,11 +136,13 @@ const App = () => {
     }, []);
 
     return (
-        isInit && <>
-            <SettingMenu isSetting={isSetting} toggleSetting={toggleSetting} />
-            <SettingTemplate isSetting={isSetting} toggleSetting={toggleSetting} />
-            <ChatTemplate />
-        </>
+        isInit && (
+            <>
+                <SettingMenu isSetting={isSetting} toggleSetting={toggleSetting} />
+                <SettingTemplate isSetting={isSetting} toggleSetting={toggleSetting} />
+                <ChatTemplate />
+            </>
+        )
     );
 };
 

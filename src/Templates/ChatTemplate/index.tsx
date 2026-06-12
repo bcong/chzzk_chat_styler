@@ -1,8 +1,8 @@
-import FrameChat from "@Components/FrameChat";
-import OverlayChat from "@Components/OverlayChat";
-import { useMainStore } from "@Stores/index";
-import { observer } from "mobx-react-lite";
-import { useEffect, useRef, useState } from "react";
+import FrameChat from '@Components/FrameChat';
+import OverlayChat from '@Components/OverlayChat';
+import { useMainStore } from '@Stores/index';
+import { observer } from 'mobx-react-lite';
+import { useEffect, useRef, useState } from 'react';
 
 const Chat = observer(() => {
     const mainStore = useMainStore();
@@ -17,8 +17,7 @@ const Chat = observer(() => {
         try {
             const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']") as HTMLElement;
             if (chatElement) {
-                if (chatElement.scrollHeight)
-                    chatElement.scrollTop = chatElement.scrollHeight;
+                if (chatElement.scrollHeight) chatElement.scrollTop = chatElement.scrollHeight;
             }
 
             const newPathname = window.location.pathname;
@@ -58,9 +57,7 @@ const Chat = observer(() => {
             break;
     }
 
-    return (
-        enable && chatElem
-    );
+    return enable && chatElem;
 });
 
 export default Chat;
