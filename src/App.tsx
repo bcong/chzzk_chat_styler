@@ -41,26 +41,6 @@ const App = () => {
         IsInit(true);
     };
 
-    const checkViewChat = () => {
-        const buttonElement = document.querySelector(
-            "button[class^='live_information_player_folded_button__']",
-        ) as HTMLButtonElement;
-        const fullScreenbuttonElement = document.querySelector(
-            "div[class^='live_information_player_control__']",
-        ) as HTMLButtonElement;
-
-        if (fullScreenbuttonElement) {
-            const chatButton = fullScreenbuttonElement?.children?.[0] as HTMLButtonElement;
-            chatButton?.click();
-        }
-
-        if (buttonElement) {
-            if (buttonElement?.textContent == '채팅') {
-                buttonElement?.click();
-            }
-        }
-    };
-
     const updateChatMessages = () => {
         addZIndexToElements();
 
@@ -118,11 +98,9 @@ const App = () => {
 
     useEffect(() => {
         initSetting();
-        checkViewChat();
 
         chatUpdate.current = setInterval(() => {
             updateChatMessages();
-            checkViewChat();
         }, 500);
 
         return () => {

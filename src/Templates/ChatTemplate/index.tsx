@@ -10,18 +10,8 @@ const Chat = observer(() => {
     const chat_style = mainStore.setting.get('chat_style');
     const defalut_chat_enable = mainStore.setting.get('defalut_chat_enable');
     const chatUpdate = useRef<number | null>(null);
-    const foldButtonRef = useRef<HTMLButtonElement | null>(null);
     const [pathname, setPathname] = useState('');
     const [chatEnable, setChatEnable] = useState(null);
-
-    const syncFoldButton = () => {
-        const foldButton = document.querySelector("button[aria-label='채팅 접기']") as HTMLButtonElement | null;
-        if (!foldButton || foldButtonRef.current === foldButton) return;
-        foldButtonRef.current = foldButton;
-        foldButton.addEventListener('click', () => {
-            mainStore.setSetting('defalut_chat_enable', false, true);
-        });
-    };
 
     const checkEnableChat = () => {
         try {
@@ -32,13 +22,6 @@ const Chat = observer(() => {
 
             const newPathname = window.location.pathname;
             const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
-
-            if (defalut_chat_enable && sideElement && sideElement.offsetWidth === 0) {
-                mainStore.setSetting('defalut_chat_enable', false, true);
-                return;
-            }
-
-            syncFoldButton();
 
             if (pathname != newPathname || chatEnable != defalut_chat_enable) {
                 if (sideElement && sideElement.style) {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260612143135
+// @version      20260612144131
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13136,17 +13136,8 @@ img {
       const chat_style = mainStore.setting.get("chat_style");
       const defalut_chat_enable = mainStore.setting.get("defalut_chat_enable");
       const chatUpdate = reactExports.useRef(null);
-      const foldButtonRef = reactExports.useRef(null);
       const [pathname, setPathname] = reactExports.useState("");
       const [chatEnable, setChatEnable] = reactExports.useState(null);
-      const syncFoldButton = () => {
-        const foldButton = document.querySelector("button[aria-label='채팅 접기']");
-        if (!foldButton || foldButtonRef.current === foldButton) return;
-        foldButtonRef.current = foldButton;
-        foldButton.addEventListener("click", () => {
-          mainStore.setSetting("defalut_chat_enable", false, true);
-        });
-      };
       const checkEnableChat = () => {
         try {
           const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']");
@@ -13155,11 +13146,6 @@ img {
           }
           const newPathname = window.location.pathname;
           const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
-          if (defalut_chat_enable && sideElement && sideElement.offsetWidth === 0) {
-            mainStore.setSetting("defalut_chat_enable", false, true);
-            return;
-          }
-          syncFoldButton();
           if (pathname != newPathname || chatEnable != defalut_chat_enable) {
             if (sideElement && sideElement.style) {
               sideElement.style.maxWidth = defalut_chat_enable ? "" : "0px";
@@ -13221,24 +13207,6 @@ img {
         mainStore.addChat({ id: -1, username: "제작자", contentArray: ["비콩 (github.com/bcong)"], color: "#e9ab00" });
         IsInit(true);
       };
-      const checkViewChat = () => {
-        var _a2;
-        const buttonElement = document.querySelector(
-          "button[class^='live_information_player_folded_button__']"
-        );
-        const fullScreenbuttonElement = document.querySelector(
-          "div[class^='live_information_player_control__']"
-        );
-        if (fullScreenbuttonElement) {
-          const chatButton = (_a2 = fullScreenbuttonElement == null ? void 0 : fullScreenbuttonElement.children) == null ? void 0 : _a2[0];
-          chatButton == null ? void 0 : chatButton.click();
-        }
-        if (buttonElement) {
-          if ((buttonElement == null ? void 0 : buttonElement.textContent) == "채팅") {
-            buttonElement == null ? void 0 : buttonElement.click();
-          }
-        }
-      };
       const updateChatMessages = () => {
         var _a2;
         addZIndexToElements();
@@ -13286,10 +13254,8 @@ img {
       };
       reactExports.useEffect(() => {
         initSetting();
-        checkViewChat();
         chatUpdate.current = setInterval(() => {
           updateChatMessages();
-          checkViewChat();
         }, 500);
         return () => {
           if (chatUpdate.current) clearInterval(chatUpdate.current);
