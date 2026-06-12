@@ -20,6 +20,14 @@ const Chat = observer(() => {
                 if (chatElement.scrollHeight) chatElement.scrollTop = chatElement.scrollHeight;
             }
 
+            const foldButton = document.querySelector("button[aria-label='채팅 접기']") as HTMLButtonElement | null;
+            if (foldButton && !foldButton.dataset.stylerBound) {
+                foldButton.dataset.stylerBound = '1';
+                foldButton.addEventListener('click', () => {
+                    mainStore.setSetting('defalut_chat_enable', false, true);
+                });
+            }
+
             const newPathname = window.location.pathname;
             const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
 
