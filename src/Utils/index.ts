@@ -1,5 +1,3 @@
-import { ChatEvent } from "chzzk";
-
 export const sleep = async (ms: number) => {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -96,27 +94,6 @@ export async function awaitElement(selector: string): Promise<Element> {
     });
 }
 
-export const extractID = (pathname: string): string => {
-    const match = pathname?.match(/\/live\/([a-f0-9]{32})/);
-    return match ? match[1] : '';
-};
-
-export const parseMessage = (chat: ChatEvent): string[] => {
-    const { message, extras } = chat;
-
-    const parts = message?.split(/({:[^:]+:})/);
-
-    return parts
-        .map(part => {
-            if (part.startsWith("{:") && part.endsWith(":}")) {
-                const emojiKey = part.slice(2, -2);
-                return extras?.emojis && extras?.emojis[emojiKey] || part;
-            }
-            return part;
-        })
-        .filter(part => part.trim() !== "");
-};
-
 export const colors = [
     '#f28ca5',
     '#9dd9a5',
@@ -128,17 +105,3 @@ export const colors = [
     '#f798f2',
     '#ddfa85',
 ];
-
-export const getCookie = (name: string) => {
-    const value = document.cookie
-        .split('; ')
-        .find((row) => row.startsWith(name + '='))
-        ?.split('=')[1];
-    return value ? decodeURIComponent(value) : undefined;
-};
-
-export const generateRandomNumber = (receivedTime: string): number => {
-    const baseNumber = Date.parse(receivedTime);
-    const randomDecimal = Math.random().toFixed(10); // 소수점 이하 10자리
-    return Number(`${baseNumber}${randomDecimal.slice(2)}`);
-};
