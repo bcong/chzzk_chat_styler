@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260612142308
+// @version      20260612143135
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13136,8 +13136,17 @@ img {
       const chat_style = mainStore.setting.get("chat_style");
       const defalut_chat_enable = mainStore.setting.get("defalut_chat_enable");
       const chatUpdate = reactExports.useRef(null);
+      const foldButtonRef = reactExports.useRef(null);
       const [pathname, setPathname] = reactExports.useState("");
       const [chatEnable, setChatEnable] = reactExports.useState(null);
+      const syncFoldButton = () => {
+        const foldButton = document.querySelector("button[aria-label='채팅 접기']");
+        if (!foldButton || foldButtonRef.current === foldButton) return;
+        foldButtonRef.current = foldButton;
+        foldButton.addEventListener("click", () => {
+          mainStore.setSetting("defalut_chat_enable", false, true);
+        });
+      };
       const checkEnableChat = () => {
         try {
           const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']");
@@ -13150,6 +13159,7 @@ img {
             mainStore.setSetting("defalut_chat_enable", false, true);
             return;
           }
+          syncFoldButton();
           if (pathname != newPathname || chatEnable != defalut_chat_enable) {
             if (sideElement && sideElement.style) {
               sideElement.style.maxWidth = defalut_chat_enable ? "" : "0px";
