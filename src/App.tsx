@@ -63,11 +63,6 @@ const App = () => {
 
     const updateChatMessages = () => {
         addZIndexToElements();
-        const closeButton = document.querySelector(
-            'div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]',
-        ) as HTMLElement | null;
-
-        if (closeButton && closeButton.style.display != 'none') closeButton.style.display = 'none';
 
         const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
         const chatArea = chatAreaElements[chatAreaElements.length - 1];

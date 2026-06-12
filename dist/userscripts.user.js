@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260612141449
+// @version      20260612142308
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13145,8 +13145,12 @@ img {
             if (chatElement.scrollHeight) chatElement.scrollTop = chatElement.scrollHeight;
           }
           const newPathname = window.location.pathname;
+          const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
+          if (defalut_chat_enable && sideElement && sideElement.offsetWidth === 0) {
+            mainStore.setSetting("defalut_chat_enable", false, true);
+            return;
+          }
           if (pathname != newPathname || chatEnable != defalut_chat_enable) {
-            const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
             if (sideElement && sideElement.style) {
               sideElement.style.maxWidth = defalut_chat_enable ? "" : "0px";
               sideElement.style.opacity = defalut_chat_enable ? "" : "0";
@@ -13228,10 +13232,6 @@ img {
       const updateChatMessages = () => {
         var _a2;
         addZIndexToElements();
-        const closeButton = document.querySelector(
-          'div[class*="live_chatting_header_wrapper"][class*="live_chatting_header_fold"]'
-        );
-        if (closeButton && closeButton.style.display != "none") closeButton.style.display = "none";
         const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
         const chatArea = chatAreaElements[chatAreaElements.length - 1];
         if (!chatArea) return;

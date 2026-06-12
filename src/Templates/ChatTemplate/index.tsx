@@ -21,8 +21,14 @@ const Chat = observer(() => {
             }
 
             const newPathname = window.location.pathname;
+            const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
+
+            if (defalut_chat_enable && sideElement && sideElement.offsetWidth === 0) {
+                mainStore.setSetting('defalut_chat_enable', false, true);
+                return;
+            }
+
             if (pathname != newPathname || chatEnable != defalut_chat_enable) {
-                const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
                 if (sideElement && sideElement.style) {
                     sideElement.style.maxWidth = defalut_chat_enable ? '' : '0px';
                     sideElement.style.opacity = defalut_chat_enable ? '' : '0';
