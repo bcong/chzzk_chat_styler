@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260612144432
+// @version      20260612145115
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13151,6 +13151,16 @@ img {
               mainStore.setSetting("defalut_chat_enable", false, true);
             });
           }
+          const showButtons = document.querySelectorAll("button[class^='live_information_player_folded_button__']");
+          showButtons.forEach((btn) => {
+            const button = btn;
+            if (!button.dataset.stylerBound) {
+              button.dataset.stylerBound = "1";
+              button.addEventListener("click", () => {
+                mainStore.setSetting("defalut_chat_enable", true, true);
+              });
+            }
+          });
           const newPathname = window.location.pathname;
           const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
           if (pathname != newPathname || chatEnable != defalut_chat_enable) {

@@ -28,6 +28,17 @@ const Chat = observer(() => {
                 });
             }
 
+            const showButtons = document.querySelectorAll("button[class^='live_information_player_folded_button__']");
+            showButtons.forEach((btn) => {
+                const button = btn as HTMLButtonElement;
+                if (!button.dataset.stylerBound) {
+                    button.dataset.stylerBound = '1';
+                    button.addEventListener('click', () => {
+                        mainStore.setSetting('defalut_chat_enable', true, true);
+                    });
+                }
+            });
+
             const newPathname = window.location.pathname;
             const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
 
