@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260613151334
+// @version      20260613151909
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -493,10 +493,10 @@ img {
 ._OverlayChat_18pdb_1 ._Chat_18pdb_17._Background_18pdb_58 ._MessageContainer_18pdb_23 {
   padding: 4px 8px;
 }
-._ShowChatButton_wpmiq_1 {
+._ShowChatButton_1pcqb_1 {
   position: absolute;
   right: 12px;
-  top: 100px;
+  top: 60px;
   background: rgba(0, 0, 0, 0.55);
   color: #fff;
   border: none;
@@ -510,11 +510,11 @@ img {
   transition: opacity 0.2s;
   user-select: none;
 }
-._ShowChatButton_wpmiq_1._Visible_wpmiq_18 {
+._ShowChatButton_1pcqb_1._Visible_1pcqb_18 {
   opacity: 1;
   pointer-events: auto;
 }
-._ShowChatButton_wpmiq_1:hover {
+._ShowChatButton_1pcqb_1:hover {
   background: rgba(0, 0, 0, 0.75);
 } `);
 
@@ -13172,8 +13172,8 @@ img {
         document.body
       );
     });
-    const ShowChatButton = "_ShowChatButton_wpmiq_1";
-    const Visible = "_Visible_wpmiq_18";
+    const ShowChatButton = "_ShowChatButton_1pcqb_1";
+    const Visible = "_Visible_1pcqb_18";
     const styles = {
       ShowChatButton,
       Visible
@@ -13187,7 +13187,8 @@ img {
       const [pathname, setPathname] = reactExports.useState("");
       const [chatEnable, setChatEnable] = reactExports.useState(null);
       const [playerDiv, setPlayerDiv] = reactExports.useState(null);
-      const [isPlayerHovered, setIsPlayerHovered] = reactExports.useState(false);
+      const [isControlsVisible, setIsControlsVisible] = reactExports.useState(false);
+      const idleTimerRef = reactExports.useRef(null);
       const checkEnableChat = () => {
         try {
           const foldButton = document.querySelector("button[aria-label='채팅 접기']");
@@ -13255,13 +13256,24 @@ img {
       }, []);
       reactExports.useEffect(() => {
         if (!playerDiv) return;
-        const onEnter = () => setIsPlayerHovered(true);
-        const onLeave = () => setIsPlayerHovered(false);
-        playerDiv.addEventListener("mouseenter", onEnter);
+        const onMove = () => {
+          setIsControlsVisible(true);
+          if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+          idleTimerRef.current = window.setTimeout(() => setIsControlsVisible(false), 3e3);
+        };
+        const onLeave = () => {
+          setIsControlsVisible(false);
+          if (idleTimerRef.current) {
+            clearTimeout(idleTimerRef.current);
+            idleTimerRef.current = null;
+          }
+        };
+        playerDiv.addEventListener("mousemove", onMove);
         playerDiv.addEventListener("mouseleave", onLeave);
         return () => {
-          playerDiv.removeEventListener("mouseenter", onEnter);
+          playerDiv.removeEventListener("mousemove", onMove);
           playerDiv.removeEventListener("mouseleave", onLeave);
+          if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
         };
       }, [playerDiv]);
       let chatElem;
@@ -13277,8 +13289,16 @@ img {
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
-            className: classes(styles.ShowChatButton, isPlayerHovered ? styles.Visible : null),
-            onClick: () => mainStore.setSetting("defalut_chat_enable", true, true),
+            className: classes(styles.ShowChatButton, isControlsVisible ? styles.Visible : null),
+            onClick: (e) => {
+              e.stopPropagation();
+              mainStore.setSetting("defalut_chat_enable", true, true);
+              const sideEl = document.querySelector("aside[class^='live_chatting_container__']");
+              if (sideEl == null ? void 0 : sideEl.style) {
+                sideEl.style.maxWidth = "";
+                sideEl.style.opacity = "";
+              }
+            },
             title: "채팅 다시 표시",
             children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "svg",
