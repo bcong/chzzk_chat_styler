@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260613145712
+// @version      20260613150045
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -493,10 +493,10 @@ img {
 ._OverlayChat_18pdb_1 ._Chat_18pdb_17._Background_18pdb_58 ._MessageContainer_18pdb_23 {
   padding: 4px 8px;
 }
-._ShowChatButton_1xqq4_1 {
+._ShowChatButton_16orn_1 {
   position: absolute;
   right: 12px;
-  top: 12px;
+  top: 53px;
   background: rgba(0, 0, 0, 0.25);
   color: #fff;
   border: none;
@@ -510,11 +510,11 @@ img {
   transition: opacity 0.2s;
   user-select: none;
 }
-._ShowChatButton_1xqq4_1._Visible_1xqq4_18 {
+._ShowChatButton_16orn_1._Visible_16orn_18 {
   opacity: 1;
   pointer-events: auto;
 }
-._ShowChatButton_1xqq4_1:hover {
+._ShowChatButton_16orn_1:hover {
   background: rgba(0, 0, 0, 0.45);
 } `);
 
@@ -13172,8 +13172,8 @@ img {
         document.body
       );
     });
-    const ShowChatButton = "_ShowChatButton_1xqq4_1";
-    const Visible = "_Visible_1xqq4_18";
+    const ShowChatButton = "_ShowChatButton_16orn_1";
+    const Visible = "_Visible_16orn_18";
     const styles = {
       ShowChatButton,
       Visible
