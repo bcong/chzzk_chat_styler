@@ -15,11 +15,6 @@ const Chat = observer(() => {
 
     const checkEnableChat = () => {
         try {
-            const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']") as HTMLElement;
-            if (chatElement) {
-                if (chatElement.scrollHeight) chatElement.scrollTop = chatElement.scrollHeight;
-            }
-
             const foldButton = document.querySelector("button[aria-label='채팅 접기']") as HTMLButtonElement | null;
             if (foldButton && !foldButton.dataset.stylerBound) {
                 foldButton.dataset.stylerBound = '1';

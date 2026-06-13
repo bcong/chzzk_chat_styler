@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260612145748
+// @version      20260613143446
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13140,29 +13140,33 @@ img {
       const [chatEnable, setChatEnable] = reactExports.useState(null);
       const checkEnableChat = () => {
         try {
-          const chatElement = document.querySelector("div[class^='live_chatting_list_wrapper__']");
-          if (chatElement) {
-            if (chatElement.scrollHeight) chatElement.scrollTop = chatElement.scrollHeight;
-          }
           const foldButton = document.querySelector("button[aria-label='채팅 접기']");
           if (foldButton && !foldButton.dataset.stylerBound) {
             foldButton.dataset.stylerBound = "1";
-            foldButton.addEventListener("click", (e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              mainStore.setSetting("defalut_chat_enable", false, true);
-            }, { capture: true });
+            foldButton.addEventListener(
+              "click",
+              (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                mainStore.setSetting("defalut_chat_enable", false, true);
+              },
+              { capture: true }
+            );
           }
           const showButtons = document.querySelectorAll("button[class^='live_information_player_folded_button__']");
           showButtons.forEach((btn) => {
             const button = btn;
             if (!button.dataset.stylerBound) {
               button.dataset.stylerBound = "1";
-              button.addEventListener("click", (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                mainStore.setSetting("defalut_chat_enable", true, true);
-              }, { capture: true });
+              button.addEventListener(
+                "click",
+                (e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  mainStore.setSetting("defalut_chat_enable", true, true);
+                },
+                { capture: true }
+              );
             }
           });
           const newPathname = window.location.pathname;
@@ -13199,13 +13203,16 @@ img {
       }
       return enable && chatElem;
     });
+    const COLORS = ["#f28ca5", "#9dd9a5", "#fff08c", "#a1b1eb", "#fac098", "#c88ed9", "#a2f7f7", "#f798f2", "#ddfa85"];
     const App = () => {
       const mainStore = useMainStore();
       const [isSetting, IsSetting] = reactExports.useState(false);
       const [isInit, IsInit] = reactExports.useState(false);
-      const chatUpdate = reactExports.useRef(null);
-      let colorIdx = 0;
-      const colors = ["#f28ca5", "#9dd9a5", "#fff08c", "#a1b1eb", "#fac098", "#c88ed9", "#a2f7f7", "#f798f2", "#ddfa85"];
+      const colorIdxRef = reactExports.useRef(0);
+      const processedChats = reactExports.useRef(/* @__PURE__ */ new WeakSet());
+      const chatObserver = reactExports.useRef(null);
+      const observedChatArea = reactExports.useRef(null);
+      const retryTimer = reactExports.useRef(null);
       const toggleSetting = () => {
         IsSetting((prevIsSetting) => !prevIsSetting);
       };
@@ -13214,12 +13221,8 @@ img {
         const bottomShadowElement = document.querySelector(
           ".pzp-pc-ui-bottom-shadow.pzp-pc__bottom-shadow"
         );
-        if (bottomButtonsElement) {
-          bottomButtonsElement.style.zIndex = "2";
-        }
-        if (bottomShadowElement) {
-          bottomShadowElement.style.zIndex = "2";
-        }
+        if (bottomButtonsElement) bottomButtonsElement.style.zIndex = "2";
+        if (bottomShadowElement) bottomShadowElement.style.zIndex = "2";
       };
       const initSetting = () => {
         GM_listValues().map((v2) => {
@@ -13228,58 +13231,73 @@ img {
         mainStore.addChat({ id: -1, username: "제작자", contentArray: ["비콩 (github.com/bcong)"], color: "#e9ab00" });
         IsInit(true);
       };
-      const updateChatMessages = () => {
-        var _a2;
+      const processChatItem = (chat) => {
+        if (processedChats.current.has(chat)) return;
+        const usernameElement = chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
+        const username = (usernameElement == null ? void 0 : usernameElement.textContent) || null;
+        const messageElement = chat.querySelector('[class*="live_chatting_message_text"]');
+        if (!username || !messageElement || !(messageElement instanceof HTMLElement)) return;
+        processedChats.current.add(chat);
+        const contentArray = [];
+        messageElement.childNodes.forEach((node) => {
+          var _a2;
+          if (node.nodeType === Node.TEXT_NODE) {
+            const textContent = (_a2 = node.textContent) == null ? void 0 : _a2.trim();
+            if (textContent) contentArray.push(textContent);
+          } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "IMG") {
+            const imgSrc = node.getAttribute("src");
+            if (imgSrc) contentArray.push(imgSrc);
+          }
+        });
+        if (contentArray.length === 0) return;
+        const idx = colorIdxRef.current;
+        mainStore.addChat({ id: mainStore.chatId + 1, username, contentArray, color: COLORS[idx] });
+        colorIdxRef.current = idx >= COLORS.length - 1 ? 0 : idx + 1;
+      };
+      const disconnectObserver = () => {
+        if (chatObserver.current) {
+          chatObserver.current.disconnect();
+          chatObserver.current = null;
+        }
+        observedChatArea.current = null;
+      };
+      const observeChatArea = () => {
         addZIndexToElements();
         const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
         const chatArea = chatAreaElements[chatAreaElements.length - 1];
-        if (!chatArea) return;
-        const chatItems = chatArea.querySelectorAll('[class*="live_chatting_list_item"]');
-        const recentChats = (_a2 = Array.from(chatItems)) == null ? void 0 : _a2.slice(-mainStore.maxChats);
-        if (!recentChats || recentChats.length <= 1) return;
-        const lastChat = mainStore.lastChat();
-        recentChats == null ? void 0 : recentChats.forEach((chat) => {
-          var _a3;
-          const usernameElement = chat.querySelector(
-            '[class*="live_chatting_username_nickname"] [class*="name_text"]'
-          );
-          const username = (usernameElement == null ? void 0 : usernameElement.textContent) || null;
-          const messageElement = chat.querySelector('[class*="live_chatting_message_text"]');
-          if (!username || !messageElement) return;
-          if (messageElement instanceof HTMLElement) {
-            let id2 = Number(chat.id);
-            if (!id2) {
-              id2 = mainStore.chatId + 1;
-              chat == null ? void 0 : chat.setAttribute("id", id2.toString());
-            }
-            if ((lastChat == null ? void 0 : lastChat.id) >= id2) return;
-            const contentArray = [];
-            (_a3 = messageElement == null ? void 0 : messageElement.childNodes) == null ? void 0 : _a3.forEach((node) => {
-              var _a4;
-              if (node.nodeType === Node.TEXT_NODE) {
-                const textContent = (_a4 = node.textContent) == null ? void 0 : _a4.trim();
-                if (textContent) {
-                  contentArray.push(textContent);
-                }
-              } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "IMG") {
-                const imgSrc = node.getAttribute("src");
-                if (imgSrc) {
-                  contentArray.push(imgSrc);
-                }
+        if (!chatArea) {
+          retryTimer.current = window.setTimeout(observeChatArea, 1e3);
+          return;
+        }
+        if (observedChatArea.current === chatArea) return;
+        disconnectObserver();
+        observedChatArea.current = chatArea;
+        chatArea.querySelectorAll('[class*="live_chatting_list_item"]').forEach(processChatItem);
+        const observer2 = new MutationObserver((mutations) => {
+          for (const mutation of mutations) {
+            if (mutation.type !== "childList") continue;
+            mutation.addedNodes.forEach((node) => {
+              if (node.nodeType !== Node.ELEMENT_NODE) return;
+              const elem = node;
+              if (elem.matches('[class*="live_chatting_list_item"]')) {
+                processChatItem(elem);
+              } else {
+                elem.querySelectorAll('[class*="live_chatting_list_item"]').forEach(processChatItem);
               }
             });
-            mainStore.addChat({ id: id2, username, contentArray, color: colors[colorIdx] });
-            colorIdx == colors.length - 1 ? colorIdx = 0 : colorIdx++;
           }
         });
+        observer2.observe(chatArea, { childList: true, subtree: false });
+        chatObserver.current = observer2;
       };
       reactExports.useEffect(() => {
         initSetting();
-        chatUpdate.current = setInterval(() => {
-          updateChatMessages();
-        }, 500);
+        observeChatArea();
+        const fallbackTimer = setInterval(observeChatArea, 3e3);
         return () => {
-          if (chatUpdate.current) clearInterval(chatUpdate.current);
+          clearInterval(fallbackTimer);
+          if (retryTimer.current) clearTimeout(retryTimer.current);
+          disconnectObserver();
         };
       }, []);
       return isInit && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
