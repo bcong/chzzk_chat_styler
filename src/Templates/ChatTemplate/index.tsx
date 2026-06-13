@@ -17,7 +17,7 @@ const Chat = observer(() => {
     const [chatEnable, setChatEnable] = useState(null);
     const [playerDiv, setPlayerDiv] = useState<Element | null>(null);
     const [isControlsVisible, setIsControlsVisible] = useState(false);
-    const idleTimerRef = useRef<number | null>(null);
+    const controlsObserverRef = useRef<MutationObserver | null>(null);
 
     const checkEnableChat = () => {
         try {
@@ -94,21 +94,14 @@ const Chat = observer(() => {
 
     useEffect(() => {
         if (!playerDiv) return;
-        const onMove = () => {
-            setIsControlsVisible(true);
-            if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-            idleTimerRef.current = window.setTimeout(() => setIsControlsVisible(false), 3000);
-        };
-        const onLeave = () => {
-            setIsControlsVisible(false);
-            if (idleTimerRef.current) { clearTimeout(idleTimerRef.current); idleTimerRef.current = null; }
-        };
-        playerDiv.addEventListener('mousemove', onMove);
-        playerDiv.addEventListener('mouseleave', onLeave);
+        const update = () => setIsControlsVisible(playerDiv.classList.contains('pzp-pc--controls'));
+        update();
+        const observer = new MutationObserver(update);
+        observer.observe(playerDiv, { attributes: true, attributeFilter: ['class'] });
+        controlsObserverRef.current = observer;
         return () => {
-            playerDiv.removeEventListener('mousemove', onMove);
-            playerDiv.removeEventListener('mouseleave', onLeave);
-            if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+            observer.disconnect();
+            controlsObserverRef.current = null;
         };
     }, [playerDiv]);
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260613151909
+// @version      20260613152240
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13188,7 +13188,7 @@ img {
       const [chatEnable, setChatEnable] = reactExports.useState(null);
       const [playerDiv, setPlayerDiv] = reactExports.useState(null);
       const [isControlsVisible, setIsControlsVisible] = reactExports.useState(false);
-      const idleTimerRef = reactExports.useRef(null);
+      const controlsObserverRef = reactExports.useRef(null);
       const checkEnableChat = () => {
         try {
           const foldButton = document.querySelector("button[aria-label='채팅 접기']");
@@ -13256,24 +13256,14 @@ img {
       }, []);
       reactExports.useEffect(() => {
         if (!playerDiv) return;
-        const onMove = () => {
-          setIsControlsVisible(true);
-          if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-          idleTimerRef.current = window.setTimeout(() => setIsControlsVisible(false), 3e3);
-        };
-        const onLeave = () => {
-          setIsControlsVisible(false);
-          if (idleTimerRef.current) {
-            clearTimeout(idleTimerRef.current);
-            idleTimerRef.current = null;
-          }
-        };
-        playerDiv.addEventListener("mousemove", onMove);
-        playerDiv.addEventListener("mouseleave", onLeave);
+        const update = () => setIsControlsVisible(playerDiv.classList.contains("pzp-pc--controls"));
+        update();
+        const observer2 = new MutationObserver(update);
+        observer2.observe(playerDiv, { attributes: true, attributeFilter: ["class"] });
+        controlsObserverRef.current = observer2;
         return () => {
-          playerDiv.removeEventListener("mousemove", onMove);
-          playerDiv.removeEventListener("mouseleave", onLeave);
-          if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+          observer2.disconnect();
+          controlsObserverRef.current = null;
         };
       }, [playerDiv]);
       let chatElem;
