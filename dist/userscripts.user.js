@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260613150045
+// @version      20260613150836
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13378,7 +13378,9 @@ img {
         if (observedChatArea.current === chatArea) return;
         disconnectObserver();
         observedChatArea.current = chatArea;
-        chatArea.querySelectorAll('[class*="live_chatting_list_item"]').forEach(processChatItem);
+        chatArea.querySelectorAll('[class*="live_chatting_list_item"]').forEach((el2) => {
+          processedChats.current.add(el2);
+        });
         const observer2 = new MutationObserver((mutations) => {
           for (const mutation of mutations) {
             if (mutation.type !== "childList") continue;

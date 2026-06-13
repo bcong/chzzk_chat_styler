@@ -97,7 +97,10 @@ const App = () => {
         disconnectObserver();
         observedChatArea.current = chatArea;
 
-        chatArea.querySelectorAll('[class*="live_chatting_list_item"]').forEach(processChatItem);
+        // 기존 항목은 중복 방지용으로 WeakSet에만 등록하고 store에는 추가하지 않음
+        chatArea.querySelectorAll('[class*="live_chatting_list_item"]').forEach((el) => {
+            processedChats.current.add(el);
+        });
 
         const observer = new MutationObserver((mutations) => {
             for (const mutation of mutations) {
