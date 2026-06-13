@@ -16,7 +16,8 @@ const Chat = observer(() => {
     const [pathname, setPathname] = useState('');
     const [chatEnable, setChatEnable] = useState(null);
     const [playerDiv, setPlayerDiv] = useState<Element | null>(null);
-    const [isPlayerHovered, setIsPlayerHovered] = useState(false);
+    const [isControlsVisible, setIsControlsVisible] = useState(false);
+    const idleTimerRef = useRef<number | null>(null);
 
     const checkEnableChat = () => {
         try {
@@ -93,13 +94,21 @@ const Chat = observer(() => {
 
     useEffect(() => {
         if (!playerDiv) return;
-        const onEnter = () => setIsPlayerHovered(true);
-        const onLeave = () => setIsPlayerHovered(false);
-        playerDiv.addEventListener('mouseenter', onEnter);
+        const onMove = () => {
+            setIsControlsVisible(true);
+            if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+            idleTimerRef.current = window.setTimeout(() => setIsControlsVisible(false), 3000);
+        };
+        const onLeave = () => {
+            setIsControlsVisible(false);
+            if (idleTimerRef.current) { clearTimeout(idleTimerRef.current); idleTimerRef.current = null; }
+        };
+        playerDiv.addEventListener('mousemove', onMove);
         playerDiv.addEventListener('mouseleave', onLeave);
         return () => {
-            playerDiv.removeEventListener('mouseenter', onEnter);
+            playerDiv.removeEventListener('mousemove', onMove);
             playerDiv.removeEventListener('mouseleave', onLeave);
+            if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
         };
     }, [playerDiv]);
 
@@ -118,8 +127,13 @@ const Chat = observer(() => {
         playerDiv &&
         ReactDOM.createPortal(
             <button
-                className={classes(styles.ShowChatButton, isPlayerHovered ? styles.Visible : null)}
-                onClick={() => mainStore.setSetting('defalut_chat_enable', true, true)}
+                className={classes(styles.ShowChatButton, isControlsVisible ? styles.Visible : null)}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    mainStore.setSetting('defalut_chat_enable', true, true);
+                    const sideEl = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement | null;
+                    if (sideEl?.style) { sideEl.style.maxWidth = ''; sideEl.style.opacity = ''; }
+                }}
                 title="채팅 다시 표시">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
