@@ -3,6 +3,8 @@ import OverlayChat from '@Components/OverlayChat';
 import { useMainStore } from '@Stores/index';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
+import styles from './style.module.less';
 
 const Chat = observer(() => {
     const mainStore = useMainStore();
@@ -84,7 +86,26 @@ const Chat = observer(() => {
             break;
     }
 
-    return enable && chatElem;
+    const showChatButton =
+        !defalut_chat_enable &&
+        ReactDOM.createPortal(
+            <button
+                className={styles.ShowChatButton}
+                onClick={() => mainStore.setSetting('defalut_chat_enable', true, true)}
+                title="채팅 다시 표시">
+                채팅 열기
+            </button>,
+            document.body,
+        );
+
+    return (
+        enable && (
+            <>
+                {chatElem}
+                {showChatButton}
+            </>
+        )
+    );
 });
 
 export default Chat;

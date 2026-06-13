@@ -41,63 +41,70 @@ const FrameChat = observer(() => {
         addFrameChat();
     }, [window.location.href]);
 
-    const chatsElem = mainStore.chats
-        .slice(-frameViewCount)
-        .map(({ id, username, contentArray, color }) => {
-            const background = frameChatBackground ? `rgba(0, 0, 0, ${frameChatOpacity}%)` : '';
-            const fontSize = `${frameFontSize}px`;
+    const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id, username, contentArray, color }) => {
+        const background = frameChatBackground ? `rgba(0, 0, 0, ${frameChatOpacity}%)` : '';
+        const fontSize = `${frameFontSize}px`;
 
-            const userNameElem = (
-                <div className={styles.Username}>
-                    <p style={{
-                        color: frameRandomUsername ? color : '#9dd9a5',
-                        fontSize: fontSize
-                    }}>
-                        {username}
-                    </p>
-                </div>
-            );
-
-            const messageContent = contentArray.map((content, index) => {
-                if (content.startsWith('http')) {
-                    return <img key={index} src={content} style={{ width: fontSize, height: fontSize }} />;
-                } else {
-                    return <p style={{ fontSize: fontSize }} key={index}>{content}</p>;
-                }
-            });
-
-            const messageElem = (
-                <div className={styles.Message}>
-                    <p style={{
-                        fontSize: fontSize
-                    }}>
-                        {messageContent}
-                    </p>
-                </div>
-            );
-
-            return (
-                <div key={id}
-                    className={classes(styles.Chat,
-                        frameChatBackground ? styles.Background : false,
-                        frameSortChatMessages ? styles.Sorted : false
-                    )}
+        const userNameElem = (
+            <div className={styles.Username}>
+                <p
                     style={{
-                        width: `${frameViewWidth}px`,
-                    }}
-                >
-                    <div className={styles.MessageContainer}
-                        style={{
-                            background: background
-                        }}>
-                        {showNicknames && userNameElem}
-                        {messageElem}
-                    </div>
-                </div>
-            );
+                        color: frameRandomUsername ? color : '#9dd9a5',
+                        fontSize: fontSize,
+                    }}>
+                    {username}
+                </p>
+            </div>
+        );
+
+        const messageContent = contentArray.map((content, index) => {
+            if (content.type === 'image') {
+                return <img key={index} src={content.content} style={{ width: fontSize, height: fontSize }} />;
+            } else {
+                return (
+                    <p style={{ fontSize: fontSize }} key={index}>
+                        {content.content}
+                    </p>
+                );
+            }
         });
 
-    let frameChatPositionCls = '', frameChatDegree;
+        const messageElem = (
+            <div className={styles.Message}>
+                <p
+                    style={{
+                        fontSize: fontSize,
+                    }}>
+                    {messageContent}
+                </p>
+            </div>
+        );
+
+        return (
+            <div
+                key={id}
+                className={classes(
+                    styles.Chat,
+                    frameChatBackground ? styles.Background : false,
+                    frameSortChatMessages ? styles.Sorted : false,
+                )}
+                style={{
+                    width: `${frameViewWidth}px`,
+                }}>
+                <div
+                    className={styles.MessageContainer}
+                    style={{
+                        background: background,
+                    }}>
+                    {showNicknames && userNameElem}
+                    {messageElem}
+                </div>
+            </div>
+        );
+    });
+
+    let frameChatPositionCls = '',
+        frameChatDegree;
     switch (frameChatPosition) {
         case 0:
             frameChatPositionCls = styles.LeftTop;
@@ -119,21 +126,23 @@ const FrameChat = observer(() => {
 
     const chatBackgroundStyle = `linear-gradient(${frameChatDegree}deg, rgba(0, 0, 0, ${frameBackgroundOpacity}%) ${frameBackgroundArea}%, rgba(0, 0, 0, 0) 100%)`;
 
-    return playerSizeDiv ? ReactDOM.createPortal(
-        <div
-            className={classes(styles.FrameChat, frameChatPositionCls)}
-            id={id}
-            style={{
-                background: frameBackground ? chatBackgroundStyle : '',
-                paddingLeft: `${frameOffsetX}px`,
-                paddingRight: `${frameOffsetX}px`,
-                paddingTop: `${frameOffsetY}px`,
-                paddingBottom: `${frameOffsetY}px`
-            }}>
-            {chatsElem}
-        </div>,
-        playerSizeDiv
-    ) : null;
+    return playerSizeDiv
+        ? ReactDOM.createPortal(
+              <div
+                  className={classes(styles.FrameChat, frameChatPositionCls)}
+                  id={id}
+                  style={{
+                      background: frameBackground ? chatBackgroundStyle : '',
+                      paddingLeft: `${frameOffsetX}px`,
+                      paddingRight: `${frameOffsetX}px`,
+                      paddingTop: `${frameOffsetY}px`,
+                      paddingBottom: `${frameOffsetY}px`,
+                  }}>
+                  {chatsElem}
+              </div>,
+              playerSizeDiv,
+          )
+        : null;
 });
 
 export default FrameChat;

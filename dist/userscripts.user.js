@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260613143446
+// @version      20260613145340
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -492,6 +492,31 @@ img {
 }
 ._OverlayChat_18pdb_1 ._Chat_18pdb_17._Background_18pdb_58 ._MessageContainer_18pdb_23 {
   padding: 4px 8px;
+}
+._ShowChatButton_1t2xn_1 {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(22, 207, 156, 0.85);
+  color: #fff;
+  border: none;
+  padding: 14px 6px;
+  writing-mode: vertical-rl;
+  cursor: pointer;
+  border-radius: 6px 0 0 6px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  z-index: 9999;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+  transition: background 0.15s, padding 0.15s;
+  user-select: none;
+  font-family: 'Pretendard', sans-serif;
+}
+._ShowChatButton_1t2xn_1:hover {
+  background: #16cf9c;
+  padding-right: 10px;
 } `);
 
 (function () {
@@ -7471,7 +7496,7 @@ img {
       m.hydrateRoot;
     }
     const SettingMenu = "_SettingMenu_sp5yj_1";
-    const styles$8 = {
+    const styles$9 = {
       SettingMenu
     };
     const TOOLBAR_SELECTOR = "div[class^='toolbar_section__']";
@@ -7487,7 +7512,7 @@ img {
         }
         const wrapper = document.createElement("div");
         wrapper.id = id2;
-        wrapper.className = styles$8.SettingMenu;
+        wrapper.className = styles$9.SettingMenu;
         const button = document.createElement("button");
         button.setAttribute("tip", "채팅 스타일러 설정");
         const label = document.createElement("p");
@@ -7538,7 +7563,7 @@ img {
     const Menus$1 = "_Menus_1q4mo_36";
     const Menu$1 = "_Menu_1q4mo_36";
     const Content = "_Content_1q4mo_57";
-    const styles$7 = {
+    const styles$8 = {
       SettingTemplate: SettingTemplate$1,
       View: View$3,
       Header,
@@ -7596,7 +7621,7 @@ img {
     const ToggleButton$1 = "_ToggleButton_1j7w4_1";
     const Enable = "_Enable_1j7w4_12";
     const Circle = "_Circle_1j7w4_15";
-    const styles$6 = {
+    const styles$7 = {
       ToggleButton: ToggleButton$1,
       Enable,
       Circle
@@ -7608,14 +7633,14 @@ img {
       const handleToggle = () => {
         setEnable(!enable);
       };
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$6.ToggleButton, enable ? styles$6.Enable : false), onClick: handleToggle, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Circle }) });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$7.ToggleButton, enable ? styles$7.Enable : false), onClick: handleToggle, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.Circle }) });
     };
     const Setting$1 = "_Setting_bt7mm_1";
     const Menus = "_Menus_bt7mm_4";
     const Menu = "_Menu_bt7mm_4";
     const Name = "_Name_bt7mm_14";
     const Value = "_Value_bt7mm_22";
-    const styles$5 = {
+    const styles$6 = {
       Setting: Setting$1,
       Menus,
       Menu,
@@ -7628,7 +7653,7 @@ img {
     const Option = "_Option_5p09x_32";
     const Selected = "_Selected_5p09x_57";
     const View$2 = "_View_5p09x_67";
-    const styles$4 = {
+    const styles$5 = {
       ListBox: ListBox$1,
       ListValue,
       Options,
@@ -7648,11 +7673,11 @@ img {
       };
       const optionsElem = options.map(({ key, name }) => {
         const isSelected = value == key;
-        return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$4.Option, isSelected ? styles$4.Selected : false), onClick: () => !isSelected && handleSetValue(key), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }, key);
+        return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$5.Option, isSelected ? styles$5.Selected : false), onClick: () => !isSelected && handleSetValue(key), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }, key);
       });
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$4.ListBox, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.ListValue, onClick: () => IsOptions(!isOptions), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: options[value].name }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$4.Options, isOptions ? styles$4.View : false), children: optionsElem })
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$5.ListBox, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.ListValue, onClick: () => IsOptions(!isOptions), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: options[value].name }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$5.Options, isOptions ? styles$5.View : false), children: optionsElem })
       ] });
     };
     function die(error) {
@@ -12254,7 +12279,7 @@ img {
     const InputValue = "_InputValue_1a5to_4";
     const Tip = "_Tip_1a5to_25";
     const View$1 = "_View_1a5to_39";
-    const styles$3 = {
+    const styles$4 = {
       InputBox: InputBox$1,
       InputValue,
       Tip,
@@ -12284,16 +12309,16 @@ img {
         }
         setValue(newValue);
       };
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$3.InputBox, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.InputValue, children: /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type, value: String(value), onChange: handleChange }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$3.Tip, tip.length > 0 ? styles$3.View : false), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: tip }) })
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$4.InputBox, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.InputValue, children: /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type, value: String(value), onChange: handleChange }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$4.Tip, tip.length > 0 ? styles$4.View : false), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: tip }) })
       ] });
     };
     const SliderBar$1 = "_SliderBar_1p3hs_1";
     const SliderTrack = "_SliderTrack_1p3hs_5";
     const SliderFilled = "_SliderFilled_1p3hs_12";
     const SliderThumb = "_SliderThumb_1p3hs_19";
-    const styles$2 = {
+    const styles$3 = {
       SliderBar: SliderBar$1,
       SliderTrack,
       SliderFilled,
@@ -12326,17 +12351,17 @@ img {
           { once: true }
         );
       };
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.SliderBar, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.SliderBar, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: styles$2.SliderTrack,
+          className: styles$3.SliderTrack,
           ref: sliderRef,
           onMouseDown: handleMouseDown,
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "div",
               {
-                className: styles$2.SliderThumb,
+                className: styles$3.SliderThumb,
                 "data-value": value,
                 style: { left: `${(value - min) / (max - min) * 100}%` }
               }
@@ -12344,7 +12369,7 @@ img {
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "div",
               {
-                className: styles$2.SliderFilled,
+                className: styles$3.SliderFilled,
                 style: { width: `${(value - min) / (max - min) * 100}%` }
               }
             )
@@ -12728,14 +12753,14 @@ img {
               contentElem = /* @__PURE__ */ jsxRuntimeExports.jsx(SliderBar, { value, setValue: cb2, min, max });
               break;
           }
-          return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Value, children: contentElem }, idx2);
+          return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Value, children: contentElem }, idx2);
         });
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$5.Menu, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Name, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }),
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$6.Menu, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Name, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }),
           valueElem
         ] }, idx);
       });
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Setting, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Menus, children: settingListElem }) });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Setting, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Menus, children: settingListElem }) });
     });
     const SvgCrossSmall = (props) => /* @__PURE__ */ reactExports.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", id: "Outline", viewBox: "0 0 24 24", width: 512, height: 512, ...props }, /* @__PURE__ */ reactExports.createElement("path", { d: "M18,6h0a1,1,0,0,0-1.414,0L12,10.586,7.414,6A1,1,0,0,0,6,6H6A1,1,0,0,0,6,7.414L10.586,12,6,16.586A1,1,0,0,0,6,18H6a1,1,0,0,0,1.414,0L12,13.414,16.586,18A1,1,0,0,0,18,18h0a1,1,0,0,0,0-1.414L13.414,12,18,7.414A1,1,0,0,0,18,6Z" }));
     const SettingTemplate = ({
@@ -12788,20 +12813,20 @@ img {
           "div",
           {
             ref: settingRef,
-            className: classes(styles$7.SettingTemplate, isSetting ? styles$7.View : false),
+            className: classes(styles$8.SettingTemplate, isSetting ? styles$8.View : false),
             style: { position: "absolute" },
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$7.Header, onMouseDown: handleMouseDown, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.Title, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "채팅 스타일러" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$8.Header, onMouseDown: handleMouseDown, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.Title, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "채팅 스타일러" }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "div",
                   {
-                    className: styles$7.Menus,
+                    className: styles$8.Menus,
                     onMouseDown: (e) => e.stopPropagation(),
                     children: /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "div",
                       {
-                        className: styles$7.Menu,
+                        className: styles$8.Menu,
                         onClick: toggleSetting,
                         children: /* @__PURE__ */ jsxRuntimeExports.jsx(SvgCrossSmall, { fill: "rgb(70, 70, 70)" })
                       }
@@ -12809,7 +12834,7 @@ img {
                   }
                 )
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.Content, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Setting, {}) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.Content, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Setting, {}) })
             ]
           }
         ),
@@ -12827,7 +12852,7 @@ img {
     const Username$1 = "_Username_mz2ar_33";
     const Message$1 = "_Message_mz2ar_29";
     const Background$1 = "_Background_mz2ar_64";
-    const styles$1 = {
+    const styles$2 = {
       FrameChat: FrameChat$1,
       LeftTop,
       LeftBottom,
@@ -12874,27 +12899,39 @@ img {
       const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id: id22, username, contentArray, color }) => {
         const background = frameChatBackground ? `rgba(0, 0, 0, ${frameChatOpacity}%)` : "";
         const fontSize = `${frameFontSize}px`;
-        const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: {
-          color: frameRandomUsername ? color : "#9dd9a5",
-          fontSize
-        }, children: username }) });
+        const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "p",
+          {
+            style: {
+              color: frameRandomUsername ? color : "#9dd9a5",
+              fontSize
+            },
+            children: username
+          }
+        ) });
         const messageContent = contentArray.map((content, index) => {
-          if (content.startsWith("http")) {
-            return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: content, style: { width: fontSize, height: fontSize } }, index);
+          if (content.type === "image") {
+            return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: content.content, style: { width: fontSize, height: fontSize } }, index);
           } else {
-            return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize }, children: content }, index);
+            return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize }, children: content.content }, index);
           }
         });
-        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Message, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: {
-          fontSize
-        }, children: messageContent }) });
+        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.Message, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "p",
+          {
+            style: {
+              fontSize
+            },
+            children: messageContent
+          }
+        ) });
         return /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
             className: classes(
-              styles$1.Chat,
-              frameChatBackground ? styles$1.Background : false,
-              frameSortChatMessages ? styles$1.Sorted : false
+              styles$2.Chat,
+              frameChatBackground ? styles$2.Background : false,
+              frameSortChatMessages ? styles$2.Sorted : false
             ),
             style: {
               width: `${frameViewWidth}px`
@@ -12902,7 +12939,7 @@ img {
             children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "div",
               {
-                className: styles$1.MessageContainer,
+                className: styles$2.MessageContainer,
                 style: {
                   background
                 },
@@ -12919,19 +12956,19 @@ img {
       let frameChatPositionCls = "", frameChatDegree;
       switch (frameChatPosition) {
         case 0:
-          frameChatPositionCls = styles$1.LeftTop;
+          frameChatPositionCls = styles$2.LeftTop;
           frameChatDegree = 180;
           break;
         case 1:
-          frameChatPositionCls = styles$1.LeftBottom;
+          frameChatPositionCls = styles$2.LeftBottom;
           frameChatDegree = 0;
           break;
         case 2:
-          frameChatPositionCls = styles$1.RightTop;
+          frameChatPositionCls = styles$2.RightTop;
           frameChatDegree = 180;
           break;
         case 3:
-          frameChatPositionCls = styles$1.RightBottom;
+          frameChatPositionCls = styles$2.RightBottom;
           frameChatDegree = 0;
           break;
       }
@@ -12940,7 +12977,7 @@ img {
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
-            className: classes(styles$1.FrameChat, frameChatPositionCls),
+            className: classes(styles$2.FrameChat, frameChatPositionCls),
             id: id2,
             style: {
               background: frameBackground ? chatBackgroundStyle : "",
@@ -12963,7 +13000,7 @@ img {
     const Username = "_Username_18pdb_27";
     const Message = "_Message_18pdb_23";
     const Background = "_Background_18pdb_58";
-    const styles = {
+    const styles$1 = {
       OverlayChat: OverlayChat$1,
       View,
       Chat: Chat$1,
@@ -13071,25 +13108,31 @@ img {
       const chatsElem = mainStore.chats.slice(-overlayViewCount).map(({ id: id2, username, contentArray, color }) => {
         const background = overlayChatBackground ? `rgba(0, 0, 0, ${overlayViewOpacity}%)` : "";
         const fontSize = `${overlayFontSize}px`;
-        const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: {
-          color: overlayRandomUsername ? color : "#9dd9a5",
-          fontSize
-        }, children: username }) });
+        const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "p",
+          {
+            style: {
+              color: overlayRandomUsername ? color : "#9dd9a5",
+              fontSize
+            },
+            children: username
+          }
+        ) });
         const messageContent = contentArray.map((content, index) => {
-          if (content.startsWith("http")) {
-            return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: content, style: { width: fontSize, height: fontSize } }, index);
+          if (content.type === "image") {
+            return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: content.content, style: { width: fontSize, height: fontSize } }, index);
           } else {
-            return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize }, children: content }, index);
+            return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize }, children: content.content }, index);
           }
         });
-        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.Message, children: messageContent });
+        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Message, children: messageContent });
         return /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
             className: classes(
-              styles.Chat,
-              overlayChatBackground ? styles.Background : false,
-              overlaySortChatMessages ? styles.Sorted : false
+              styles$1.Chat,
+              overlayChatBackground ? styles$1.Background : false,
+              overlaySortChatMessages ? styles$1.Sorted : false
             ),
             style: {
               width: `${overlayViewWidth}px`
@@ -13097,7 +13140,7 @@ img {
             children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "div",
               {
-                className: styles.MessageContainer,
+                className: styles$1.MessageContainer,
                 style: {
                   background
                 },
@@ -13117,7 +13160,7 @@ img {
           "div",
           {
             ref: chatRef,
-            className: classes(styles.OverlayChat, isView ? styles.View : false),
+            className: classes(styles$1.OverlayChat, isView ? styles$1.View : false),
             onMouseDown: handleMouseDown,
             style: {
               left: `${position.left}px`,
@@ -13130,6 +13173,10 @@ img {
         document.body
       );
     });
+    const ShowChatButton = "_ShowChatButton_1t2xn_1";
+    const styles = {
+      ShowChatButton
+    };
     const Chat = observer(() => {
       const mainStore = useMainStore();
       const enable = mainStore.setting.get("enable");
@@ -13201,7 +13248,22 @@ img {
           chatElem = /* @__PURE__ */ jsxRuntimeExports.jsx(FrameChat, {});
           break;
       }
-      return enable && chatElem;
+      const showChatButton = !defalut_chat_enable && ReactDOM.createPortal(
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            className: styles.ShowChatButton,
+            onClick: () => mainStore.setSetting("defalut_chat_enable", true, true),
+            title: "채팅 다시 표시",
+            children: "채팅 열기"
+          }
+        ),
+        document.body
+      );
+      return enable && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        chatElem,
+        showChatButton
+      ] });
     });
     const COLORS = ["#f28ca5", "#9dd9a5", "#fff08c", "#a1b1eb", "#fac098", "#c88ed9", "#a2f7f7", "#f798f2", "#ddfa85"];
     const App = () => {
@@ -13228,7 +13290,12 @@ img {
         GM_listValues().map((v2) => {
           mainStore.setSetting(v2, GM_getValue(v2), false);
         });
-        mainStore.addChat({ id: -1, username: "제작자", contentArray: ["비콩 (github.com/bcong)"], color: "#e9ab00" });
+        mainStore.addChat({
+          id: -1,
+          username: "제작자",
+          contentArray: [{ type: "text", content: "비콩 (github.com/bcong)" }],
+          color: "#e9ab00"
+        });
         IsInit(true);
       };
       const processChatItem = (chat) => {
@@ -13243,10 +13310,10 @@ img {
           var _a2;
           if (node.nodeType === Node.TEXT_NODE) {
             const textContent = (_a2 = node.textContent) == null ? void 0 : _a2.trim();
-            if (textContent) contentArray.push(textContent);
+            if (textContent) contentArray.push({ type: "text", content: textContent });
           } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "IMG") {
             const imgSrc = node.getAttribute("src");
-            if (imgSrc) contentArray.push(imgSrc);
+            if (imgSrc) contentArray.push({ type: "image", content: imgSrc });
           }
         });
         if (contentArray.length === 0) return;

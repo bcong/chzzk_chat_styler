@@ -31,11 +31,11 @@ const OverlayChat = observer(() => {
         setIsDragging(true);
         setInitialPosition({
             x: e.clientX,
-            y: e.clientY
+            y: e.clientY,
         });
         setOffset({
             x: position.left,
-            y: position.top
+            y: position.top,
         });
     };
 
@@ -104,10 +104,10 @@ const OverlayChat = observer(() => {
             mainStore.setSetting('overlay_y', newTop, true);
         };
 
-        window.addEventListener("resize", handleResize);
+        window.addEventListener('resize', handleResize);
 
         return () => {
-            window.removeEventListener("resize", handleResize);
+            window.removeEventListener('resize', handleResize);
         };
     }, [position]);
 
@@ -124,75 +124,74 @@ const OverlayChat = observer(() => {
         IsView(true);
     }, []);
 
-    const chatsElem = mainStore.chats
-        .slice(-overlayViewCount)
-        .map(({ id, username, contentArray, color }) => {
-            const background = overlayChatBackground ? `rgba(0, 0, 0, ${overlayViewOpacity}%)` : '';
-            const fontSize = `${overlayFontSize}px`;
+    const chatsElem = mainStore.chats.slice(-overlayViewCount).map(({ id, username, contentArray, color }) => {
+        const background = overlayChatBackground ? `rgba(0, 0, 0, ${overlayViewOpacity}%)` : '';
+        const fontSize = `${overlayFontSize}px`;
 
-            const userNameElem = (
-                <div className={styles.Username}>
-                    <p style={{
-                        color: overlayRandomUsername ? color : '#9dd9a5',
-                        fontSize: fontSize
-                    }}>
-                        {username}
-                    </p>
-                </div>
-            );
-
-            const messageContent = contentArray.map((content, index) => {
-                if (content.startsWith('http')) {
-                    return <img key={index} src={content} style={{ width: fontSize, height: fontSize }} />;
-                } else {
-                    return <p style={{ fontSize: fontSize }} key={index}>{content}</p>;
-                }
-            });
-
-            const messageElem = (
-                <div className={styles.Message}>
-                    {messageContent}
-                </div>
-            );
-
-            return (
-                <div key={id}
-                    className={classes(styles.Chat,
-                        overlayChatBackground ? styles.Background : false,
-                        overlaySortChatMessages ? styles.Sorted : false
-                    )}
+        const userNameElem = (
+            <div className={styles.Username}>
+                <p
                     style={{
-                        width: `${overlayViewWidth}px`,
-                    }}
-                >
-                    <div className={styles.MessageContainer}
-                        style={{
-                            background: background
-                        }}>
-                        {showNicknames && userNameElem}
-                        {messageElem}
-                    </div>
-                </div>
-            );
+                        color: overlayRandomUsername ? color : '#9dd9a5',
+                        fontSize: fontSize,
+                    }}>
+                    {username}
+                </p>
+            </div>
+        );
+
+        const messageContent = contentArray.map((content, index) => {
+            if (content.type === 'image') {
+                return <img key={index} src={content.content} style={{ width: fontSize, height: fontSize }} />;
+            } else {
+                return (
+                    <p style={{ fontSize: fontSize }} key={index}>
+                        {content.content}
+                    </p>
+                );
+            }
         });
+
+        const messageElem = <div className={styles.Message}>{messageContent}</div>;
+
+        return (
+            <div
+                key={id}
+                className={classes(
+                    styles.Chat,
+                    overlayChatBackground ? styles.Background : false,
+                    overlaySortChatMessages ? styles.Sorted : false,
+                )}
+                style={{
+                    width: `${overlayViewWidth}px`,
+                }}>
+                <div
+                    className={styles.MessageContainer}
+                    style={{
+                        background: background,
+                    }}>
+                    {showNicknames && userNameElem}
+                    {messageElem}
+                </div>
+            </div>
+        );
+    });
 
     const chatBackgroundStyle = `linear-gradient(0deg, rgba(0, 0, 0, ${overlayBackgroundOpacity}%) ${overlayBackgroundArea}%, rgba(0, 0, 0, 0) 100%)`;
 
-    return (
-        ReactDOM.createPortal(
-            <div
-                ref={chatRef}
-                className={classes(styles.OverlayChat, isView ? styles.View : false)}
-                onMouseDown={handleMouseDown}
-                style={{
-                    left: `${position.left}px`,
-                    top: `${position.top}px`,
-                    background: overlayBackground ? chatBackgroundStyle : '',
-                }}
-            >
-                {chatsElem}
-            </div>
-            , document.body)
+    return ReactDOM.createPortal(
+        <div
+            ref={chatRef}
+            className={classes(styles.OverlayChat, isView ? styles.View : false)}
+            onMouseDown={handleMouseDown}
+            style={{
+                left: `${position.left}px`,
+                top: `${position.top}px`,
+                background: overlayBackground ? chatBackgroundStyle : '',
+            }}>
+            {chatsElem}
+        </div>,
+        document.body,
     );
 });
 

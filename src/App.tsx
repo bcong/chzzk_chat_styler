@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import SettingMenu from '@Components/SettingMenu';
 import SettingTemplate from '@Templates/SettingTemplate';
 import { useMainStore } from './Stores';
-import { T_SETTING } from './@types';
+import { I_CONTENT, T_SETTING } from './@types';
 import ChatTemplate from '@Templates/ChatTemplate';
 
 const COLORS = ['#f28ca5', '#9dd9a5', '#fff08c', '#a1b1eb', '#fac098', '#c88ed9', '#a2f7f7', '#f798f2', '#ddfa85'];
@@ -35,7 +35,12 @@ const App = () => {
         GM_listValues().map((v) => {
             mainStore.setSetting(v as T_SETTING, GM_getValue(v), false);
         });
-        mainStore.addChat({ id: -1, username: '제작자', contentArray: ['비콩 (github.com/bcong)'], color: '#e9ab00' });
+        mainStore.addChat({
+            id: -1,
+            username: '제작자',
+            contentArray: [{ type: 'text', content: '비콩 (github.com/bcong)' }],
+            color: '#e9ab00',
+        });
         IsInit(true);
     };
 
@@ -50,14 +55,14 @@ const App = () => {
 
         processedChats.current.add(chat);
 
-        const contentArray: string[] = [];
+        const contentArray: I_CONTENT[] = [];
         messageElement.childNodes.forEach((node: ChildNode) => {
             if (node.nodeType === Node.TEXT_NODE) {
                 const textContent = node.textContent?.trim();
-                if (textContent) contentArray.push(textContent);
+                if (textContent) contentArray.push({ type: 'text', content: textContent });
             } else if (node.nodeType === Node.ELEMENT_NODE && (node as HTMLElement).tagName === 'IMG') {
                 const imgSrc = (node as HTMLImageElement).getAttribute('src');
-                if (imgSrc) contentArray.push(imgSrc);
+                if (imgSrc) contentArray.push({ type: 'image', content: imgSrc });
             }
         });
 
