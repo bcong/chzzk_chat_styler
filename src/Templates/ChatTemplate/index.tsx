@@ -81,7 +81,7 @@ const Chat = observer(() => {
 
     useEffect(() => {
         const find = () => {
-            const el = document.querySelector('#live_player_layout');
+            const el = document.querySelector('div[aria-label="비디오 플레이어"]');
             if (el) {
                 setPlayerDiv(el);
             } else {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260613151013
+// @version      20260613151334
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -493,11 +493,11 @@ img {
 ._OverlayChat_18pdb_1 ._Chat_18pdb_17._Background_18pdb_58 ._MessageContainer_18pdb_23 {
   padding: 4px 8px;
 }
-._ShowChatButton_18pep_1 {
+._ShowChatButton_wpmiq_1 {
   position: absolute;
   right: 12px;
   top: 100px;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.55);
   color: #fff;
   border: none;
   padding: 6px;
@@ -510,12 +510,12 @@ img {
   transition: opacity 0.2s;
   user-select: none;
 }
-._ShowChatButton_18pep_1._Visible_18pep_18 {
+._ShowChatButton_wpmiq_1._Visible_wpmiq_18 {
   opacity: 1;
   pointer-events: auto;
 }
-._ShowChatButton_18pep_1:hover {
-  background: rgba(0, 0, 0, 0.45);
+._ShowChatButton_wpmiq_1:hover {
+  background: rgba(0, 0, 0, 0.75);
 } `);
 
 (function () {
@@ -13172,8 +13172,8 @@ img {
         document.body
       );
     });
-    const ShowChatButton = "_ShowChatButton_18pep_1";
-    const Visible = "_Visible_18pep_18";
+    const ShowChatButton = "_ShowChatButton_wpmiq_1";
+    const Visible = "_Visible_wpmiq_18";
     const styles = {
       ShowChatButton,
       Visible
@@ -13244,7 +13244,7 @@ img {
       }, [defalut_chat_enable, chatEnable, pathname]);
       reactExports.useEffect(() => {
         const find = () => {
-          const el2 = document.querySelector("#live_player_layout");
+          const el2 = document.querySelector('div[aria-label="비디오 플레이어"]');
           if (el2) {
             setPlayerDiv(el2);
           } else {
