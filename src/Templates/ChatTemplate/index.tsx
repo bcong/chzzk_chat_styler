@@ -1,6 +1,7 @@
 import FrameChat from '@Components/FrameChat';
 import OverlayChat from '@Components/OverlayChat';
 import { useMainStore } from '@Stores/index';
+import { classes } from '@Utils/index';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
@@ -14,6 +15,8 @@ const Chat = observer(() => {
     const chatUpdate = useRef<number | null>(null);
     const [pathname, setPathname] = useState('');
     const [chatEnable, setChatEnable] = useState(null);
+    const [playerDiv, setPlayerDiv] = useState<Element | null>(null);
+    const [isPlayerHovered, setIsPlayerHovered] = useState(false);
 
     const checkEnableChat = () => {
         try {
@@ -76,6 +79,30 @@ const Chat = observer(() => {
         };
     }, [defalut_chat_enable, chatEnable, pathname]);
 
+    useEffect(() => {
+        const find = () => {
+            const el = document.querySelector('#live_player_layout');
+            if (el) {
+                setPlayerDiv(el);
+            } else {
+                setTimeout(find, 500);
+            }
+        };
+        find();
+    }, []);
+
+    useEffect(() => {
+        if (!playerDiv) return;
+        const onEnter = () => setIsPlayerHovered(true);
+        const onLeave = () => setIsPlayerHovered(false);
+        playerDiv.addEventListener('mouseenter', onEnter);
+        playerDiv.addEventListener('mouseleave', onLeave);
+        return () => {
+            playerDiv.removeEventListener('mouseenter', onEnter);
+            playerDiv.removeEventListener('mouseleave', onLeave);
+        };
+    }, [playerDiv]);
+
     let chatElem;
     switch (chat_style) {
         case 0:
@@ -88,14 +115,26 @@ const Chat = observer(() => {
 
     const showChatButton =
         !defalut_chat_enable &&
+        playerDiv &&
         ReactDOM.createPortal(
             <button
-                className={styles.ShowChatButton}
+                className={classes(styles.ShowChatButton, isPlayerHovered ? styles.Visible : null)}
                 onClick={() => mainStore.setSetting('defalut_chat_enable', true, true)}
                 title="채팅 다시 표시">
-                채팅 열기
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
             </button>,
-            document.body,
+            playerDiv,
         );
 
     return (

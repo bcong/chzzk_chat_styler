@@ -1,28 +1,26 @@
 .ShowChatButton {
-    position: fixed;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(22, 207, 156, 0.85);
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    background: rgba(0, 0, 0, 0.25);
     color: #fff;
     border: none;
-    padding: 14px 6px;
-    writing-mode: vertical-rl;
+    padding: 6px;
     cursor: pointer;
-    border-radius: 6px 0 0 6px;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    border-radius: 6px;
+    line-height: 0;
     z-index: 9999;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
-    transition:
-        background 0.15s,
-        padding 0.15s;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
     user-select: none;
-    font-family: 'Pretendard', sans-serif;
+
+    &.Visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
 
     &:hover {
-        background: rgba(22, 207, 156, 1);
-        padding-right: 10px;
+        background: rgba(0, 0, 0, 0.45);
     }
 }

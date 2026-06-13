@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260613145340
+// @version      20260613145712
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -493,30 +493,29 @@ img {
 ._OverlayChat_18pdb_1 ._Chat_18pdb_17._Background_18pdb_58 ._MessageContainer_18pdb_23 {
   padding: 4px 8px;
 }
-._ShowChatButton_1t2xn_1 {
-  position: fixed;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(22, 207, 156, 0.85);
+._ShowChatButton_1xqq4_1 {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: rgba(0, 0, 0, 0.25);
   color: #fff;
   border: none;
-  padding: 14px 6px;
-  writing-mode: vertical-rl;
+  padding: 6px;
   cursor: pointer;
-  border-radius: 6px 0 0 6px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  border-radius: 6px;
+  line-height: 0;
   z-index: 9999;
-  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
-  transition: background 0.15s, padding 0.15s;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
   user-select: none;
-  font-family: 'Pretendard', sans-serif;
 }
-._ShowChatButton_1t2xn_1:hover {
-  background: #16cf9c;
-  padding-right: 10px;
+._ShowChatButton_1xqq4_1._Visible_1xqq4_18 {
+  opacity: 1;
+  pointer-events: auto;
+}
+._ShowChatButton_1xqq4_1:hover {
+  background: rgba(0, 0, 0, 0.45);
 } `);
 
 (function () {
@@ -13173,9 +13172,11 @@ img {
         document.body
       );
     });
-    const ShowChatButton = "_ShowChatButton_1t2xn_1";
+    const ShowChatButton = "_ShowChatButton_1xqq4_1";
+    const Visible = "_Visible_1xqq4_18";
     const styles = {
-      ShowChatButton
+      ShowChatButton,
+      Visible
     };
     const Chat = observer(() => {
       const mainStore = useMainStore();
@@ -13185,6 +13186,8 @@ img {
       const chatUpdate = reactExports.useRef(null);
       const [pathname, setPathname] = reactExports.useState("");
       const [chatEnable, setChatEnable] = reactExports.useState(null);
+      const [playerDiv, setPlayerDiv] = reactExports.useState(null);
+      const [isPlayerHovered, setIsPlayerHovered] = reactExports.useState(false);
       const checkEnableChat = () => {
         try {
           const foldButton = document.querySelector("button[aria-label='채팅 접기']");
@@ -13239,6 +13242,28 @@ img {
           if (chatUpdate.current) clearInterval(chatUpdate.current);
         };
       }, [defalut_chat_enable, chatEnable, pathname]);
+      reactExports.useEffect(() => {
+        const find = () => {
+          const el2 = document.querySelector("#live_player_layout");
+          if (el2) {
+            setPlayerDiv(el2);
+          } else {
+            setTimeout(find, 500);
+          }
+        };
+        find();
+      }, []);
+      reactExports.useEffect(() => {
+        if (!playerDiv) return;
+        const onEnter = () => setIsPlayerHovered(true);
+        const onLeave = () => setIsPlayerHovered(false);
+        playerDiv.addEventListener("mouseenter", onEnter);
+        playerDiv.addEventListener("mouseleave", onLeave);
+        return () => {
+          playerDiv.removeEventListener("mouseenter", onEnter);
+          playerDiv.removeEventListener("mouseleave", onLeave);
+        };
+      }, [playerDiv]);
       let chatElem;
       switch (chat_style) {
         case 0:
@@ -13248,17 +13273,31 @@ img {
           chatElem = /* @__PURE__ */ jsxRuntimeExports.jsx(FrameChat, {});
           break;
       }
-      const showChatButton = !defalut_chat_enable && ReactDOM.createPortal(
+      const showChatButton = !defalut_chat_enable && playerDiv && ReactDOM.createPortal(
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
-            className: styles.ShowChatButton,
+            className: classes(styles.ShowChatButton, isPlayerHovered ? styles.Visible : null),
             onClick: () => mainStore.setSetting("defalut_chat_enable", true, true),
             title: "채팅 다시 표시",
-            children: "채팅 열기"
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "svg",
+              {
+                xmlns: "http://www.w3.org/2000/svg",
+                width: "22",
+                height: "22",
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "currentColor",
+                strokeWidth: "2",
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" })
+              }
+            )
           }
         ),
-        document.body
+        playerDiv
       );
       return enable && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
         chatElem,
