@@ -84,10 +84,16 @@ const App = () => {
     const observeChatArea = () => {
         addZIndexToElements();
 
+        // 감시 중인 요소가 DOM에서 제거된 경우(방송 종료/재시작) 상태 초기화
+        if (observedChatArea.current && !observedChatArea.current.isConnected) {
+            disconnectObserver();
+        }
+
         const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
         const chatArea = chatAreaElements[chatAreaElements.length - 1];
 
         if (!chatArea) {
+            if (retryTimer.current) clearTimeout(retryTimer.current);
             retryTimer.current = window.setTimeout(observeChatArea, 1000);
             return;
         }

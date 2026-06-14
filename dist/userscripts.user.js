@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260613152240
+// @version      20260614091411
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13379,9 +13379,13 @@ img {
       };
       const observeChatArea = () => {
         addZIndexToElements();
+        if (observedChatArea.current && !observedChatArea.current.isConnected) {
+          disconnectObserver();
+        }
         const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
         const chatArea = chatAreaElements[chatAreaElements.length - 1];
         if (!chatArea) {
+          if (retryTimer.current) clearTimeout(retryTimer.current);
           retryTimer.current = window.setTimeout(observeChatArea, 1e3);
           return;
         }
