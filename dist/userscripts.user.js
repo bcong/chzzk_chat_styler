@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260619040827
+// @version      20260619041648
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13407,16 +13407,7 @@ img {
         if (observedChatArea.current && !observedChatArea.current.isConnected) {
           disconnectObserver();
         }
-        let chatArea = null;
-        const asideChatting = document.querySelector("aside#aside-chatting");
-        if (asideChatting) {
-          const chatLog = asideChatting.querySelector('[role="log"]');
-          chatArea = (chatLog == null ? void 0 : chatLog.firstElementChild) ?? null;
-        }
-        if (!chatArea) {
-          const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
-          chatArea = chatAreaElements[chatAreaElements.length - 1] ?? null;
-        }
+        const chatArea = document.querySelector('aside#aside-chatting [role="log"]') ?? document.querySelector('[class*="live_chatting_list_wrapper"]') ?? null;
         if (!chatArea) {
           if (retryTimer.current) clearTimeout(retryTimer.current);
           retryTimer.current = window.setTimeout(observeChatArea, 1e3);
@@ -13425,6 +13416,9 @@ img {
         if (observedChatArea.current === chatArea) return;
         disconnectObserver();
         observedChatArea.current = chatArea;
+        chatArea.querySelectorAll('[class*="live_chatting_list_item"]').forEach((el2) => {
+          processedChats.current.add(el2);
+        });
         Array.from(chatArea.children).forEach((el2) => {
           processedChats.current.add(el2);
         });
@@ -13444,7 +13438,7 @@ img {
             });
           }
         });
-        observer2.observe(chatArea, { childList: true, subtree: false });
+        observer2.observe(chatArea, { childList: true, subtree: true });
         chatObserver.current = observer2;
       };
       reactExports.useEffect(() => {

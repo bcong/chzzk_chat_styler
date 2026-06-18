@@ -97,19 +97,11 @@ const App = () => {
             disconnectObserver();
         }
 
-        // 새 구조: aside#aside-chatting > [role="log"] > firstElementChild (= _wrapper_sg7hy_25)
-        // DOM: [role="log"] 자식: [0]=wrapper [1]=floating [2]=layer
-        // wrapper 를 직접 관찰해야 item 추가를 childList로 감지 가능
-        let chatArea: Element | null = null;
-        const asideChatting = document.querySelector('aside#aside-chatting');
-        if (asideChatting) {
-            const chatLog = asideChatting.querySelector('[role="log"]');
-            chatArea = (chatLog?.firstElementChild as Element) ?? null;
-        }
-        if (!chatArea) {
-            const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
-            chatArea = chatAreaElements[chatAreaElements.length - 1] ?? null;
-        }
+        // [role="log"] 를 직접 관찰 + subtree:true → 중첩 깊이에 무관하게 감지
+        const chatArea: Element | null =
+            document.querySelector('aside#aside-chatting [role="log"]') ??
+            document.querySelector('[class*="live_chatting_list_wrapper"]') ??
+            null;
 
         if (!chatArea) {
             if (retryTimer.current) clearTimeout(retryTimer.current);
@@ -122,7 +114,10 @@ const App = () => {
         disconnectObserver();
         observedChatArea.current = chatArea;
 
-        // 기존 항목은 중복 방지용으로 WeakSet에만 등록 (item 레벨로 마킹)
+        // 기존 항목은 중복 방지용으로 WeakSet에만 등록
+        chatArea.querySelectorAll('[class*="live_chatting_list_item"]').forEach((el) => {
+            processedChats.current.add(el);
+        });
         Array.from(chatArea.children).forEach((el) => {
             processedChats.current.add(el);
         });
@@ -145,7 +140,7 @@ const App = () => {
             }
         });
 
-        observer.observe(chatArea, { childList: true, subtree: false });
+        observer.observe(chatArea, { childList: true, subtree: true });
         chatObserver.current = observer;
     };
 
