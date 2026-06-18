@@ -98,15 +98,29 @@ const Chat = observer(() => {
     }, []);
 
     useEffect(() => {
+        let currentEl: Element | null = null;
+
         const find = () => {
-            const el = document.querySelector('div[aria-label="비디오 플레이어"]') || document.querySelector('.pzp-pc');
-            if (el) {
-                setPlayerDiv(el);
-            } else {
-                setTimeout(find, 500);
+            // 감시 중인 요소가 DOM에서 제거된 경우(방송 대기/끊김) 초기화
+            if (currentEl && !currentEl.isConnected) {
+                currentEl = null;
+                setPlayerDiv(null);
+            }
+
+            if (!currentEl) {
+                const el =
+                    document.querySelector('div[aria-label="비디오 플레이어"]') || document.querySelector('.pzp-pc');
+                if (el) {
+                    currentEl = el;
+                    setPlayerDiv(el);
+                }
             }
         };
+
         find();
+        const timer = setInterval(find, 2000);
+
+        return () => clearInterval(timer);
     }, []);
 
     useEffect(() => {
