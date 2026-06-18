@@ -47,9 +47,17 @@ const App = () => {
     const processChatItem = (chat: Element) => {
         if (processedChats.current.has(chat)) return;
 
-        const usernameElement = chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
-        const username = usernameElement?.textContent || null;
-        const messageElement = chat.querySelector('[class*="live_chatting_message_text"]');
+        // chat = _item_sg7hy_7 (item 레벨)
+        // 닉네임: button._nickname_* 의 textContent (img alt="" 이므로 텍스트만 남음)
+        const usernameElement =
+            chat.querySelector('button[class*="nickname"]') ??
+            chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
+        const username = usernameElement?.textContent?.trim() || null;
+
+        // 메시지: _chatting_message_* 의 직접 자식 span (> 로 닉네임 내부 span 배제)
+        const messageElement =
+            chat.querySelector('[class*="chatting_message"] > span[class*="text"]') ??
+            chat.querySelector('[class*="live_chatting_message_text"]');
 
         if (!username || !messageElement || !(messageElement instanceof HTMLElement)) return;
 
@@ -89,8 +97,19 @@ const App = () => {
             disconnectObserver();
         }
 
-        const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
-        const chatArea = chatAreaElements[chatAreaElements.length - 1];
+        // 새 구조: aside#aside-chatting > [role="log"] > firstElementChild (= _wrapper_sg7hy_25)
+        // DOM: [role="log"] 자식: [0]=wrapper [1]=floating [2]=layer
+        // wrapper 를 직접 관찰해야 item 추가를 childList로 감지 가능
+        let chatArea: Element | null = null;
+        const asideChatting = document.querySelector('aside#aside-chatting');
+        if (asideChatting) {
+            const chatLog = asideChatting.querySelector('[role="log"]');
+            chatArea = (chatLog?.firstElementChild as Element) ?? null;
+        }
+        if (!chatArea) {
+            const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
+            chatArea = chatAreaElements[chatAreaElements.length - 1] ?? null;
+        }
 
         if (!chatArea) {
             if (retryTimer.current) clearTimeout(retryTimer.current);
@@ -103,8 +122,8 @@ const App = () => {
         disconnectObserver();
         observedChatArea.current = chatArea;
 
-        // 기존 항목은 중복 방지용으로 WeakSet에만 등록하고 store에는 추가하지 않음
-        chatArea.querySelectorAll('[class*="live_chatting_list_item"]').forEach((el) => {
+        // 기존 항목은 중복 방지용으로 WeakSet에만 등록 (item 레벨로 마킹)
+        Array.from(chatArea.children).forEach((el) => {
             processedChats.current.add(el);
         });
 
@@ -114,7 +133,10 @@ const App = () => {
                 mutation.addedNodes.forEach((node) => {
                     if (node.nodeType !== Node.ELEMENT_NODE) return;
                     const elem = node as Element;
-                    if (elem.matches('[class*="live_chatting_list_item"]')) {
+                    // elem = _item_sg7hy_7: chatting_message 를 포함하는지 확인
+                    if (elem.querySelector('[class*="chatting_message"]')) {
+                        processChatItem(elem);
+                    } else if (elem.matches('[class*="live_chatting_list_item"]')) {
                         processChatItem(elem);
                     } else {
                         elem.querySelectorAll('[class*="live_chatting_list_item"]').forEach(processChatItem);

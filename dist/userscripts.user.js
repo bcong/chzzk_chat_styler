@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260618144933
+// @version      20260618151500
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13316,6 +13316,8 @@ img {
       const [playerDiv, setPlayerDiv] = reactExports.useState(null);
       const [isControlsVisible, setIsControlsVisible] = reactExports.useState(false);
       const controlsObserverRef = reactExports.useRef(null);
+      const asideObserverRef = reactExports.useRef(null);
+      const getSideElement = () => document.querySelector("aside#aside-chatting") ?? document.querySelector("aside[class*='live_chatting_container']");
       const checkEnableChat = () => {
         try {
           const foldButton = document.querySelector("button[aria-label='채팅 접기']");
@@ -13331,24 +13333,8 @@ img {
               { capture: true }
             );
           }
-          const showButtons = document.querySelectorAll("button[class*='live_information_player_folded_button']");
-          showButtons.forEach((btn) => {
-            const button = btn;
-            if (!button.dataset.stylerBound) {
-              button.dataset.stylerBound = "1";
-              button.addEventListener(
-                "click",
-                (e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  mainStore.setSetting("defalut_chat_enable", true, true);
-                },
-                { capture: true }
-              );
-            }
-          });
           const newPathname = window.location.pathname;
-          const sideElement = document.querySelector("aside[class*='live_chatting_container']");
+          const sideElement = getSideElement();
           if (pathname != newPathname || chatEnable != defalut_chat_enable) {
             if (sideElement && sideElement.style) {
               sideElement.style.maxWidth = defalut_chat_enable ? "" : "0px";
@@ -13370,6 +13356,32 @@ img {
           if (chatUpdate.current) clearInterval(chatUpdate.current);
         };
       }, [defalut_chat_enable, chatEnable, pathname]);
+      reactExports.useEffect(() => {
+        const attachAsideObserver = () => {
+          const sideEl = getSideElement();
+          if (!sideEl || asideObserverRef.current) return;
+          const obs = new MutationObserver(() => {
+            const folded = sideEl.className.includes("is_folded");
+            if (folded && mainStore.setting.get("defalut_chat_enable")) {
+              mainStore.setSetting("defalut_chat_enable", false, true);
+            } else if (!folded && !mainStore.setting.get("defalut_chat_enable")) {
+              if (sideEl.style.maxWidth !== "0px") {
+                mainStore.setSetting("defalut_chat_enable", true, true);
+              }
+            }
+          });
+          obs.observe(sideEl, { attributes: true, attributeFilter: ["class"] });
+          asideObserverRef.current = obs;
+        };
+        const timer = setInterval(attachAsideObserver, 1e3);
+        attachAsideObserver();
+        return () => {
+          var _a2;
+          clearInterval(timer);
+          (_a2 = asideObserverRef.current) == null ? void 0 : _a2.disconnect();
+          asideObserverRef.current = null;
+        };
+      }, []);
       reactExports.useEffect(() => {
         const find = () => {
           const el2 = document.querySelector('div[aria-label="비디오 플레이어"]') || document.querySelector(".pzp-pc");
@@ -13410,9 +13422,7 @@ img {
             onClick: (e) => {
               e.stopPropagation();
               mainStore.setSetting("defalut_chat_enable", true, true);
-              const sideEl = document.querySelector(
-                "aside[class*='live_chatting_container']"
-              );
+              const sideEl = getSideElement();
               if (sideEl == null ? void 0 : sideEl.style) {
                 sideEl.style.maxWidth = "";
                 sideEl.style.opacity = "";
@@ -13477,17 +13487,18 @@ img {
         IsInit(true);
       };
       const processChatItem = (chat) => {
+        var _a2;
         if (processedChats.current.has(chat)) return;
-        const usernameElement = chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
-        const username = (usernameElement == null ? void 0 : usernameElement.textContent) || null;
-        const messageElement = chat.querySelector('[class*="live_chatting_message_text"]');
+        const usernameElement = chat.querySelector('button[class*="nickname"]') ?? chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
+        const username = ((_a2 = usernameElement == null ? void 0 : usernameElement.textContent) == null ? void 0 : _a2.trim()) || null;
+        const messageElement = chat.querySelector('[class*="chatting_message"] > span[class*="text"]') ?? chat.querySelector('[class*="live_chatting_message_text"]');
         if (!username || !messageElement || !(messageElement instanceof HTMLElement)) return;
         processedChats.current.add(chat);
         const contentArray = [];
         messageElement.childNodes.forEach((node) => {
-          var _a2;
+          var _a3;
           if (node.nodeType === Node.TEXT_NODE) {
-            const textContent = (_a2 = node.textContent) == null ? void 0 : _a2.trim();
+            const textContent = (_a3 = node.textContent) == null ? void 0 : _a3.trim();
             if (textContent) contentArray.push({ type: "text", content: textContent });
           } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "IMG") {
             const imgSrc = node.getAttribute("src");
@@ -13511,8 +13522,16 @@ img {
         if (observedChatArea.current && !observedChatArea.current.isConnected) {
           disconnectObserver();
         }
-        const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
-        const chatArea = chatAreaElements[chatAreaElements.length - 1];
+        let chatArea = null;
+        const asideChatting = document.querySelector("aside#aside-chatting");
+        if (asideChatting) {
+          const chatLog = asideChatting.querySelector('[role="log"]');
+          chatArea = (chatLog == null ? void 0 : chatLog.firstElementChild) ?? null;
+        }
+        if (!chatArea) {
+          const chatAreaElements = document.querySelectorAll('[class*="live_chatting_list_wrapper"]');
+          chatArea = chatAreaElements[chatAreaElements.length - 1] ?? null;
+        }
         if (!chatArea) {
           if (retryTimer.current) clearTimeout(retryTimer.current);
           retryTimer.current = window.setTimeout(observeChatArea, 1e3);
@@ -13521,7 +13540,7 @@ img {
         if (observedChatArea.current === chatArea) return;
         disconnectObserver();
         observedChatArea.current = chatArea;
-        chatArea.querySelectorAll('[class*="live_chatting_list_item"]').forEach((el2) => {
+        Array.from(chatArea.children).forEach((el2) => {
           processedChats.current.add(el2);
         });
         const observer2 = new MutationObserver((mutations) => {
@@ -13530,7 +13549,9 @@ img {
             mutation.addedNodes.forEach((node) => {
               if (node.nodeType !== Node.ELEMENT_NODE) return;
               const elem = node;
-              if (elem.matches('[class*="live_chatting_list_item"]')) {
+              if (elem.querySelector('[class*="chatting_message"]')) {
+                processChatItem(elem);
+              } else if (elem.matches('[class*="live_chatting_list_item"]')) {
                 processChatItem(elem);
               } else {
                 elem.querySelectorAll('[class*="live_chatting_list_item"]').forEach(processChatItem);

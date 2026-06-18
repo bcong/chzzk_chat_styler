@@ -18,6 +18,11 @@ const Chat = observer(() => {
     const [playerDiv, setPlayerDiv] = useState<Element | null>(null);
     const [isControlsVisible, setIsControlsVisible] = useState(false);
     const controlsObserverRef = useRef<MutationObserver | null>(null);
+    const asideObserverRef = useRef<MutationObserver | null>(null);
+
+    const getSideElement = (): HTMLElement | null =>
+        (document.querySelector('aside#aside-chatting') ??
+            document.querySelector("aside[class*='live_chatting_container']")) as HTMLElement | null;
 
     const checkEnableChat = () => {
         try {
@@ -35,25 +40,8 @@ const Chat = observer(() => {
                 );
             }
 
-            const showButtons = document.querySelectorAll("button[class*='live_information_player_folded_button']");
-            showButtons.forEach((btn) => {
-                const button = btn as HTMLButtonElement;
-                if (!button.dataset.stylerBound) {
-                    button.dataset.stylerBound = '1';
-                    button.addEventListener(
-                        'click',
-                        (e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            mainStore.setSetting('defalut_chat_enable', true, true);
-                        },
-                        { capture: true },
-                    );
-                }
-            });
-
             const newPathname = window.location.pathname;
-            const sideElement = document.querySelector("aside[class*='live_chatting_container']") as HTMLElement;
+            const sideElement = getSideElement();
 
             if (pathname != newPathname || chatEnable != defalut_chat_enable) {
                 if (sideElement && sideElement.style) {
@@ -79,6 +67,35 @@ const Chat = observer(() => {
             if (chatUpdate.current) clearInterval(chatUpdate.current);
         };
     }, [defalut_chat_enable, chatEnable, pathname]);
+
+    // aside#aside-chatting 클래스 변화 관찰 - is_folded 상태 동기화
+    useEffect(() => {
+        const attachAsideObserver = () => {
+            const sideEl = getSideElement();
+            if (!sideEl || asideObserverRef.current) return;
+            const obs = new MutationObserver(() => {
+                const folded = sideEl.className.includes('is_folded');
+                if (folded && mainStore.setting.get('defalut_chat_enable')) {
+                    mainStore.setSetting('defalut_chat_enable', false, true);
+                } else if (!folded && !mainStore.setting.get('defalut_chat_enable')) {
+                    // is_folded 해제 시 - 우리가 수동 숨김한 경우가 아닐 때만 복원
+                    if (sideEl.style.maxWidth !== '0px') {
+                        mainStore.setSetting('defalut_chat_enable', true, true);
+                    }
+                }
+            });
+            obs.observe(sideEl, { attributes: true, attributeFilter: ['class'] });
+            asideObserverRef.current = obs;
+        };
+
+        const timer = setInterval(attachAsideObserver, 1000);
+        attachAsideObserver();
+        return () => {
+            clearInterval(timer);
+            asideObserverRef.current?.disconnect();
+            asideObserverRef.current = null;
+        };
+    }, []);
 
     useEffect(() => {
         const find = () => {
@@ -124,9 +141,7 @@ const Chat = observer(() => {
                 onClick={(e) => {
                     e.stopPropagation();
                     mainStore.setSetting('defalut_chat_enable', true, true);
-                    const sideEl = document.querySelector(
-                        "aside[class*='live_chatting_container']",
-                    ) as HTMLElement | null;
+                    const sideEl = getSideElement();
                     if (sideEl?.style) {
                         sideEl.style.maxWidth = '';
                         sideEl.style.opacity = '';
