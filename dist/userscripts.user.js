@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260614091411
+// @version      20260618144933
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -7498,11 +7498,15 @@ img {
     const styles$9 = {
       SettingMenu
     };
-    const TOOLBAR_SELECTOR = "div[class^='toolbar_section__']";
+    const STUDIO_LINK_SELECTOR = "a[href*='studio.chzzk.naver.com']";
     const SettingMenuComponent = ({ toggleSetting }) => {
       const id2 = "chatStylerSetting";
       const selfRemoving = reactExports.useRef(false);
-      const insertElement = (toolbar) => {
+      const findFirstBox = () => {
+        const studioLink = document.querySelector(STUDIO_LINK_SELECTOR);
+        return (studioLink == null ? void 0 : studioLink.parentElement) ?? null;
+      };
+      const insertElement = (firstBox) => {
         const existing = document.getElementById(id2);
         if (existing) {
           selfRemoving.current = true;
@@ -7518,12 +7522,12 @@ img {
         label.textContent = "S";
         button.appendChild(label);
         wrapper.appendChild(button);
-        toolbar.insertBefore(wrapper, toolbar.firstChild);
+        firstBox.appendChild(wrapper);
         wrapper.addEventListener("click", toggleSetting);
       };
       const tryInsert = () => {
-        const toolbar = document.querySelector(TOOLBAR_SELECTOR);
-        if (toolbar) insertElement(toolbar);
+        const firstBox = findFirstBox();
+        if (firstBox) insertElement(firstBox);
       };
       reactExports.useEffect(() => {
         tryInsert();
@@ -7533,7 +7537,7 @@ img {
             for (const node of mutation.addedNodes) {
               if (node.nodeType !== 1) continue;
               const el2 = node;
-              if (el2.matches(TOOLBAR_SELECTOR) || el2.querySelector(TOOLBAR_SELECTOR)) {
+              if (el2.matches(STUDIO_LINK_SELECTOR) || el2.querySelector(STUDIO_LINK_SELECTOR)) {
                 tryInsert();
                 break;
               }
@@ -7849,6 +7853,13 @@ img {
       for (var e = 0, n2 = Array(a); e < a; e++) n2[e] = r2[e];
       return n2;
     }
+    function _construct(t2, e, r2) {
+      if (_isNativeReflectConstruct()) return Reflect.construct.apply(null, arguments);
+      var o = [null];
+      o.push.apply(o, e);
+      var p2 = new (t2.bind.apply(t2, o))();
+      return r2 && _setPrototypeOf(p2, r2.prototype), p2;
+    }
     function _defineProperties(e, r2) {
       for (var t2 = 0; t2 < r2.length; t2++) {
         var o = r2[t2];
@@ -7886,8 +7897,30 @@ img {
         return n2;
       }, _extends.apply(null, arguments);
     }
+    function _getPrototypeOf(t2) {
+      return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function(t22) {
+        return t22.__proto__ || Object.getPrototypeOf(t22);
+      }, _getPrototypeOf(t2);
+    }
     function _inheritsLoose(t2, o) {
       t2.prototype = Object.create(o.prototype), t2.prototype.constructor = t2, _setPrototypeOf(t2, o);
+    }
+    function _isNativeFunction(t2) {
+      try {
+        return -1 !== Function.toString.call(t2).indexOf("[native code]");
+      } catch (n2) {
+        return "function" == typeof t2;
+      }
+    }
+    function _isNativeReflectConstruct() {
+      try {
+        var t2 = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {
+        }));
+      } catch (t22) {
+      }
+      return (_isNativeReflectConstruct = function() {
+        return !!t2;
+      })();
     }
     function _setPrototypeOf(t2, e) {
       return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function(t22, e2) {
@@ -7914,6 +7947,28 @@ img {
         var t2 = {}.toString.call(r2).slice(8, -1);
         return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray(r2, a) : void 0;
       }
+    }
+    function _wrapNativeSuper(t2) {
+      var r2 = "function" == typeof Map ? /* @__PURE__ */ new Map() : void 0;
+      return _wrapNativeSuper = function(t22) {
+        if (null === t22 || !_isNativeFunction(t22)) return t22;
+        if ("function" != typeof t22) throw new TypeError("Super expression must either be null or a function");
+        if (void 0 !== r2) {
+          if (r2.has(t22)) return r2.get(t22);
+          r2.set(t22, Wrapper);
+        }
+        function Wrapper() {
+          return _construct(t22, arguments, _getPrototypeOf(this).constructor);
+        }
+        return Wrapper.prototype = Object.create(t22.prototype, {
+          constructor: {
+            value: Wrapper,
+            enumerable: false,
+            writable: true,
+            configurable: true
+          }
+        }), _setPrototypeOf(Wrapper, t22);
+      }, _wrapNativeSuper(t2);
     }
     var storedAnnotationsSymbol = /* @__PURE__ */ Symbol("mobx-stored-annotations");
     function createDecoratorAnnotation(annotation) {
@@ -8030,14 +8085,8 @@ img {
       }
       return atom;
     }
-    function identityComparer(a, b) {
-      return a === b;
-    }
     function structuralComparer(a, b) {
       return deepEqual(a, b);
-    }
-    function shallowComparer(a, b) {
-      return deepEqual(a, b, 1);
     }
     function defaultComparer(a, b) {
       if (Object.is) {
@@ -8046,10 +8095,8 @@ img {
       return a === b ? a !== 0 || 1 / a === 1 / b : a !== a && b !== b;
     }
     var comparer = {
-      identity: identityComparer,
       structural: structuralComparer,
-      "default": defaultComparer,
-      shallow: shallowComparer
+      "default": defaultComparer
     };
     function deepEnhancer(v2, _14, name) {
       if (isObservable(v2)) {
@@ -8327,17 +8374,41 @@ img {
     function decorate_20223_$3(get4, context) {
       var ann = this;
       var key = context.name, addInitializer = context.addInitializer;
-      addInitializer(function() {
-        var adm = asObservableObject(this)[$mobx];
+      var computedValues;
+      function createComputedValue(target, adm) {
         var options = _extends({}, ann.options_, {
           get: get4,
-          context: this
+          context: target
         });
         options.name || (options.name = "ObservableObject." + key.toString());
-        adm.values_.set(key, new ComputedValue(options));
+        return new ComputedValue(options);
+      }
+      addInitializer(function() {
+        var _adm$lazyComputedKeys;
+        var adm = asObservableObject(this)[$mobx];
+        var target = this;
+        var observable2 = adm.values_.get(key);
+        if (observable2 instanceof ComputedValue && observable2.derivation !== get4) {
+          adm.values_["delete"](key);
+        }
+        ((_adm$lazyComputedKeys = adm.lazyComputedKeys_) != null ? _adm$lazyComputedKeys : adm.lazyComputedKeys_ = /* @__PURE__ */ new Map()).set(key, function() {
+          return createComputedValue(target);
+        });
       });
       return function() {
-        return this[$mobx].getObservablePropValue_(key);
+        var adm = this[$mobx];
+        var observable2 = adm.values_.get(key);
+        if (observable2 instanceof ComputedValue && observable2.derivation !== get4) {
+          var _computedValues;
+          var computed3 = (_computedValues = computedValues) == null ? void 0 : _computedValues.get(this);
+          if (!computed3) {
+            var _computedValues2;
+            computed3 = createComputedValue(this);
+            ((_computedValues2 = computedValues) != null ? _computedValues2 : computedValues = /* @__PURE__ */ new WeakMap()).set(this, computed3);
+          }
+          return computed3.get();
+        }
+        return adm.getObservablePropValue_(key);
       };
     }
     function assertComputedDescriptor(adm, _ref, key, _ref2) {
@@ -8364,37 +8435,34 @@ img {
     function decorate_20223_$4(desc, context) {
       var ann = this;
       var kind = context.kind, name = context.name;
-      var initializedObjects = /* @__PURE__ */ new WeakSet();
-      function initializeObservable(target, value) {
-        var _ann$options_$enhance, _ann$options_;
+      if (kind !== "accessor") {
+        return;
+      }
+      function registerLazy(target, value) {
+        var _adm$lazyObservableKe;
         var adm = asObservableObject(target)[$mobx];
-        var observable2 = new ObservableValue(value, (_ann$options_$enhance = (_ann$options_ = ann.options_) == null ? void 0 : _ann$options_.enhancer) != null ? _ann$options_$enhance : deepEnhancer, "ObservableObject." + name.toString(), false);
-        adm.values_.set(name, observable2);
-        initializedObjects.add(target);
+        ((_adm$lazyObservableKe = adm.lazyObservableKeys_) != null ? _adm$lazyObservableKe : adm.lazyObservableKeys_ = /* @__PURE__ */ new Map()).set(name, function() {
+          var _ann$options_$enhance, _ann$options_;
+          return new ObservableValue(value, (_ann$options_$enhance = (_ann$options_ = ann.options_) == null ? void 0 : _ann$options_.enhancer) != null ? _ann$options_$enhance : deepEnhancer, "ObservableObject." + name.toString(), false);
+        });
+        return adm;
       }
-      if (kind == "accessor") {
-        return {
-          get: function get4() {
-            if (!initializedObjects.has(this)) {
-              initializeObservable(this, desc.get.call(this));
-            }
-            return this[$mobx].getObservablePropValue_(name);
-          },
-          set: function set5(value) {
-            if (!initializedObjects.has(this)) {
-              initializeObservable(this, value);
-            }
-            return this[$mobx].setObservablePropValue_(name, value);
-          },
-          init: function init(value) {
-            if (!initializedObjects.has(this)) {
-              initializeObservable(this, value);
-            }
-            return value;
-          }
-        };
-      }
-      return;
+      return {
+        get: function get4() {
+          var _this$$mobx;
+          var adm = (_this$$mobx = this[$mobx]) != null ? _this$$mobx : registerLazy(this, desc.get.call(this));
+          return adm.getObservablePropValue_(name);
+        },
+        set: function set5(value) {
+          var _this$$mobx2;
+          var adm = (_this$$mobx2 = this[$mobx]) != null ? _this$$mobx2 : registerLazy(this, value);
+          return adm.setObservablePropValue_(name, value);
+        },
+        init: function init(value) {
+          registerLazy(this, value);
+          return value;
+        }
+      };
     }
     function assertObservableDescriptor(adm, _ref, key, descriptor) {
       _ref.annotationType_;
@@ -9723,10 +9791,21 @@ img {
       return Array.from(new Set(list));
     }
     var generatorId = 0;
-    function FlowCancellationError() {
-      this.message = "FLOW_CANCELLED";
-    }
-    FlowCancellationError.prototype = /* @__PURE__ */ Object.create(Error.prototype);
+    var FlowCancellationError = /* @__PURE__ */ function(_Error) {
+      function FlowCancellationError2() {
+        var _this;
+        _this = _Error.call(this, "FLOW_CANCELLED") || this;
+        Object.setPrototypeOf(_this, (this instanceof FlowCancellationError2 ? this.constructor : void 0).prototype);
+        _this.name = "FlowCancellationError";
+        return _this;
+      }
+      _inheritsLoose(FlowCancellationError2, _Error);
+      var _proto = FlowCancellationError2.prototype;
+      _proto.toString = function toString2() {
+        return "Error: " + this.message;
+      };
+      return FlowCancellationError2;
+    }(/* @__PURE__ */ _wrapNativeSuper(Error));
     var flowAnnotation = /* @__PURE__ */ createFlowAnnotation("flow");
     var flowBoundAnnotation = /* @__PURE__ */ createFlowAnnotation("flow.bound", {
       bound: true
@@ -10546,6 +10625,18 @@ img {
         }
         return this.dehanceValue_(void 0);
       };
+      _proto.getOrInsert = function getOrInsert(key, value) {
+        if (!this.has(key)) {
+          this.set(key, value);
+        }
+        return this.get(key);
+      };
+      _proto.getOrInsertComputed = function getOrInsertComputed(key, callback) {
+        if (!this.has(key)) {
+          this.set(key, callback(key));
+        }
+        return this.get(key);
+      };
       _proto.dehanceValue_ = function dehanceValue_(value) {
         if (this.dehancer !== void 0) {
           return this.dehancer(value);
@@ -11006,6 +11097,8 @@ img {
         this.isPlainObject_ = void 0;
         this.appliedAnnotations_ = void 0;
         this.pendingKeys_ = void 0;
+        this.lazyComputedKeys_ = void 0;
+        this.lazyObservableKeys_ = void 0;
         this.target_ = target_;
         this.values_ = values_;
         this.name_ = name_;
@@ -11015,10 +11108,41 @@ img {
       }
       var _proto = ObservableObjectAdministration2.prototype;
       _proto.getObservablePropValue_ = function getObservablePropValue_(key) {
-        return this.values_.get(key).get();
+        var _ref, _this$values_$get;
+        var observable2 = (_ref = (_this$values_$get = this.values_.get(key)) != null ? _this$values_$get : this.materializeLazyComputed_(key)) != null ? _ref : this.materializeLazyObservable_(key);
+        return observable2.get();
+      };
+      _proto.materializeLazyComputed_ = function materializeLazyComputed_(key) {
+        var _this$lazyComputedKey;
+        var factory = (_this$lazyComputedKey = this.lazyComputedKeys_) == null ? void 0 : _this$lazyComputedKey.get(key);
+        if (!factory) {
+          return void 0;
+        }
+        this.lazyComputedKeys_["delete"](key);
+        if (this.lazyComputedKeys_.size === 0) {
+          this.lazyComputedKeys_ = void 0;
+        }
+        var computed3 = factory();
+        this.values_.set(key, computed3);
+        return computed3;
+      };
+      _proto.materializeLazyObservable_ = function materializeLazyObservable_(key) {
+        var _this$lazyObservableK;
+        var factory = (_this$lazyObservableK = this.lazyObservableKeys_) == null ? void 0 : _this$lazyObservableK.get(key);
+        if (!factory) {
+          return void 0;
+        }
+        this.lazyObservableKeys_["delete"](key);
+        if (this.lazyObservableKeys_.size === 0) {
+          this.lazyObservableKeys_ = void 0;
+        }
+        var observable2 = factory();
+        this.values_.set(key, observable2);
+        return observable2;
       };
       _proto.setObservablePropValue_ = function setObservablePropValue_(key, newValue) {
-        var observable2 = this.values_.get(key);
+        var _ref2, _this$values_$get2;
+        var observable2 = (_ref2 = (_this$values_$get2 = this.values_.get(key)) != null ? _this$values_$get2 : this.materializeLazyComputed_(key)) != null ? _ref2 : this.materializeLazyObservable_(key);
         if (observable2 instanceof ComputedValue) {
           observable2.set(newValue);
           return true;
@@ -11554,10 +11678,12 @@ img {
           return observable2;
         }
         if (isObservableObject(thing)) {
+          var _ref, _adm$values_$get;
           if (!property) {
             return die(26);
           }
-          var _observable = thing[$mobx].values_.get(property);
+          var adm = thing[$mobx];
+          var _observable = (_ref = (_adm$values_$get = adm.values_.get(property)) != null ? _adm$values_$get : adm.materializeLazyComputed_(property)) != null ? _ref : adm.materializeLazyObservable_(property);
           if (!_observable) {
             die(27, property, getDebugName(thing));
           }
@@ -11725,8 +11851,9 @@ img {
       }
       return a;
     }
-    var _getGlobal$Iterator;
-    var maybeIteratorPrototype = ((_getGlobal$Iterator = getGlobal().Iterator) == null ? void 0 : _getGlobal$Iterator.prototype) || {};
+    var _global$Iterator;
+    var global$1 = /* @__PURE__ */ getGlobal();
+    var maybeIteratorPrototype = ((_global$Iterator = global$1.Iterator) == null ? void 0 : _global$Iterator.prototype) || {};
     function makeIterable(iterator) {
       iterator[Symbol.iterator] = getSelf;
       return Object.assign(Object.create(maybeIteratorPrototype), iterator);
@@ -13204,7 +13331,7 @@ img {
               { capture: true }
             );
           }
-          const showButtons = document.querySelectorAll("button[class^='live_information_player_folded_button__']");
+          const showButtons = document.querySelectorAll("button[class*='live_information_player_folded_button']");
           showButtons.forEach((btn) => {
             const button = btn;
             if (!button.dataset.stylerBound) {
@@ -13221,7 +13348,7 @@ img {
             }
           });
           const newPathname = window.location.pathname;
-          const sideElement = document.querySelector("aside[class^='live_chatting_container__']");
+          const sideElement = document.querySelector("aside[class*='live_chatting_container']");
           if (pathname != newPathname || chatEnable != defalut_chat_enable) {
             if (sideElement && sideElement.style) {
               sideElement.style.maxWidth = defalut_chat_enable ? "" : "0px";
@@ -13245,7 +13372,7 @@ img {
       }, [defalut_chat_enable, chatEnable, pathname]);
       reactExports.useEffect(() => {
         const find = () => {
-          const el2 = document.querySelector('div[aria-label="비디오 플레이어"]');
+          const el2 = document.querySelector('div[aria-label="비디오 플레이어"]') || document.querySelector(".pzp-pc");
           if (el2) {
             setPlayerDiv(el2);
           } else {
@@ -13283,7 +13410,9 @@ img {
             onClick: (e) => {
               e.stopPropagation();
               mainStore.setSetting("defalut_chat_enable", true, true);
-              const sideEl = document.querySelector("aside[class^='live_chatting_container__']");
+              const sideEl = document.querySelector(
+                "aside[class*='live_chatting_container']"
+              );
               if (sideEl == null ? void 0 : sideEl.style) {
                 sideEl.style.maxWidth = "";
                 sideEl.style.opacity = "";

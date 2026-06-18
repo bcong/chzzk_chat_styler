@@ -4,13 +4,18 @@ import { I_GLOBAL_PROPS } from '@Types/index';
 
 interface I_PROPS extends I_GLOBAL_PROPS {}
 
-const TOOLBAR_SELECTOR = "div[class^='toolbar_section__']";
+const STUDIO_LINK_SELECTOR = "a[href*='studio.chzzk.naver.com']";
 
 const SettingMenuComponent: React.FC<I_PROPS> = ({ toggleSetting }) => {
     const id = 'chatStylerSetting';
     const selfRemoving = useRef(false);
 
-    const insertElement = (toolbar: Element) => {
+    const findFirstBox = (): Element | null => {
+        const studioLink = document.querySelector(STUDIO_LINK_SELECTOR);
+        return studioLink?.parentElement ?? null;
+    };
+
+    const insertElement = (firstBox: Element) => {
         const existing = document.getElementById(id);
         if (existing) {
             selfRemoving.current = true;
@@ -30,13 +35,13 @@ const SettingMenuComponent: React.FC<I_PROPS> = ({ toggleSetting }) => {
         button.appendChild(label);
         wrapper.appendChild(button);
 
-        toolbar.insertBefore(wrapper, toolbar.firstChild);
+        firstBox.appendChild(wrapper);
         wrapper.addEventListener('click', toggleSetting);
     };
 
     const tryInsert = () => {
-        const toolbar = document.querySelector(TOOLBAR_SELECTOR);
-        if (toolbar) insertElement(toolbar);
+        const firstBox = findFirstBox();
+        if (firstBox) insertElement(firstBox);
     };
 
     useEffect(() => {
@@ -46,11 +51,11 @@ const SettingMenuComponent: React.FC<I_PROPS> = ({ toggleSetting }) => {
             for (const mutation of mutations) {
                 if (mutation.type !== 'childList') continue;
 
-                // toolbar가 새로 추가됐을 때 (초기 로드 / 전체화면 전환 등)
+                // studio 링크가 새로 추가됐을 때 (초기 로드 / 전체화면 전환 등)
                 for (const node of mutation.addedNodes) {
                     if (node.nodeType !== 1) continue;
                     const el = node as Element;
-                    if (el.matches(TOOLBAR_SELECTOR) || el.querySelector(TOOLBAR_SELECTOR)) {
+                    if (el.matches(STUDIO_LINK_SELECTOR) || el.querySelector(STUDIO_LINK_SELECTOR)) {
                         tryInsert();
                         break;
                     }

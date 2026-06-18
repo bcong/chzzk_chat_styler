@@ -35,7 +35,7 @@ const Chat = observer(() => {
                 );
             }
 
-            const showButtons = document.querySelectorAll("button[class^='live_information_player_folded_button__']");
+            const showButtons = document.querySelectorAll("button[class*='live_information_player_folded_button']");
             showButtons.forEach((btn) => {
                 const button = btn as HTMLButtonElement;
                 if (!button.dataset.stylerBound) {
@@ -53,7 +53,7 @@ const Chat = observer(() => {
             });
 
             const newPathname = window.location.pathname;
-            const sideElement = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement;
+            const sideElement = document.querySelector("aside[class*='live_chatting_container']") as HTMLElement;
 
             if (pathname != newPathname || chatEnable != defalut_chat_enable) {
                 if (sideElement && sideElement.style) {
@@ -82,7 +82,7 @@ const Chat = observer(() => {
 
     useEffect(() => {
         const find = () => {
-            const el = document.querySelector('div[aria-label="비디오 플레이어"]');
+            const el = document.querySelector('div[aria-label="비디오 플레이어"]') || document.querySelector('.pzp-pc');
             if (el) {
                 setPlayerDiv(el);
             } else {
@@ -124,8 +124,13 @@ const Chat = observer(() => {
                 onClick={(e) => {
                     e.stopPropagation();
                     mainStore.setSetting('defalut_chat_enable', true, true);
-                    const sideEl = document.querySelector("aside[class^='live_chatting_container__']") as HTMLElement | null;
-                    if (sideEl?.style) { sideEl.style.maxWidth = ''; sideEl.style.opacity = ''; }
+                    const sideEl = document.querySelector(
+                        "aside[class*='live_chatting_container']",
+                    ) as HTMLElement | null;
+                    if (sideEl?.style) {
+                        sideEl.style.maxWidth = '';
+                        sideEl.style.opacity = '';
+                    }
                 }}
                 title="채팅 다시 표시">
                 <svg
