@@ -25,20 +25,22 @@ const FrameChat = observer(() => {
     const showNicknames = mainStore.setting.get('show_nicknames');
 
     useEffect(() => {
-        const addFrameChat = () => {
-            const div = document.querySelector('#live_player_layout');
-
-            if (!div) {
-                setTimeout(addFrameChat, 1000);
-                return;
-            }
-
-            if (div) {
-                setPlayerSizeDiv(div);
-            }
+        const find = () => {
+            setPlayerSizeDiv((prev) => {
+                if (prev && !prev.isConnected) {
+                    return null;
+                }
+                if (!prev) {
+                    const div = document.querySelector('#live_player_layout');
+                    return div ?? null;
+                }
+                return prev;
+            });
         };
 
-        addFrameChat();
+        find();
+        const timer = setInterval(find, 1000);
+        return () => clearInterval(timer);
     }, [window.location.href]);
 
     const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id, username, contentArray, color }) => {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260619041648
+// @version      20260627061146
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -12887,17 +12887,21 @@ img {
       const id2 = "chatStylerFrameChat";
       const showNicknames = mainStore.setting.get("show_nicknames");
       reactExports.useEffect(() => {
-        const addFrameChat = () => {
-          const div = document.querySelector("#live_player_layout");
-          if (!div) {
-            setTimeout(addFrameChat, 1e3);
-            return;
-          }
-          if (div) {
-            setPlayerSizeDiv(div);
-          }
+        const find = () => {
+          setPlayerSizeDiv((prev) => {
+            if (prev && !prev.isConnected) {
+              return null;
+            }
+            if (!prev) {
+              const div = document.querySelector("#live_player_layout");
+              return div ?? null;
+            }
+            return prev;
+          });
         };
-        addFrameChat();
+        find();
+        const timer = setInterval(find, 1e3);
+        return () => clearInterval(timer);
       }, [window.location.href]);
       const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id: id22, username, contentArray, color }) => {
         const background = frameChatBackground ? `rgba(0, 0, 0, ${frameChatOpacity}%)` : "";
