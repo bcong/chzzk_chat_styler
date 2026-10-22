@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20260627061146
+// @version      20261022141713
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13242,6 +13242,7 @@ img {
           const sideEl = getSideElement();
           if (!sideEl || asideObserverRef.current) return;
           const obs = new MutationObserver(() => {
+            if (document.fullscreenElement) return;
             const folded = sideEl.className.includes("is_folded");
             if (folded && mainStore.setting.get("defalut_chat_enable")) {
               mainStore.setSetting("defalut_chat_enable", false, true);

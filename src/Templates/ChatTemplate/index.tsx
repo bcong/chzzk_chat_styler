@@ -74,6 +74,8 @@ const Chat = observer(() => {
             const sideEl = getSideElement();
             if (!sideEl || asideObserverRef.current) return;
             const obs = new MutationObserver(() => {
+                if (document.fullscreenElement) return;
+
                 const folded = sideEl.className.includes('is_folded');
                 if (folded && mainStore.setting.get('defalut_chat_enable')) {
                     mainStore.setSetting('defalut_chat_enable', false, true);
