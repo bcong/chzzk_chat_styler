@@ -18,7 +18,6 @@ const Chat = observer(() => {
     const [playerDiv, setPlayerDiv] = useState<Element | null>(null);
     const [isControlsVisible, setIsControlsVisible] = useState(false);
     const controlsObserverRef = useRef<MutationObserver | null>(null);
-    const asideObserverRef = useRef<MutationObserver | null>(null);
 
     const getSideElement = (): HTMLElement | null =>
         (document.querySelector('aside#aside-chatting') ??
@@ -32,6 +31,8 @@ const Chat = observer(() => {
                 foldButton.addEventListener(
                     'click',
                     (e) => {
+                        if (!e.isTrusted) return;
+
                         e.stopPropagation();
                         e.preventDefault();
                         mainStore.setSetting('defalut_chat_enable', false, true);
@@ -67,37 +68,6 @@ const Chat = observer(() => {
             if (chatUpdate.current) clearInterval(chatUpdate.current);
         };
     }, [defalut_chat_enable, chatEnable, pathname]);
-
-    // aside#aside-chatting 클래스 변화 관찰 - is_folded 상태 동기화
-    useEffect(() => {
-        const attachAsideObserver = () => {
-            const sideEl = getSideElement();
-            if (!sideEl || asideObserverRef.current) return;
-            const obs = new MutationObserver(() => {
-                if (document.fullscreenElement) return;
-
-                const folded = sideEl.className.includes('is_folded');
-                if (folded && mainStore.setting.get('defalut_chat_enable')) {
-                    mainStore.setSetting('defalut_chat_enable', false, true);
-                } else if (!folded && !mainStore.setting.get('defalut_chat_enable')) {
-                    // is_folded 해제 시 - 우리가 수동 숨김한 경우가 아닐 때만 복원
-                    if (sideEl.style.maxWidth !== '0px') {
-                        mainStore.setSetting('defalut_chat_enable', true, true);
-                    }
-                }
-            });
-            obs.observe(sideEl, { attributes: true, attributeFilter: ['class'] });
-            asideObserverRef.current = obs;
-        };
-
-        const timer = setInterval(attachAsideObserver, 1000);
-        attachAsideObserver();
-        return () => {
-            clearInterval(timer);
-            asideObserverRef.current?.disconnect();
-            asideObserverRef.current = null;
-        };
-    }, []);
 
     useEffect(() => {
         let currentEl: Element | null = null;

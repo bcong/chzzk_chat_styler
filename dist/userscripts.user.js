@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20261022141713
+// @version      20261022142143
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -13197,7 +13197,6 @@ img {
       const [playerDiv, setPlayerDiv] = reactExports.useState(null);
       const [isControlsVisible, setIsControlsVisible] = reactExports.useState(false);
       const controlsObserverRef = reactExports.useRef(null);
-      const asideObserverRef = reactExports.useRef(null);
       const getSideElement = () => document.querySelector("aside#aside-chatting") ?? document.querySelector("aside[class*='live_chatting_container']");
       const checkEnableChat = () => {
         try {
@@ -13207,6 +13206,7 @@ img {
             foldButton.addEventListener(
               "click",
               (e) => {
+                if (!e.isTrusted) return;
                 e.stopPropagation();
                 e.preventDefault();
                 mainStore.setSetting("defalut_chat_enable", false, true);
@@ -13237,33 +13237,6 @@ img {
           if (chatUpdate.current) clearInterval(chatUpdate.current);
         };
       }, [defalut_chat_enable, chatEnable, pathname]);
-      reactExports.useEffect(() => {
-        const attachAsideObserver = () => {
-          const sideEl = getSideElement();
-          if (!sideEl || asideObserverRef.current) return;
-          const obs = new MutationObserver(() => {
-            if (document.fullscreenElement) return;
-            const folded = sideEl.className.includes("is_folded");
-            if (folded && mainStore.setting.get("defalut_chat_enable")) {
-              mainStore.setSetting("defalut_chat_enable", false, true);
-            } else if (!folded && !mainStore.setting.get("defalut_chat_enable")) {
-              if (sideEl.style.maxWidth !== "0px") {
-                mainStore.setSetting("defalut_chat_enable", true, true);
-              }
-            }
-          });
-          obs.observe(sideEl, { attributes: true, attributeFilter: ["class"] });
-          asideObserverRef.current = obs;
-        };
-        const timer = setInterval(attachAsideObserver, 1e3);
-        attachAsideObserver();
-        return () => {
-          var _a2;
-          clearInterval(timer);
-          (_a2 = asideObserverRef.current) == null ? void 0 : _a2.disconnect();
-          asideObserverRef.current = null;
-        };
-      }, []);
       reactExports.useEffect(() => {
         let currentEl = null;
         const find = () => {
