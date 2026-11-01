@@ -9,7 +9,6 @@ import { shouldFloatChat, shouldRenderChat } from '@Utils/chatVisibility';
 const FrameChat = observer(() => {
     const mainStore = useMainStore();
     const [playerSizeDiv, setPlayerSizeDiv] = useState<Element | null>(null);
-    const [isPaused, setIsPaused] = useState(false);
     const hasSeenPlayer = useRef(false);
     const frameChatPosition = mainStore.setting.get('frame_chat_position');
     const frameRandomUsername = mainStore.setting.get('frame_random_username');
@@ -29,9 +28,11 @@ const FrameChat = observer(() => {
 
     useEffect(() => {
         const find = () => {
-            const player = document.querySelector('#live_player_layout');
+            const playerLayout = document.querySelector('#live_player_layout');
+            const preAdPlayer = document.querySelector('#preAdPlayerWrapper');
+            const player = playerLayout?.parentElement ?? preAdPlayer?.parentElement ?? playerLayout ?? preAdPlayer;
+
             if (player) {
-                hasSeenPlayer.current = true;
                 setPlayerSizeDiv(player);
             } else {
                 setPlayerSizeDiv((prev) => (prev && !prev.isConnected ? null : prev));
@@ -44,25 +45,7 @@ const FrameChat = observer(() => {
     }, [window.location.href]);
 
     useEffect(() => {
-        const video =
-            playerSizeDiv?.querySelector('video') ??
-            Array.from(document.querySelectorAll('video')).find((item) => item.readyState > 0);
-        if (!video) {
-            setIsPaused(false);
-            return;
-        }
-
-        const update = () => setIsPaused(video.paused || video.ended);
-        update();
-        video.addEventListener('pause', update);
-        video.addEventListener('play', update);
-        video.addEventListener('ended', update);
-
-        return () => {
-            video.removeEventListener('pause', update);
-            video.removeEventListener('play', update);
-            video.removeEventListener('ended', update);
-        };
+        if (playerSizeDiv) hasSeenPlayer.current = true;
     }, [playerSizeDiv]);
 
     const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id, username, contentArray, color }) => {
@@ -151,7 +134,7 @@ const FrameChat = observer(() => {
     const chatBackgroundStyle = `linear-gradient(${frameChatDegree}deg, rgba(0, 0, 0, ${frameBackgroundOpacity}%) ${frameBackgroundArea}%, rgba(0, 0, 0, 0) 100%)`;
     if (!shouldRenderChat(!!playerSizeDiv, hasSeenPlayer.current)) return null;
 
-    const isFloating = shouldFloatChat(!!playerSizeDiv, isPaused);
+    const isFloating = shouldFloatChat(!!playerSizeDiv);
     const portalTarget = playerSizeDiv && !isFloating ? playerSizeDiv : document.body;
 
     return ReactDOM.createPortal(

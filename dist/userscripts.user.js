@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20261102034132
+// @version      20261102040418
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -12814,7 +12814,7 @@ img {
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.Content, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Setting, {}) }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$7.Version, children: [
                 "빌드 버전: ",
-                "20261102034132"
+                "20261102040418"
               ] })
             ]
           }
@@ -12847,11 +12847,10 @@ img {
       Background: Background$1
     };
     const shouldRenderChat = (hasPlayer, hasSeenPlayer) => hasPlayer || hasSeenPlayer;
-    const shouldFloatChat = (hasPlayer, isPaused) => !hasPlayer || isPaused;
+    const shouldFloatChat = (hasPlayer) => !hasPlayer;
     const FrameChat = observer(() => {
       const mainStore = useMainStore();
       const [playerSizeDiv, setPlayerSizeDiv] = reactExports.useState(null);
-      const [isPaused, setIsPaused] = reactExports.useState(false);
       const hasSeenPlayer = reactExports.useRef(false);
       const frameChatPosition = mainStore.setting.get("frame_chat_position");
       const frameRandomUsername = mainStore.setting.get("frame_random_username");
@@ -12870,9 +12869,10 @@ img {
       const showNicknames = mainStore.setting.get("show_nicknames");
       reactExports.useEffect(() => {
         const find = () => {
-          const player = document.querySelector("#live_player_layout");
+          const playerLayout = document.querySelector("#live_player_layout");
+          const preAdPlayer = document.querySelector("#preAdPlayerWrapper");
+          const player = (playerLayout == null ? void 0 : playerLayout.parentElement) ?? (preAdPlayer == null ? void 0 : preAdPlayer.parentElement) ?? playerLayout ?? preAdPlayer;
           if (player) {
-            hasSeenPlayer.current = true;
             setPlayerSizeDiv(player);
           } else {
             setPlayerSizeDiv((prev) => prev && !prev.isConnected ? null : prev);
@@ -12883,21 +12883,7 @@ img {
         return () => clearInterval(timer);
       }, [window.location.href]);
       reactExports.useEffect(() => {
-        const video = (playerSizeDiv == null ? void 0 : playerSizeDiv.querySelector("video")) ?? Array.from(document.querySelectorAll("video")).find((item) => item.readyState > 0);
-        if (!video) {
-          setIsPaused(false);
-          return;
-        }
-        const update = () => setIsPaused(video.paused || video.ended);
-        update();
-        video.addEventListener("pause", update);
-        video.addEventListener("play", update);
-        video.addEventListener("ended", update);
-        return () => {
-          video.removeEventListener("pause", update);
-          video.removeEventListener("play", update);
-          video.removeEventListener("ended", update);
-        };
+        if (playerSizeDiv) hasSeenPlayer.current = true;
       }, [playerSizeDiv]);
       const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id: id22, username, contentArray, color }) => {
         const background = frameChatBackground ? `rgba(0, 0, 0, ${frameChatOpacity}%)` : "";
@@ -12977,7 +12963,7 @@ img {
       }
       const chatBackgroundStyle = `linear-gradient(${frameChatDegree}deg, rgba(0, 0, 0, ${frameBackgroundOpacity}%) ${frameBackgroundArea}%, rgba(0, 0, 0, 0) 100%)`;
       if (!shouldRenderChat(!!playerSizeDiv, hasSeenPlayer.current)) return null;
-      const isFloating = shouldFloatChat(!!playerSizeDiv, isPaused);
+      const isFloating = shouldFloatChat(!!playerSizeDiv);
       const portalTarget = playerSizeDiv && !isFloating ? playerSizeDiv : document.body;
       return ReactDOM.createPortal(
         /* @__PURE__ */ jsxRuntimeExports.jsx(
