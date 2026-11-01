@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styles from './style.module.less';
 import { useMainStore } from '@Stores/index';
 import { observer } from 'mobx-react-lite';
 import { classes } from '@Utils/index';
-import { shouldFloatChat } from '@Utils/chatVisibility';
+import { shouldFloatChat, shouldRenderChat } from '@Utils/chatVisibility';
 
 const FrameChat = observer(() => {
     const mainStore = useMainStore();
     const [playerSizeDiv, setPlayerSizeDiv] = useState<Element | null>(null);
     const [isPaused, setIsPaused] = useState(false);
+    const hasSeenPlayer = useRef(false);
     const frameChatPosition = mainStore.setting.get('frame_chat_position');
     const frameRandomUsername = mainStore.setting.get('frame_random_username');
     const frameViewCount = mainStore.setting.get('frame_view_count');
@@ -28,16 +29,13 @@ const FrameChat = observer(() => {
 
     useEffect(() => {
         const find = () => {
-            setPlayerSizeDiv((prev) => {
-                if (prev && !prev.isConnected) {
-                    return null;
-                }
-                if (!prev) {
-                    const div = document.querySelector('#live_player_layout');
-                    return div ?? null;
-                }
-                return prev;
-            });
+            const player = document.querySelector('#live_player_layout');
+            if (player) {
+                hasSeenPlayer.current = true;
+                setPlayerSizeDiv(player);
+            } else {
+                setPlayerSizeDiv((prev) => (prev && !prev.isConnected ? null : prev));
+            }
         };
 
         find();
@@ -151,6 +149,8 @@ const FrameChat = observer(() => {
     }
 
     const chatBackgroundStyle = `linear-gradient(${frameChatDegree}deg, rgba(0, 0, 0, ${frameBackgroundOpacity}%) ${frameBackgroundArea}%, rgba(0, 0, 0, 0) 100%)`;
+    if (!shouldRenderChat(!!playerSizeDiv, hasSeenPlayer.current)) return null;
+
     const isFloating = shouldFloatChat(!!playerSizeDiv, isPaused);
     const portalTarget = playerSizeDiv && !isFloating ? playerSizeDiv : document.body;
 
