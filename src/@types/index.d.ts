@@ -6,7 +6,6 @@ export interface I_GLOBAL_PROPS {
 export type T_SETTING =
     | 'enable'
     | 'chat_style'
-    | 'defalut_chat_enable'
     | 'show_nicknames'
 
     // 오버레이

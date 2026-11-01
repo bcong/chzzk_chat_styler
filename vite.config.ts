@@ -42,9 +42,10 @@ export default defineConfig(({ mode }) => {
                     exclude: [
                         'https://chzzk.naver.com/video/*'
                     ],
+                    'run-at': 'document-start',
                     icon: 'https://ssl.pstatic.net/static/nng/glive/icon/favicon.png',
                     connect: ['chzzk.naver.com'],
-                    grant: ['GM_setValue', 'GM_getValue', 'GM_listValues'],
+                    grant: ['GM_setValue', 'GM_getValue', 'GM_listValues', 'unsafeWindow'],
                     license: 'MIT',
                     downloadURL: 'https://github.com/bcong/chzzk_chat_styler/blob/master/dist/userscripts.user.js',
                     updateURL: 'https://github.com/bcong/chzzk_chat_styler/blob/master/dist/userscripts.user.js'
@@ -85,6 +86,7 @@ export default defineConfig(({ mode }) => {
         },
         define: {
             "process.env.NODE_ENV": JSON.stringify(mode),
+            __BUILD_VERSION__: JSON.stringify(version),
         },
         resolve: {
             alias: {

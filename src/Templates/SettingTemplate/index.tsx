@@ -86,6 +86,7 @@ const SettingTemplate: React.FC<I_PROPS> = ({
             <div className={styles.Content}>
                 <Setting />
             </div>
+            <div className={styles.Version}>빌드 버전: {__BUILD_VERSION__}</div>
         </div>,
         document.body
     );

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20261022142143
+// @version      20261102032835
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -15,6 +15,8 @@
 // @grant        GM_getValue
 // @grant        GM_listValues
 // @grant        GM_setValue
+// @grant        unsafeWindow
+// @run-at       document-start
 // ==/UserScript==
 
 (n=>{if(typeof GM_addStyle=="function"){GM_addStyle(n);return}const _=document.createElement("style");_.textContent=n,document.head.append(_)})(` @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css');
@@ -82,7 +84,7 @@ img {
 ._SettingMenu_sp5yj_1:hover {
   background-color: rgba(255, 255, 255, 0.25);
 }
-._SettingTemplate_1q4mo_1 {
+._SettingTemplate_5j2jf_1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -99,10 +101,10 @@ img {
   overflow: auto;
   font-family: 'Pretendard';
 }
-._SettingTemplate_1q4mo_1._View_1q4mo_18 {
+._SettingTemplate_5j2jf_1._View_5j2jf_18 {
   display: flex;
 }
-._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 {
+._SettingTemplate_5j2jf_1 ._Header_5j2jf_21 {
   display: flex;
   align-items: center;
   width: 100%;
@@ -113,16 +115,16 @@ img {
   background-color: rgba(0, 0, 0, 0.02);
   padding-left: 12px;
 }
-._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 ._Title_1q4mo_32 p {
+._SettingTemplate_5j2jf_1 ._Header_5j2jf_21 ._Title_5j2jf_32 p {
   color: #000;
   font-size: 14px;
 }
-._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 ._Menus_1q4mo_36 {
+._SettingTemplate_5j2jf_1 ._Header_5j2jf_21 ._Menus_5j2jf_36 {
   height: 100%;
   position: absolute;
   right: 0;
 }
-._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 ._Menus_1q4mo_36 ._Menu_1q4mo_36 {
+._SettingTemplate_5j2jf_1 ._Header_5j2jf_21 ._Menus_5j2jf_36 ._Menu_5j2jf_36 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -130,35 +132,43 @@ img {
   height: 100%;
   transition-duration: 0.1s;
 }
-._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 ._Menus_1q4mo_36 ._Menu_1q4mo_36 svg {
+._SettingTemplate_5j2jf_1 ._Header_5j2jf_21 ._Menus_5j2jf_36 ._Menu_5j2jf_36 svg {
   width: 60%;
   height: 100%;
 }
-._SettingTemplate_1q4mo_1 ._Header_1q4mo_21 ._Menus_1q4mo_36 ._Menu_1q4mo_36:hover {
+._SettingTemplate_5j2jf_1 ._Header_5j2jf_21 ._Menus_5j2jf_36 ._Menu_5j2jf_36:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.05);
 }
-._SettingTemplate_1q4mo_1 ._Content_1q4mo_57 {
+._SettingTemplate_5j2jf_1 ._Content_5j2jf_57 {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
-._SettingTemplate_1q4mo_1 ._Content_1q4mo_57::-webkit-scrollbar-track,
-._SettingTemplate_1q4mo_1 ._Content_1q4mo_57::-webkit-scrollbar {
+._SettingTemplate_5j2jf_1 ._Content_5j2jf_57::-webkit-scrollbar-track,
+._SettingTemplate_5j2jf_1 ._Content_5j2jf_57::-webkit-scrollbar {
   background-color: transparent;
   width: 10px;
 }
-._SettingTemplate_1q4mo_1 ._Content_1q4mo_57::-webkit-scrollbar-thumb {
+._SettingTemplate_5j2jf_1 ._Content_5j2jf_57::-webkit-scrollbar-thumb {
   background: rgba(63, 63, 63, 0.8) !important;
   border-radius: 20px;
   background-clip: padding-box !important;
   border: 3px solid transparent !important;
 }
-._SettingTemplate_1q4mo_1 ._Content_1q4mo_57:hover::-webkit-scrollbar-thumb {
+._SettingTemplate_5j2jf_1 ._Content_5j2jf_57:hover::-webkit-scrollbar-thumb {
   background: rgba(63, 63, 63, 0.8) !important;
   background-clip: padding-box !important;
   border: 3px solid transparent !important;
+}
+._SettingTemplate_5j2jf_1 ._Version_5j2jf_79 {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  border-top: 1px solid rgba(117, 123, 138, 0.1);
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 11px;
+  text-align: right;
 }
 ._ToggleButton_1j7w4_1 {
   width: 46px;
@@ -492,30 +502,6 @@ img {
 }
 ._OverlayChat_18pdb_1 ._Chat_18pdb_17._Background_18pdb_58 ._MessageContainer_18pdb_23 {
   padding: 4px 8px;
-}
-._ShowChatButton_1pcqb_1 {
-  position: absolute;
-  right: 12px;
-  top: 60px;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  border: none;
-  padding: 6px;
-  cursor: pointer;
-  border-radius: 6px;
-  line-height: 0;
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s;
-  user-select: none;
-}
-._ShowChatButton_1pcqb_1._Visible_1pcqb_18 {
-  opacity: 1;
-  pointer-events: auto;
-}
-._ShowChatButton_1pcqb_1:hover {
-  background: rgba(0, 0, 0, 0.75);
 } `);
 
 (function () {
@@ -7495,7 +7481,7 @@ img {
       m.hydrateRoot;
     }
     const SettingMenu = "_SettingMenu_sp5yj_1";
-    const styles$9 = {
+    const styles$8 = {
       SettingMenu
     };
     const STUDIO_LINK_SELECTOR = "a[href*='studio.chzzk.naver.com']";
@@ -7515,7 +7501,7 @@ img {
         }
         const wrapper = document.createElement("div");
         wrapper.id = id2;
-        wrapper.className = styles$9.SettingMenu;
+        wrapper.className = styles$8.SettingMenu;
         const button = document.createElement("button");
         button.setAttribute("tip", "채팅 스타일러 설정");
         const label = document.createElement("p");
@@ -7559,21 +7545,23 @@ img {
       }, []);
       return null;
     };
-    const SettingTemplate$1 = "_SettingTemplate_1q4mo_1";
-    const View$3 = "_View_1q4mo_18";
-    const Header = "_Header_1q4mo_21";
-    const Title = "_Title_1q4mo_32";
-    const Menus$1 = "_Menus_1q4mo_36";
-    const Menu$1 = "_Menu_1q4mo_36";
-    const Content = "_Content_1q4mo_57";
-    const styles$8 = {
+    const SettingTemplate$1 = "_SettingTemplate_5j2jf_1";
+    const View$3 = "_View_5j2jf_18";
+    const Header = "_Header_5j2jf_21";
+    const Title = "_Title_5j2jf_32";
+    const Menus$1 = "_Menus_5j2jf_36";
+    const Menu$1 = "_Menu_5j2jf_36";
+    const Content = "_Content_5j2jf_57";
+    const Version = "_Version_5j2jf_79";
+    const styles$7 = {
       SettingTemplate: SettingTemplate$1,
       View: View$3,
       Header,
       Title,
       Menus: Menus$1,
       Menu: Menu$1,
-      Content
+      Content,
+      Version
     };
     const classes = (...classes2) => {
       return classes2.filter(Boolean).join(" ");
@@ -7624,7 +7612,7 @@ img {
     const ToggleButton$1 = "_ToggleButton_1j7w4_1";
     const Enable = "_Enable_1j7w4_12";
     const Circle = "_Circle_1j7w4_15";
-    const styles$7 = {
+    const styles$6 = {
       ToggleButton: ToggleButton$1,
       Enable,
       Circle
@@ -7636,14 +7624,14 @@ img {
       const handleToggle = () => {
         setEnable(!enable);
       };
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$7.ToggleButton, enable ? styles$7.Enable : false), onClick: handleToggle, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.Circle }) });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$6.ToggleButton, enable ? styles$6.Enable : false), onClick: handleToggle, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Circle }) });
     };
     const Setting$1 = "_Setting_bt7mm_1";
     const Menus = "_Menus_bt7mm_4";
     const Menu = "_Menu_bt7mm_4";
     const Name = "_Name_bt7mm_14";
     const Value = "_Value_bt7mm_22";
-    const styles$6 = {
+    const styles$5 = {
       Setting: Setting$1,
       Menus,
       Menu,
@@ -7656,7 +7644,7 @@ img {
     const Option = "_Option_5p09x_32";
     const Selected = "_Selected_5p09x_57";
     const View$2 = "_View_5p09x_67";
-    const styles$5 = {
+    const styles$4 = {
       ListBox: ListBox$1,
       ListValue,
       Options,
@@ -7676,11 +7664,11 @@ img {
       };
       const optionsElem = options.map(({ key, name }) => {
         const isSelected = value == key;
-        return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$5.Option, isSelected ? styles$5.Selected : false), onClick: () => !isSelected && handleSetValue(key), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }, key);
+        return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$4.Option, isSelected ? styles$4.Selected : false), onClick: () => !isSelected && handleSetValue(key), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }, key);
       });
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$5.ListBox, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.ListValue, onClick: () => IsOptions(!isOptions), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: options[value].name }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$5.Options, isOptions ? styles$5.View : false), children: optionsElem })
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$4.ListBox, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.ListValue, onClick: () => IsOptions(!isOptions), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: options[value].name }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$4.Options, isOptions ? styles$4.View : false), children: optionsElem })
       ] });
     };
     function die(error) {
@@ -11779,10 +11767,6 @@ img {
             value: 10
           },
           {
-            key: "defalut_chat_enable",
-            value: true
-          },
-          {
             key: "show_nicknames",
             value: true
           },
@@ -12282,7 +12266,7 @@ img {
     const InputValue = "_InputValue_1a5to_4";
     const Tip = "_Tip_1a5to_25";
     const View$1 = "_View_1a5to_39";
-    const styles$4 = {
+    const styles$3 = {
       InputBox: InputBox$1,
       InputValue,
       Tip,
@@ -12312,16 +12296,16 @@ img {
         }
         setValue(newValue);
       };
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$4.InputBox, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.InputValue, children: /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type, value: String(value), onChange: handleChange }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$4.Tip, tip.length > 0 ? styles$4.View : false), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: tip }) })
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$3.InputBox, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.InputValue, children: /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type, value: String(value), onChange: handleChange }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$3.Tip, tip.length > 0 ? styles$3.View : false), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: tip }) })
       ] });
     };
     const SliderBar$1 = "_SliderBar_1p3hs_1";
     const SliderTrack = "_SliderTrack_1p3hs_5";
     const SliderFilled = "_SliderFilled_1p3hs_12";
     const SliderThumb = "_SliderThumb_1p3hs_19";
-    const styles$3 = {
+    const styles$2 = {
       SliderBar: SliderBar$1,
       SliderTrack,
       SliderFilled,
@@ -12354,17 +12338,17 @@ img {
           { once: true }
         );
       };
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.SliderBar, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.SliderBar, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: styles$3.SliderTrack,
+          className: styles$2.SliderTrack,
           ref: sliderRef,
           onMouseDown: handleMouseDown,
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "div",
               {
-                className: styles$3.SliderThumb,
+                className: styles$2.SliderThumb,
                 "data-value": value,
                 style: { left: `${(value - min) / (max - min) * 100}%` }
               }
@@ -12372,7 +12356,7 @@ img {
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "div",
               {
-                className: styles$3.SliderFilled,
+                className: styles$2.SliderFilled,
                 style: { width: `${(value - min) / (max - min) * 100}%` }
               }
             )
@@ -12419,16 +12403,6 @@ img {
               type: "toggle",
               value: mainStore.setting.get("enable"),
               cb: (value) => mainStore.setSetting("enable", value, true)
-            }
-          ]
-        },
-        {
-          name: "기존 채팅 표시",
-          values: [
-            {
-              type: "toggle",
-              value: mainStore.setting.get("defalut_chat_enable"),
-              cb: (value) => mainStore.setSetting("defalut_chat_enable", value, true)
             }
           ]
         },
@@ -12756,14 +12730,14 @@ img {
               contentElem = /* @__PURE__ */ jsxRuntimeExports.jsx(SliderBar, { value, setValue: cb2, min, max });
               break;
           }
-          return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Value, children: contentElem }, idx2);
+          return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Value, children: contentElem }, idx2);
         });
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$6.Menu, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Name, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }),
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$5.Menu, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Name, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }),
           valueElem
         ] }, idx);
       });
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Setting, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Menus, children: settingListElem }) });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Setting, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Menus, children: settingListElem }) });
     });
     const SvgCrossSmall = (props) => /* @__PURE__ */ reactExports.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", id: "Outline", viewBox: "0 0 24 24", width: 512, height: 512, ...props }, /* @__PURE__ */ reactExports.createElement("path", { d: "M18,6h0a1,1,0,0,0-1.414,0L12,10.586,7.414,6A1,1,0,0,0,6,6H6A1,1,0,0,0,6,7.414L10.586,12,6,16.586A1,1,0,0,0,6,18H6a1,1,0,0,0,1.414,0L12,13.414,16.586,18A1,1,0,0,0,18,18h0a1,1,0,0,0,0-1.414L13.414,12,18,7.414A1,1,0,0,0,18,6Z" }));
     const SettingTemplate = ({
@@ -12816,20 +12790,20 @@ img {
           "div",
           {
             ref: settingRef,
-            className: classes(styles$8.SettingTemplate, isSetting ? styles$8.View : false),
+            className: classes(styles$7.SettingTemplate, isSetting ? styles$7.View : false),
             style: { position: "absolute" },
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$8.Header, onMouseDown: handleMouseDown, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.Title, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "채팅 스타일러" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$7.Header, onMouseDown: handleMouseDown, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.Title, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "채팅 스타일러" }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "div",
                   {
-                    className: styles$8.Menus,
+                    className: styles$7.Menus,
                     onMouseDown: (e) => e.stopPropagation(),
                     children: /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "div",
                       {
-                        className: styles$8.Menu,
+                        className: styles$7.Menu,
                         onClick: toggleSetting,
                         children: /* @__PURE__ */ jsxRuntimeExports.jsx(SvgCrossSmall, { fill: "rgb(70, 70, 70)" })
                       }
@@ -12837,7 +12811,11 @@ img {
                   }
                 )
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.Content, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Setting, {}) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.Content, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Setting, {}) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$7.Version, children: [
+                "빌드 버전: ",
+                "20261102032835"
+              ] })
             ]
           }
         ),
@@ -12855,7 +12833,7 @@ img {
     const Username$1 = "_Username_mz2ar_33";
     const Message$1 = "_Message_mz2ar_29";
     const Background$1 = "_Background_mz2ar_64";
-    const styles$2 = {
+    const styles$1 = {
       FrameChat: FrameChat$1,
       LeftTop,
       LeftBottom,
@@ -12868,9 +12846,11 @@ img {
       Message: Message$1,
       Background: Background$1
     };
+    const shouldFloatChat = (hasPlayer, isPaused) => !hasPlayer || isPaused;
     const FrameChat = observer(() => {
       const mainStore = useMainStore();
       const [playerSizeDiv, setPlayerSizeDiv] = reactExports.useState(null);
+      const [isPaused, setIsPaused] = reactExports.useState(false);
       const frameChatPosition = mainStore.setting.get("frame_chat_position");
       const frameRandomUsername = mainStore.setting.get("frame_random_username");
       const frameViewCount = mainStore.setting.get("frame_view_count");
@@ -12903,10 +12883,27 @@ img {
         const timer = setInterval(find, 1e3);
         return () => clearInterval(timer);
       }, [window.location.href]);
+      reactExports.useEffect(() => {
+        const video = (playerSizeDiv == null ? void 0 : playerSizeDiv.querySelector("video")) ?? Array.from(document.querySelectorAll("video")).find((item) => item.readyState > 0);
+        if (!video) {
+          setIsPaused(false);
+          return;
+        }
+        const update = () => setIsPaused(video.paused || video.ended);
+        update();
+        video.addEventListener("pause", update);
+        video.addEventListener("play", update);
+        video.addEventListener("ended", update);
+        return () => {
+          video.removeEventListener("pause", update);
+          video.removeEventListener("play", update);
+          video.removeEventListener("ended", update);
+        };
+      }, [playerSizeDiv]);
       const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id: id22, username, contentArray, color }) => {
         const background = frameChatBackground ? `rgba(0, 0, 0, ${frameChatOpacity}%)` : "";
         const fontSize = `${frameFontSize}px`;
-        const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "p",
           {
             style: {
@@ -12923,7 +12920,7 @@ img {
             return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize }, children: content.content }, index);
           }
         });
-        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.Message, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Message, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "p",
           {
             style: {
@@ -12936,9 +12933,9 @@ img {
           "div",
           {
             className: classes(
-              styles$2.Chat,
-              frameChatBackground ? styles$2.Background : false,
-              frameSortChatMessages ? styles$2.Sorted : false
+              styles$1.Chat,
+              frameChatBackground ? styles$1.Background : false,
+              frameSortChatMessages ? styles$1.Sorted : false
             ),
             style: {
               width: `${frameViewWidth}px`
@@ -12946,7 +12943,7 @@ img {
             children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "div",
               {
-                className: styles$2.MessageContainer,
+                className: styles$1.MessageContainer,
                 style: {
                   background
                 },
@@ -12963,31 +12960,35 @@ img {
       let frameChatPositionCls = "", frameChatDegree;
       switch (frameChatPosition) {
         case 0:
-          frameChatPositionCls = styles$2.LeftTop;
+          frameChatPositionCls = styles$1.LeftTop;
           frameChatDegree = 180;
           break;
         case 1:
-          frameChatPositionCls = styles$2.LeftBottom;
+          frameChatPositionCls = styles$1.LeftBottom;
           frameChatDegree = 0;
           break;
         case 2:
-          frameChatPositionCls = styles$2.RightTop;
+          frameChatPositionCls = styles$1.RightTop;
           frameChatDegree = 180;
           break;
         case 3:
-          frameChatPositionCls = styles$2.RightBottom;
+          frameChatPositionCls = styles$1.RightBottom;
           frameChatDegree = 0;
           break;
       }
       const chatBackgroundStyle = `linear-gradient(${frameChatDegree}deg, rgba(0, 0, 0, ${frameBackgroundOpacity}%) ${frameBackgroundArea}%, rgba(0, 0, 0, 0) 100%)`;
-      return playerSizeDiv ? ReactDOM.createPortal(
+      const isFloating = shouldFloatChat(!!playerSizeDiv, isPaused);
+      const portalTarget = playerSizeDiv && !isFloating ? playerSizeDiv : document.body;
+      return ReactDOM.createPortal(
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
-            className: classes(styles$2.FrameChat, frameChatPositionCls),
+            className: classes(styles$1.FrameChat, frameChatPositionCls),
             id: id2,
             style: {
               background: frameBackground ? chatBackgroundStyle : "",
+              position: isFloating ? "fixed" : void 0,
+              zIndex: isFloating ? 13e3 : void 0,
               paddingLeft: `${frameOffsetX}px`,
               paddingRight: `${frameOffsetX}px`,
               paddingTop: `${frameOffsetY}px`,
@@ -12996,8 +12997,8 @@ img {
             children: chatsElem
           }
         ),
-        playerSizeDiv
-      ) : null;
+        portalTarget
+      );
     });
     const OverlayChat$1 = "_OverlayChat_18pdb_1";
     const View = "_View_18pdb_14";
@@ -13007,7 +13008,7 @@ img {
     const Username = "_Username_18pdb_27";
     const Message = "_Message_18pdb_23";
     const Background = "_Background_18pdb_58";
-    const styles$1 = {
+    const styles = {
       OverlayChat: OverlayChat$1,
       View,
       Chat: Chat$1,
@@ -13115,7 +13116,7 @@ img {
       const chatsElem = mainStore.chats.slice(-overlayViewCount).map(({ id: id2, username, contentArray, color }) => {
         const background = overlayChatBackground ? `rgba(0, 0, 0, ${overlayViewOpacity}%)` : "";
         const fontSize = `${overlayFontSize}px`;
-        const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "p",
           {
             style: {
@@ -13132,14 +13133,14 @@ img {
             return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize }, children: content.content }, index);
           }
         });
-        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Message, children: messageContent });
+        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.Message, children: messageContent });
         return /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
             className: classes(
-              styles$1.Chat,
-              overlayChatBackground ? styles$1.Background : false,
-              overlaySortChatMessages ? styles$1.Sorted : false
+              styles.Chat,
+              overlayChatBackground ? styles.Background : false,
+              overlaySortChatMessages ? styles.Sorted : false
             ),
             style: {
               width: `${overlayViewWidth}px`
@@ -13147,7 +13148,7 @@ img {
             children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "div",
               {
-                className: styles$1.MessageContainer,
+                className: styles.MessageContainer,
                 style: {
                   background
                 },
@@ -13167,7 +13168,8 @@ img {
           "div",
           {
             ref: chatRef,
-            className: classes(styles$1.OverlayChat, isView ? styles$1.View : false),
+            className: classes(styles.OverlayChat, isView ? styles.View : false),
+            id: "chatStylerOverlayChat",
             onMouseDown: handleMouseDown,
             style: {
               left: `${position.left}px`,
@@ -13180,152 +13182,235 @@ img {
         document.body
       );
     });
-    const ShowChatButton = "_ShowChatButton_1pcqb_1";
-    const Visible = "_Visible_1pcqb_18";
-    const styles = {
-      ShowChatButton,
-      Visible
-    };
     const Chat = observer(() => {
       const mainStore = useMainStore();
-      const enable = mainStore.setting.get("enable");
-      const chat_style = mainStore.setting.get("chat_style");
-      const defalut_chat_enable = mainStore.setting.get("defalut_chat_enable");
-      const chatUpdate = reactExports.useRef(null);
-      const [pathname, setPathname] = reactExports.useState("");
-      const [chatEnable, setChatEnable] = reactExports.useState(null);
-      const [playerDiv, setPlayerDiv] = reactExports.useState(null);
-      const [isControlsVisible, setIsControlsVisible] = reactExports.useState(false);
-      const controlsObserverRef = reactExports.useRef(null);
-      const getSideElement = () => document.querySelector("aside#aside-chatting") ?? document.querySelector("aside[class*='live_chatting_container']");
-      const checkEnableChat = () => {
-        try {
-          const foldButton = document.querySelector("button[aria-label='채팅 접기']");
-          if (foldButton && !foldButton.dataset.stylerBound) {
-            foldButton.dataset.stylerBound = "1";
-            foldButton.addEventListener(
-              "click",
-              (e) => {
-                if (!e.isTrusted) return;
-                e.stopPropagation();
-                e.preventDefault();
-                mainStore.setSetting("defalut_chat_enable", false, true);
-              },
-              { capture: true }
-            );
+      if (!mainStore.setting.get("enable")) return null;
+      switch (mainStore.setting.get("chat_style")) {
+        case 0:
+          return /* @__PURE__ */ jsxRuntimeExports.jsx(OverlayChat, {});
+        case 1:
+          return /* @__PURE__ */ jsxRuntimeExports.jsx(FrameChat, {});
+        default:
+          return null;
+      }
+    });
+    const chatSocketMessages = new EventTarget();
+    const isRecord = (value) => typeof value === "object" && value !== null;
+    const installChatSocketHook = () => {
+      unsafeWindow.WebSocket = new Proxy(unsafeWindow.WebSocket, {
+        construct(target, args, newTarget) {
+          const socket = Reflect.construct(target, args, newTarget);
+          const url = new URL(String(args[0]), unsafeWindow.location.href);
+          if (url.protocol === "wss:" && url.hostname.endsWith(".chat.naver.com") && url.pathname === "/chat") {
+            socket.addEventListener("message", (event) => {
+              if (typeof event.data === "string") {
+                chatSocketMessages.dispatchEvent(
+                  new CustomEvent("chat", { detail: event.data })
+                );
+              }
+            });
           }
-          const newPathname = window.location.pathname;
-          const sideElement = getSideElement();
-          if (pathname != newPathname || chatEnable != defalut_chat_enable) {
-            if (sideElement && sideElement.style) {
-              sideElement.style.maxWidth = defalut_chat_enable ? "" : "0px";
-              sideElement.style.opacity = defalut_chat_enable ? "" : "0";
-              setPathname(newPathname);
-              setChatEnable(defalut_chat_enable);
+          return socket;
+        }
+      });
+    };
+    const parseChatSocketMessage = (data) => {
+      const frame = JSON.parse(data);
+      if (!isRecord(frame) || frame.cmd !== 93101 && frame.cmd !== 93102) return [];
+      const body = frame.bdy;
+      const chats = Array.isArray(body) ? body : isRecord(body) && Array.isArray(body.messageList) ? body.messageList : [body];
+      return chats.flatMap((chat) => {
+        if (!isRecord(chat) || chat.msgStatusType === "HIDDEN" || chat.messageStatusType === "HIDDEN") return [];
+        const profile = typeof chat.profile === "string" ? JSON.parse(chat.profile) : chat.profile;
+        const extras = typeof chat.extras === "string" && chat.extras ? JSON.parse(chat.extras) : chat.extras;
+        const nickname = isRecord(profile) && typeof profile.nickname === "string" ? profile.nickname : void 0;
+        const extraNickname = isRecord(extras) && typeof extras.nickname === "string" ? extras.nickname : void 0;
+        const username = (nickname || extraNickname || "").trim();
+        const message = typeof chat.msg === "string" && chat.msg ? chat.msg : chat.content;
+        if (!username || typeof message !== "string" || !message.trim()) return [];
+        const emojis = /* @__PURE__ */ new Map();
+        if (isRecord(extras) && isRecord(extras.emojis)) {
+          for (const token of Object.keys(extras.emojis)) {
+            const url = extras.emojis[token];
+            if (token && typeof url === "string" && url.startsWith("https://")) emojis.set(token, url);
+          }
+        }
+        const emojiPattern = [...emojis.keys()].sort((a, b) => b.length - a.length).map((token) => token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+        const parts = emojiPattern ? message.split(new RegExp(`(${emojiPattern})`, "g")) : [message];
+        const contentArray = [];
+        for (const part of parts) {
+          if (!part.trim()) continue;
+          const image = emojis.get(part);
+          contentArray.push(image ? { type: "image", content: image } : { type: "text", content: part.trim() });
+        }
+        return contentArray.length ? [{ username, contentArray }] : [];
+      });
+    };
+    const isDocumentPictureInPictureApi = (value) => typeof value === "object" && value !== null && typeof Reflect.get(value, "requestWindow") === "function";
+    const CHAT_SELECTOR = "#chatStylerOverlayChat, #chatStylerFrameChat";
+    const installChatPipHook = () => {
+      const pageWindow = unsafeWindow;
+      const pageDocument = pageWindow.document;
+      let opening = false;
+      const openPictureInPicture = async (video, pipApi) => {
+        const width = Math.min((video == null ? void 0 : video.videoWidth) || 640, 640);
+        const height = (video == null ? void 0 : video.videoWidth) ? Math.round(width * video.videoHeight / video.videoWidth) : 360;
+        const pipWindow = await pipApi.requestWindow({ width, height });
+        const pipDocument = pipWindow.document;
+        const parent = (video == null ? void 0 : video.parentNode) ?? null;
+        if (video && !parent) throw new Error("The CHZZK video player is no longer available.");
+        const nextSibling = (video == null ? void 0 : video.nextSibling) ?? null;
+        const placeholder = video && parent ? pageDocument.createComment("CHZZK chat PiP video position") : null;
+        const originalStyle = (video == null ? void 0 : video.getAttribute("style")) ?? null;
+        const originalControls = (video == null ? void 0 : video.controls) ?? false;
+        const copiedStyles = /* @__PURE__ */ new Set();
+        const chatHost = pipDocument.createElement("div");
+        let chatRoot = null;
+        let chatParent = null;
+        let waitingForChat = false;
+        let restored = false;
+        const rootObserver = new MutationObserver(syncChat);
+        const parentObserver = new MutationObserver(syncChat);
+        const documentObserver = new MutationObserver(syncChat);
+        const restoreVideo = () => {
+          var _a2;
+          if (restored) return;
+          restored = true;
+          rootObserver.disconnect();
+          parentObserver.disconnect();
+          documentObserver.disconnect();
+          waitingForChat = false;
+          if (video && (placeholder == null ? void 0 : placeholder.parentNode)) {
+            placeholder.parentNode.insertBefore(video, placeholder);
+            placeholder.remove();
+          } else if (video && (parent == null ? void 0 : parent.isConnected)) {
+            parent.insertBefore(video, (nextSibling == null ? void 0 : nextSibling.parentNode) === parent ? nextSibling : null);
+          } else if (video) {
+            (_a2 = pageDocument.querySelector("#live_player_layout, .pzp-pc")) == null ? void 0 : _a2.append(video);
+          }
+          if (video) {
+            if (originalStyle === null) video.removeAttribute("style");
+            else video.setAttribute("style", originalStyle);
+            video.controls = originalControls;
+          }
+        };
+        const copyChatStyles = (source) => {
+          const classNames = Array.from(source.classList);
+          pageDocument.querySelectorAll("style").forEach((style) => {
+            const css = style.textContent ?? "";
+            if (!copiedStyles.has(style) && classNames.some((name) => css.includes(name))) {
+              pipDocument.head.append(style.cloneNode(true));
+              copiedStyles.add(style);
+            }
+          });
+        };
+        function syncChat() {
+          if (restored) return;
+          const source = pageDocument.querySelector(CHAT_SELECTOR);
+          if (source !== chatRoot || (source == null ? void 0 : source.parentNode) !== chatParent) {
+            rootObserver.disconnect();
+            parentObserver.disconnect();
+            chatRoot = source;
+            chatParent = (source == null ? void 0 : source.parentNode) ?? null;
+            if (source) {
+              copyChatStyles(source);
+              rootObserver.observe(source, {
+                attributes: true,
+                childList: true,
+                characterData: true,
+                subtree: true
+              });
+              if (source.parentNode) {
+                parentObserver.observe(source.parentNode, { childList: true });
+              }
             }
           }
-        } catch (e) {
-          console.error(e);
+          if (!source) {
+            chatHost.replaceChildren();
+            if (pageDocument.documentElement && !waitingForChat) {
+              documentObserver.observe(pageDocument.documentElement, { childList: true, subtree: true });
+              waitingForChat = true;
+            }
+            return;
+          }
+          documentObserver.disconnect();
+          waitingForChat = false;
+          const clone = source.cloneNode(true);
+          clone.style.pointerEvents = "none";
+          if (source.id === "chatStylerOverlayChat") {
+            const maxLeft = Math.max(0, (pipWindow.innerWidth || width) - 80);
+            const maxTop = Math.max(0, (pipWindow.innerHeight || height) - 80);
+            clone.style.left = `${Math.min(Math.max(0, parseFloat(source.style.left) || 0), maxLeft)}px`;
+            clone.style.top = `${Math.min(Math.max(0, parseFloat(source.style.top) || 0), maxTop)}px`;
+          }
+          chatHost.replaceChildren(clone);
+        }
+        try {
+          if (video && parent && placeholder) parent.insertBefore(placeholder, video);
+          pipDocument.documentElement.style.cssText = "width:100%;height:100%;overflow:hidden;";
+          pipDocument.body.style.cssText = "position:relative;width:100vw;height:100vh;margin:0;overflow:hidden;background:#000;";
+          chatHost.style.cssText = "position:absolute;inset:0;z-index:1;pointer-events:none;";
+          pipDocument.body.append(chatHost);
+          if (video) {
+            pipDocument.adoptNode(video);
+            video.setAttribute(
+              "style",
+              "position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:contain;"
+            );
+            video.controls = true;
+            pipDocument.body.insertBefore(video, chatHost);
+          }
+          pipWindow.addEventListener("pagehide", restoreVideo, { once: true });
+          syncChat();
+          return pipWindow;
+        } catch (error) {
+          restoreVideo();
+          pipWindow.close();
+          throw error;
         }
       };
-      reactExports.useEffect(() => {
-        checkEnableChat();
-        chatUpdate.current = setInterval(() => {
-          checkEnableChat();
-        }, 500);
-        return () => {
-          if (chatUpdate.current) clearInterval(chatUpdate.current);
-        };
-      }, [defalut_chat_enable, chatEnable, pathname]);
-      reactExports.useEffect(() => {
-        let currentEl = null;
-        const find = () => {
-          if (currentEl && !currentEl.isConnected) {
-            currentEl = null;
-            setPlayerDiv(null);
+      pageDocument.addEventListener(
+        "click",
+        (event) => {
+          const target = event.target;
+          if (!(target instanceof Element) || !target.closest('.pzp-pip-button, button[aria-label="PIP 보기"]')) {
+            return;
           }
-          if (!currentEl) {
-            const el2 = document.querySelector('div[aria-label="비디오 플레이어"]') || document.querySelector(".pzp-pc");
-            if (el2) {
-              currentEl = el2;
-              setPlayerDiv(el2);
-            }
+          const pipApi = Reflect.get(pageWindow, "documentPictureInPicture");
+          if (!isDocumentPictureInPictureApi(pipApi)) return;
+          const currentWindow = pipApi.window;
+          if (currentWindow && !currentWindow.closed) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            currentWindow.focus();
+            return;
           }
-        };
-        find();
-        const timer = setInterval(find, 2e3);
-        return () => clearInterval(timer);
-      }, []);
-      reactExports.useEffect(() => {
-        if (!playerDiv) return;
-        const update = () => setIsControlsVisible(playerDiv.classList.contains("pzp-pc--controls"));
-        update();
-        const observer2 = new MutationObserver(update);
-        observer2.observe(playerDiv, { attributes: true, attributeFilter: ["class"] });
-        controlsObserverRef.current = observer2;
-        return () => {
-          observer2.disconnect();
-          controlsObserverRef.current = null;
-        };
-      }, [playerDiv]);
-      let chatElem;
-      switch (chat_style) {
-        case 0:
-          chatElem = /* @__PURE__ */ jsxRuntimeExports.jsx(OverlayChat, {});
-          break;
-        case 1:
-          chatElem = /* @__PURE__ */ jsxRuntimeExports.jsx(FrameChat, {});
-          break;
-      }
-      const showChatButton = !defalut_chat_enable && playerDiv && ReactDOM.createPortal(
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            className: classes(styles.ShowChatButton, isControlsVisible ? styles.Visible : null),
-            onClick: (e) => {
-              e.stopPropagation();
-              mainStore.setSetting("defalut_chat_enable", true, true);
-              const sideEl = getSideElement();
-              if (sideEl == null ? void 0 : sideEl.style) {
-                sideEl.style.maxWidth = "";
-                sideEl.style.opacity = "";
-              }
-            },
-            title: "채팅 다시 표시",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "svg",
-              {
-                xmlns: "http://www.w3.org/2000/svg",
-                width: "22",
-                height: "22",
-                viewBox: "0 0 24 24",
-                fill: "none",
-                stroke: "currentColor",
-                strokeWidth: "2",
-                strokeLinecap: "round",
-                strokeLinejoin: "round",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" })
-              }
-            )
-          }
-        ),
-        playerDiv
+          if (opening) return;
+          const player = target.closest(".pzp-pc");
+          const videos = Array.from(
+            (player == null ? void 0 : player.querySelectorAll("video")) ?? pageDocument.querySelectorAll("video")
+          );
+          const video = videos.find((item) => item.videoWidth > 0) ?? videos.find((item) => item.readyState > 0) ?? videos[0] ?? null;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          opening = true;
+          void openPictureInPicture(video, pipApi).catch((error) => {
+            console.error("[CHZZK Chat Styler] Picture-in-Picture failed:", error);
+          }).finally(() => {
+            opening = false;
+          });
+        },
+        true
       );
-      return enable && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        chatElem,
-        showChatButton
-      ] });
-    });
+    };
     const COLORS = ["#f28ca5", "#9dd9a5", "#fff08c", "#a1b1eb", "#fac098", "#c88ed9", "#a2f7f7", "#f798f2", "#ddfa85"];
+    installChatSocketHook();
+    installChatPipHook();
     const App = () => {
       const mainStore = useMainStore();
       const [isSetting, IsSetting] = reactExports.useState(false);
       const [isInit, IsInit] = reactExports.useState(false);
       const colorIdxRef = reactExports.useRef(0);
-      const processedChats = reactExports.useRef(/* @__PURE__ */ new WeakSet());
-      const chatObserver = reactExports.useRef(null);
-      const observedChatArea = reactExports.useRef(null);
-      const retryTimer = reactExports.useRef(null);
       const toggleSetting = () => {
         IsSetting((prevIsSetting) => !prevIsSetting);
       };
@@ -13349,84 +13434,29 @@ img {
         });
         IsInit(true);
       };
-      const processChatItem = (chat) => {
-        var _a2;
-        if (processedChats.current.has(chat)) return;
-        const usernameElement = chat.querySelector('button[class*="nickname"]') ?? chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
-        const username = ((_a2 = usernameElement == null ? void 0 : usernameElement.textContent) == null ? void 0 : _a2.trim()) || null;
-        const messageElement = chat.querySelector('[class*="chatting_message"] > span[class*="text"]') ?? chat.querySelector('[class*="live_chatting_message_text"]');
-        if (!username || !messageElement || !(messageElement instanceof HTMLElement)) return;
-        processedChats.current.add(chat);
-        const contentArray = [];
-        messageElement.childNodes.forEach((node) => {
-          var _a3;
-          if (node.nodeType === Node.TEXT_NODE) {
-            const textContent = (_a3 = node.textContent) == null ? void 0 : _a3.trim();
-            if (textContent) contentArray.push({ type: "text", content: textContent });
-          } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "IMG") {
-            const imgSrc = node.getAttribute("src");
-            if (imgSrc) contentArray.push({ type: "image", content: imgSrc });
-          }
-        });
-        if (contentArray.length === 0) return;
-        const idx = colorIdxRef.current;
-        mainStore.addChat({ id: mainStore.chatId + 1, username, contentArray, color: COLORS[idx] });
-        colorIdxRef.current = idx >= COLORS.length - 1 ? 0 : idx + 1;
-      };
-      const disconnectObserver = () => {
-        if (chatObserver.current) {
-          chatObserver.current.disconnect();
-          chatObserver.current = null;
-        }
-        observedChatArea.current = null;
-      };
-      const observeChatArea = () => {
-        addZIndexToElements();
-        if (observedChatArea.current && !observedChatArea.current.isConnected) {
-          disconnectObserver();
-        }
-        const chatArea = document.querySelector('aside#aside-chatting [role="log"]') ?? document.querySelector('[class*="live_chatting_list_wrapper"]') ?? null;
-        if (!chatArea) {
-          if (retryTimer.current) clearTimeout(retryTimer.current);
-          retryTimer.current = window.setTimeout(observeChatArea, 1e3);
+      const handleChatSocketMessage = (event) => {
+        if (!(event instanceof CustomEvent) || typeof event.detail !== "string") return;
+        let chats;
+        try {
+          chats = parseChatSocketMessage(event.detail);
+        } catch (error) {
+          log(error);
           return;
         }
-        if (observedChatArea.current === chatArea) return;
-        disconnectObserver();
-        observedChatArea.current = chatArea;
-        chatArea.querySelectorAll('[class*="live_chatting_list_item"]').forEach((el2) => {
-          processedChats.current.add(el2);
+        chats.forEach(({ username, contentArray }) => {
+          const idx = colorIdxRef.current;
+          mainStore.addChat({ id: mainStore.chatId + 1, username, contentArray, color: COLORS[idx] });
+          colorIdxRef.current = idx >= COLORS.length - 1 ? 0 : idx + 1;
         });
-        Array.from(chatArea.children).forEach((el2) => {
-          processedChats.current.add(el2);
-        });
-        const observer2 = new MutationObserver((mutations) => {
-          for (const mutation of mutations) {
-            if (mutation.type !== "childList") continue;
-            mutation.addedNodes.forEach((node) => {
-              if (node.nodeType !== Node.ELEMENT_NODE) return;
-              const elem = node;
-              if (elem.querySelector('[class*="chatting_message"]')) {
-                processChatItem(elem);
-              } else if (elem.matches('[class*="live_chatting_list_item"]')) {
-                processChatItem(elem);
-              } else {
-                elem.querySelectorAll('[class*="live_chatting_list_item"]').forEach(processChatItem);
-              }
-            });
-          }
-        });
-        observer2.observe(chatArea, { childList: true, subtree: true });
-        chatObserver.current = observer2;
       };
       reactExports.useEffect(() => {
         initSetting();
-        observeChatArea();
-        const fallbackTimer = setInterval(observeChatArea, 3e3);
+        addZIndexToElements();
+        chatSocketMessages.addEventListener("chat", handleChatSocketMessage);
+        const fallbackTimer = setInterval(addZIndexToElements, 3e3);
         return () => {
           clearInterval(fallbackTimer);
-          if (retryTimer.current) clearTimeout(retryTimer.current);
-          disconnectObserver();
+          chatSocketMessages.removeEventListener("chat", handleChatSocketMessage);
         };
       }, []);
       return isInit && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
@@ -13452,11 +13482,16 @@ img {
         );
       }
     }
-    addLocationChangeCallback(() => {
+    const watchLocation = () => addLocationChangeCallback(() => {
       main().catch((e) => {
         log(e);
       });
     });
+    if (document.readyState === "complete") {
+      watchLocation();
+    } else {
+      window.addEventListener("load", () => window.setTimeout(watchLocation, 0), { once: true });
+    }
   })();
 
 })();

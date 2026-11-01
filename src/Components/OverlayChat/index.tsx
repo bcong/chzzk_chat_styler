@@ -183,6 +183,7 @@ const OverlayChat = observer(() => {
         <div
             ref={chatRef}
             className={classes(styles.OverlayChat, isView ? styles.View : false)}
+            id="chatStylerOverlayChat"
             onMouseDown={handleMouseDown}
             style={{
                 left: `${position.left}px`,

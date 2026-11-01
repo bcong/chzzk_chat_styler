@@ -16,10 +16,6 @@ export default class MainStore {
             value: 10,
         },
         {
-            key: 'defalut_chat_enable',
-            value: true,
-        },
-        {
             key: 'show_nicknames',
             value: true,
         },

@@ -2,20 +2,22 @@ import { useEffect, useRef, useState } from 'react';
 import SettingMenu from '@Components/SettingMenu';
 import SettingTemplate from '@Templates/SettingTemplate';
 import { useMainStore } from './Stores';
-import { I_CONTENT, T_SETTING } from './@types';
+import { T_SETTING } from './@types';
 import ChatTemplate from '@Templates/ChatTemplate';
+import { chatSocketMessages, installChatSocketHook, parseChatSocketMessage } from './Utils/chatSocket';
+import { installChatPipHook } from './Utils/chatPip';
+import { log } from './Utils';
 
 const COLORS = ['#f28ca5', '#9dd9a5', '#fff08c', '#a1b1eb', '#fac098', '#c88ed9', '#a2f7f7', '#f798f2', '#ddfa85'];
+
+installChatSocketHook();
+installChatPipHook();
 
 const App = () => {
     const mainStore = useMainStore();
     const [isSetting, IsSetting] = useState(false);
     const [isInit, IsInit] = useState(false);
     const colorIdxRef = useRef(0);
-    const processedChats = useRef(new WeakSet<Element>());
-    const chatObserver = useRef<MutationObserver | null>(null);
-    const observedChatArea = useRef<Element | null>(null);
-    const retryTimer = useRef<number | null>(null);
 
     const toggleSetting = () => {
         IsSetting((prevIsSetting) => !prevIsSetting);
@@ -44,116 +46,34 @@ const App = () => {
         IsInit(true);
     };
 
-    const processChatItem = (chat: Element) => {
-        if (processedChats.current.has(chat)) return;
+    const handleChatSocketMessage = (event: Event) => {
+        if (!(event instanceof CustomEvent) || typeof event.detail !== 'string') return;
 
-        // chat = _item_sg7hy_7 (item 레벨)
-        // 닉네임: button._nickname_* 의 textContent (img alt="" 이므로 텍스트만 남음)
-        const usernameElement =
-            chat.querySelector('button[class*="nickname"]') ??
-            chat.querySelector('[class*="live_chatting_username_nickname"] [class*="name_text"]');
-        const username = usernameElement?.textContent?.trim() || null;
-
-        // 메시지: _chatting_message_* 의 직접 자식 span (> 로 닉네임 내부 span 배제)
-        const messageElement =
-            chat.querySelector('[class*="chatting_message"] > span[class*="text"]') ??
-            chat.querySelector('[class*="live_chatting_message_text"]');
-
-        if (!username || !messageElement || !(messageElement instanceof HTMLElement)) return;
-
-        processedChats.current.add(chat);
-
-        const contentArray: I_CONTENT[] = [];
-        messageElement.childNodes.forEach((node: ChildNode) => {
-            if (node.nodeType === Node.TEXT_NODE) {
-                const textContent = node.textContent?.trim();
-                if (textContent) contentArray.push({ type: 'text', content: textContent });
-            } else if (node.nodeType === Node.ELEMENT_NODE && (node as HTMLElement).tagName === 'IMG') {
-                const imgSrc = (node as HTMLImageElement).getAttribute('src');
-                if (imgSrc) contentArray.push({ type: 'image', content: imgSrc });
-            }
-        });
-
-        if (contentArray.length === 0) return;
-
-        const idx = colorIdxRef.current;
-        mainStore.addChat({ id: mainStore.chatId + 1, username, contentArray, color: COLORS[idx] });
-        colorIdxRef.current = idx >= COLORS.length - 1 ? 0 : idx + 1;
-    };
-
-    const disconnectObserver = () => {
-        if (chatObserver.current) {
-            chatObserver.current.disconnect();
-            chatObserver.current = null;
-        }
-        observedChatArea.current = null;
-    };
-
-    const observeChatArea = () => {
-        addZIndexToElements();
-
-        // 감시 중인 요소가 DOM에서 제거된 경우(방송 종료/재시작) 상태 초기화
-        if (observedChatArea.current && !observedChatArea.current.isConnected) {
-            disconnectObserver();
-        }
-
-        // [role="log"] 를 직접 관찰 + subtree:true → 중첩 깊이에 무관하게 감지
-        const chatArea: Element | null =
-            document.querySelector('aside#aside-chatting [role="log"]') ??
-            document.querySelector('[class*="live_chatting_list_wrapper"]') ??
-            null;
-
-        if (!chatArea) {
-            if (retryTimer.current) clearTimeout(retryTimer.current);
-            retryTimer.current = window.setTimeout(observeChatArea, 1000);
+        let chats: ReturnType<typeof parseChatSocketMessage>;
+        try {
+            chats = parseChatSocketMessage(event.detail);
+        } catch (error) {
+            log(error);
             return;
         }
 
-        if (observedChatArea.current === chatArea) return;
-
-        disconnectObserver();
-        observedChatArea.current = chatArea;
-
-        // 기존 항목은 중복 방지용으로 WeakSet에만 등록
-        chatArea.querySelectorAll('[class*="live_chatting_list_item"]').forEach((el) => {
-            processedChats.current.add(el);
+        chats.forEach(({ username, contentArray }) => {
+            const idx = colorIdxRef.current;
+            mainStore.addChat({ id: mainStore.chatId + 1, username, contentArray, color: COLORS[idx] });
+            colorIdxRef.current = idx >= COLORS.length - 1 ? 0 : idx + 1;
         });
-        Array.from(chatArea.children).forEach((el) => {
-            processedChats.current.add(el);
-        });
-
-        const observer = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-                if (mutation.type !== 'childList') continue;
-                mutation.addedNodes.forEach((node) => {
-                    if (node.nodeType !== Node.ELEMENT_NODE) return;
-                    const elem = node as Element;
-                    // elem = _item_sg7hy_7: chatting_message 를 포함하는지 확인
-                    if (elem.querySelector('[class*="chatting_message"]')) {
-                        processChatItem(elem);
-                    } else if (elem.matches('[class*="live_chatting_list_item"]')) {
-                        processChatItem(elem);
-                    } else {
-                        elem.querySelectorAll('[class*="live_chatting_list_item"]').forEach(processChatItem);
-                    }
-                });
-            }
-        });
-
-        observer.observe(chatArea, { childList: true, subtree: true });
-        chatObserver.current = observer;
     };
 
     useEffect(() => {
         initSetting();
-        observeChatArea();
+        addZIndexToElements();
+        chatSocketMessages.addEventListener('chat', handleChatSocketMessage);
 
-        const fallbackTimer = setInterval(observeChatArea, 3000);
+        const fallbackTimer = setInterval(addZIndexToElements, 3000);
 
         return () => {
             clearInterval(fallbackTimer);
-            if (retryTimer.current) clearTimeout(retryTimer.current);
-            disconnectObserver();
+            chatSocketMessages.removeEventListener('chat', handleChatSocketMessage);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

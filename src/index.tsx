@@ -32,8 +32,15 @@ async function main() {
     }
 }
 
-addLocationChangeCallback(() => {
-    main().catch((e) => {
-        log(e);
+const watchLocation = () =>
+    addLocationChangeCallback(() => {
+        main().catch((e) => {
+            log(e);
+        });
     });
-});
+
+if (document.readyState === 'complete') {
+    watchLocation();
+} else {
+    window.addEventListener('load', () => window.setTimeout(watchLocation, 0), { once: true });
+}

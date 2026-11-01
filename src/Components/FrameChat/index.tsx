@@ -4,10 +4,12 @@ import styles from './style.module.less';
 import { useMainStore } from '@Stores/index';
 import { observer } from 'mobx-react-lite';
 import { classes } from '@Utils/index';
+import { shouldFloatChat } from '@Utils/chatVisibility';
 
 const FrameChat = observer(() => {
     const mainStore = useMainStore();
     const [playerSizeDiv, setPlayerSizeDiv] = useState<Element | null>(null);
+    const [isPaused, setIsPaused] = useState(false);
     const frameChatPosition = mainStore.setting.get('frame_chat_position');
     const frameRandomUsername = mainStore.setting.get('frame_random_username');
     const frameViewCount = mainStore.setting.get('frame_view_count');
@@ -42,6 +44,28 @@ const FrameChat = observer(() => {
         const timer = setInterval(find, 1000);
         return () => clearInterval(timer);
     }, [window.location.href]);
+
+    useEffect(() => {
+        const video =
+            playerSizeDiv?.querySelector('video') ??
+            Array.from(document.querySelectorAll('video')).find((item) => item.readyState > 0);
+        if (!video) {
+            setIsPaused(false);
+            return;
+        }
+
+        const update = () => setIsPaused(video.paused || video.ended);
+        update();
+        video.addEventListener('pause', update);
+        video.addEventListener('play', update);
+        video.addEventListener('ended', update);
+
+        return () => {
+            video.removeEventListener('pause', update);
+            video.removeEventListener('play', update);
+            video.removeEventListener('ended', update);
+        };
+    }, [playerSizeDiv]);
 
     const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id, username, contentArray, color }) => {
         const background = frameChatBackground ? `rgba(0, 0, 0, ${frameChatOpacity}%)` : '';
@@ -127,24 +151,26 @@ const FrameChat = observer(() => {
     }
 
     const chatBackgroundStyle = `linear-gradient(${frameChatDegree}deg, rgba(0, 0, 0, ${frameBackgroundOpacity}%) ${frameBackgroundArea}%, rgba(0, 0, 0, 0) 100%)`;
+    const isFloating = shouldFloatChat(!!playerSizeDiv, isPaused);
+    const portalTarget = playerSizeDiv && !isFloating ? playerSizeDiv : document.body;
 
-    return playerSizeDiv
-        ? ReactDOM.createPortal(
-              <div
-                  className={classes(styles.FrameChat, frameChatPositionCls)}
-                  id={id}
-                  style={{
-                      background: frameBackground ? chatBackgroundStyle : '',
-                      paddingLeft: `${frameOffsetX}px`,
-                      paddingRight: `${frameOffsetX}px`,
-                      paddingTop: `${frameOffsetY}px`,
-                      paddingBottom: `${frameOffsetY}px`,
-                  }}>
-                  {chatsElem}
-              </div>,
-              playerSizeDiv,
-          )
-        : null;
+    return ReactDOM.createPortal(
+        <div
+            className={classes(styles.FrameChat, frameChatPositionCls)}
+            id={id}
+            style={{
+                background: frameBackground ? chatBackgroundStyle : '',
+                position: isFloating ? 'fixed' : undefined,
+                zIndex: isFloating ? 13000 : undefined,
+                paddingLeft: `${frameOffsetX}px`,
+                paddingRight: `${frameOffsetX}px`,
+                paddingTop: `${frameOffsetY}px`,
+                paddingBottom: `${frameOffsetY}px`,
+            }}>
+            {chatsElem}
+        </div>,
+        portalTarget,
+    );
 });
 
 export default FrameChat;
