@@ -78,13 +78,16 @@ const Chat = observer(() => {
     }, []);
 
     if (!mainStore.setting.get('enable')) return null;
-    if (!shouldShowFullscreenChat(!!mainStore.setting.get('fullscreen_only_chat'), isFullscreen)) return null;
+    const isPageVisible = shouldShowFullscreenChat(
+        !!mainStore.setting.get('fullscreen_only_chat'),
+        isFullscreen,
+    );
 
     switch (mainStore.setting.get('chat_style')) {
         case 0:
-            return <OverlayChat />;
+            return <OverlayChat isFullscreen={isFullscreen} isPageVisible={isPageVisible} />;
         case 1:
-            return <FrameChat />;
+            return <FrameChat isFullscreen={isFullscreen} isPageVisible={isPageVisible} />;
         default:
             return null;
     }

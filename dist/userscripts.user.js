@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20261103154426
+// @version      20261103174054
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -12875,7 +12875,7 @@ img {
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.Content, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Setting, {}) }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$8.Version, children: [
                 "빌드 버전: ",
-                "20261103154426"
+                "20261103174054"
               ] })
             ]
           }
@@ -12980,6 +12980,7 @@ img {
         {
           ref: areaRef,
           className: styles$1.ChatArea,
+          "data-chat-visibility-area": true,
           style: { pointerEvents: visible ? "auto" : "none" },
           onMouseEnter: showControl,
           onMouseLeave: hideControlLater,
@@ -12988,6 +12989,7 @@ img {
               "div",
               {
                 className: styles$1.Messages,
+                "data-chat-messages": true,
                 style: { visibility: visible ? "visible" : "hidden" },
                 "aria-hidden": !visible,
                 children
@@ -13047,11 +13049,11 @@ img {
         }
       );
     };
-    const FrameChat = observer(() => {
+    const FrameChat = observer(({ isFullscreen, isPageVisible }) => {
       const mainStore = useMainStore();
       const [playerSizeDiv, setPlayerSizeDiv] = reactExports.useState(null);
       const hasSeenPlayer = reactExports.useRef(false);
-      const [isChatVisible, setIsChatVisible] = reactExports.useState(true);
+      const [visibility, setVisibility] = reactExports.useState({ normal: true, fullscreen: true });
       const frameChatPosition = mainStore.setting.get("frame_chat_position");
       const frameRandomUsername = mainStore.setting.get("frame_random_username");
       const frameViewCount = mainStore.setting.get("frame_view_count");
@@ -13067,6 +13069,8 @@ img {
       const frameOffsetY = mainStore.setting.get("frame_offset_y");
       const id2 = "chatStylerFrameChat";
       const showNicknames = mainStore.setting.get("show_nicknames");
+      const mode = isFullscreen ? "fullscreen" : "normal";
+      const isChatVisible = visibility[mode];
       reactExports.useEffect(() => {
         const find = () => {
           const player = findChatPlayerArea();
@@ -13173,6 +13177,7 @@ img {
               background: frameBackground && isChatVisible ? chatBackgroundStyle : "",
               position: isFloating ? "fixed" : void 0,
               zIndex: isFloating ? 13e3 : void 0,
+              visibility: isPageVisible ? "visible" : "hidden",
               pointerEvents: isChatVisible ? "auto" : "none",
               paddingLeft: `${frameOffsetX}px`,
               paddingRight: `${frameOffsetX}px`,
@@ -13185,7 +13190,10 @@ img {
                 fontSize: Number(frameFontSize),
                 side: frameChatPosition === 2 || frameChatPosition === 3 ? "right" : "left",
                 visible: isChatVisible,
-                onToggle: () => setIsChatVisible((visible) => !visible),
+                onToggle: () => setVisibility((current) => ({
+                  ...current,
+                  [mode]: !current[mode]
+                })),
                 children: chatsElem
               }
             )
@@ -13212,12 +13220,12 @@ img {
       Message,
       Background
     };
-    const OverlayChat = observer(() => {
+    const OverlayChat = observer(({ isFullscreen, isPageVisible }) => {
       var _a2;
       const mainStore = useMainStore();
       const chatRef = reactExports.useRef(null);
       const [playerArea, setPlayerArea] = reactExports.useState(() => findChatPlayerArea());
-      const [isChatVisible, setIsChatVisible] = reactExports.useState(true);
+      const [visibility, setVisibility] = reactExports.useState({ normal: true, fullscreen: true });
       const [isView, IsView] = reactExports.useState(false);
       const [isDragging, setIsDragging] = reactExports.useState(false);
       const [offset, setOffset] = reactExports.useState({ x: 0, y: 0 });
@@ -13234,6 +13242,8 @@ img {
       const overlayBackground = mainStore.setting.get("overlay_background");
       const overlayBackgroundArea = mainStore.setting.get("overlay_background_area");
       const showNicknames = mainStore.setting.get("show_nicknames");
+      const mode = isFullscreen ? "fullscreen" : "normal";
+      const isChatVisible = visibility[mode];
       reactExports.useEffect(() => {
         const find = () => setPlayerArea(findChatPlayerArea());
         const timer = setInterval(find, 250);
@@ -13393,6 +13403,7 @@ img {
               position: playerArea ? "absolute" : "fixed",
               left: `${position.left - ((area == null ? void 0 : area.left) ?? 0)}px`,
               top: `${position.top - ((area == null ? void 0 : area.top) ?? 0)}px`,
+              visibility: isPageVisible ? "visible" : "hidden",
               background: overlayBackground && isChatVisible ? chatBackgroundStyle : "",
               zIndex: playerArea ? 1 : 13e3,
               pointerEvents: isChatVisible ? "auto" : "none"
@@ -13403,7 +13414,10 @@ img {
                 fontSize: Number(overlayFontSize),
                 side: toggleSide,
                 visible: isChatVisible,
-                onToggle: () => setIsChatVisible((visible) => !visible),
+                onToggle: () => setVisibility((current) => ({
+                  ...current,
+                  [mode]: !current[mode]
+                })),
                 children: chatsElem
               }
             )
@@ -13468,12 +13482,15 @@ img {
         };
       }, []);
       if (!mainStore.setting.get("enable")) return null;
-      if (!shouldShowFullscreenChat(!!mainStore.setting.get("fullscreen_only_chat"), isFullscreen)) return null;
+      const isPageVisible = shouldShowFullscreenChat(
+        !!mainStore.setting.get("fullscreen_only_chat"),
+        isFullscreen
+      );
       switch (mainStore.setting.get("chat_style")) {
         case 0:
-          return /* @__PURE__ */ jsxRuntimeExports.jsx(OverlayChat, {});
+          return /* @__PURE__ */ jsxRuntimeExports.jsx(OverlayChat, { isFullscreen, isPageVisible });
         case 1:
-          return /* @__PURE__ */ jsxRuntimeExports.jsx(FrameChat, {});
+          return /* @__PURE__ */ jsxRuntimeExports.jsx(FrameChat, { isFullscreen, isPageVisible });
         default:
           return null;
       }
@@ -13553,9 +13570,71 @@ img {
         let chatParent = null;
         let waitingForChat = false;
         let restored = false;
+        let isPipChatVisible = true;
+        let isPipControlVisible = false;
+        let hideControlTimer = null;
         const rootObserver = new MutationObserver(syncChat);
         const parentObserver = new MutationObserver(syncChat);
         const documentObserver = new MutationObserver(syncChat);
+        const updatePipChatControls = () => {
+          var _a2;
+          const messages = chatHost.querySelector("[data-chat-messages]");
+          if (messages) {
+            messages.style.visibility = isPipChatVisible ? "visible" : "hidden";
+            messages.setAttribute("aria-hidden", String(!isPipChatVisible));
+          }
+          const toggle = chatHost.querySelector("[data-chat-visibility-toggle]");
+          if (!toggle) return;
+          const label = isPipChatVisible ? "채팅 숨기기" : "채팅 표시";
+          toggle.setAttribute("aria-label", label);
+          toggle.setAttribute("aria-pressed", String(isPipChatVisible));
+          toggle.title = label;
+          toggle.style.opacity = isPipControlVisible ? "1" : "0";
+          toggle.style.pointerEvents = isPipControlVisible ? "auto" : "none";
+          const svg = toggle.querySelector("svg");
+          if (!svg) return;
+          (_a2 = svg.lastElementChild) == null ? void 0 : _a2.remove();
+          const indicator = pipDocument.createElementNS(
+            "http://www.w3.org/2000/svg",
+            isPipChatVisible ? "circle" : "path"
+          );
+          if (isPipChatVisible) {
+            indicator.setAttribute("cx", "12");
+            indicator.setAttribute("cy", "12");
+            indicator.setAttribute("r", "3");
+          } else {
+            indicator.setAttribute("d", "m3 3 18 18");
+          }
+          svg.appendChild(indicator);
+        };
+        const showPipControl = () => {
+          if (hideControlTimer !== null) {
+            pipWindow.clearTimeout(hideControlTimer);
+            hideControlTimer = null;
+          }
+          isPipControlVisible = true;
+          updatePipChatControls();
+        };
+        const hidePipControlLater = () => {
+          if (hideControlTimer !== null) return;
+          hideControlTimer = pipWindow.setTimeout(() => {
+            hideControlTimer = null;
+            isPipControlVisible = false;
+            updatePipChatControls();
+          }, 2e3);
+        };
+        const containsPoint = (element, x2, y2) => {
+          if (!element) return false;
+          const rect = element.getBoundingClientRect();
+          return x2 >= rect.left && x2 <= rect.right && y2 >= rect.top && y2 <= rect.bottom;
+        };
+        function handlePipMouseMove(event) {
+          if (containsPoint(chatHost.querySelector("[data-chat-visibility-area]"), event.clientX, event.clientY) || containsPoint(chatHost.querySelector("[data-chat-visibility-toggle]"), event.clientX, event.clientY)) {
+            showPipControl();
+          } else if (isPipControlVisible) {
+            hidePipControlLater();
+          }
+        }
         const restoreVideo = () => {
           var _a2;
           if (restored) return;
@@ -13563,6 +13642,8 @@ img {
           rootObserver.disconnect();
           parentObserver.disconnect();
           documentObserver.disconnect();
+          pipWindow.removeEventListener("mousemove", handlePipMouseMove);
+          if (hideControlTimer !== null) pipWindow.clearTimeout(hideControlTimer);
           waitingForChat = false;
           if (video && (placeholder == null ? void 0 : placeholder.parentNode)) {
             placeholder.parentNode.insertBefore(video, placeholder);
@@ -13579,7 +13660,12 @@ img {
           }
         };
         const copyChatStyles = (source) => {
-          const classNames = Array.from(source.classList);
+          const classNames = [
+            ...source.classList,
+            ...Array.from(source.querySelectorAll("[class]")).flatMap(
+              (element) => Array.from(element.classList)
+            )
+          ];
           pageDocument.querySelectorAll("style").forEach((style) => {
             const css = style.textContent ?? "";
             if (!copiedStyles.has(style) && classNames.some((name) => css.includes(name))) {
@@ -13589,7 +13675,6 @@ img {
           });
         };
         function syncChat() {
-          var _a2;
           if (restored) return;
           const source = pageDocument.querySelector(CHAT_SELECTOR);
           if (source !== chatRoot || (source == null ? void 0 : source.parentNode) !== chatParent) {
@@ -13622,7 +13707,14 @@ img {
           waitingForChat = false;
           const clone = source.cloneNode(true);
           clone.style.pointerEvents = "none";
-          (_a2 = clone.querySelector("[data-chat-visibility-toggle]")) == null ? void 0 : _a2.remove();
+          clone.style.visibility = "visible";
+          const toggle = clone.querySelector("[data-chat-visibility-toggle]");
+          toggle == null ? void 0 : toggle.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            isPipChatVisible = !isPipChatVisible;
+            showPipControl();
+          });
           if (source.id === "chatStylerOverlayChat") {
             const maxLeft = Math.max(0, (pipWindow.innerWidth || width) - 80);
             const maxTop = Math.max(0, (pipWindow.innerHeight || height) - 80);
@@ -13631,6 +13723,7 @@ img {
             clone.style.top = `${Math.min(Math.max(0, sourceRect.top), maxTop)}px`;
           }
           chatHost.replaceChildren(clone);
+          updatePipChatControls();
         }
         try {
           if (video && parent && placeholder) parent.insertBefore(placeholder, video);
@@ -13648,6 +13741,7 @@ img {
             pipDocument.body.insertBefore(video, chatHost);
           }
           pipWindow.addEventListener("pagehide", restoreVideo, { once: true });
+          pipWindow.addEventListener("mousemove", handlePipMouseMove);
           syncChat();
           return pipWindow;
         } catch (error) {

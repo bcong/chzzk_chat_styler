@@ -22,5 +22,7 @@ assert.equal(isChatPlayerFullscreen(null, {}, true), true);
 const fullscreenElement = { contains: () => false };
 const playerArea = { contains: (element) => element === fullscreenElement };
 assert.equal(isChatPlayerFullscreen(fullscreenElement, playerArea, false), true);
+const fullscreenWrapper = { contains: (element) => element === playerArea };
+assert.equal(isChatPlayerFullscreen(fullscreenWrapper, playerArea, false), true);
 
 console.log('Chat visibility check passed');

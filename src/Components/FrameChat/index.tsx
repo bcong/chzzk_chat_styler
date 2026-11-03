@@ -7,11 +7,16 @@ import { classes } from '@Utils/index';
 import { findChatPlayerArea, shouldFloatChat, shouldRenderChat } from '@Utils/chatVisibility';
 import ChatVisibilityToggle from '@Components/ChatVisibilityToggle';
 
-const FrameChat = observer(() => {
+type Props = {
+    isFullscreen: boolean;
+    isPageVisible: boolean;
+};
+
+const FrameChat = observer(({ isFullscreen, isPageVisible }: Props) => {
     const mainStore = useMainStore();
     const [playerSizeDiv, setPlayerSizeDiv] = useState<Element | null>(null);
     const hasSeenPlayer = useRef(false);
-    const [isChatVisible, setIsChatVisible] = useState(true);
+    const [visibility, setVisibility] = useState({ normal: true, fullscreen: true });
     const frameChatPosition = mainStore.setting.get('frame_chat_position');
     const frameRandomUsername = mainStore.setting.get('frame_random_username');
     const frameViewCount = mainStore.setting.get('frame_view_count');
@@ -27,6 +32,8 @@ const FrameChat = observer(() => {
     const frameOffsetY = mainStore.setting.get('frame_offset_y');
     const id = 'chatStylerFrameChat';
     const showNicknames = mainStore.setting.get('show_nicknames');
+    const mode = isFullscreen ? 'fullscreen' : 'normal';
+    const isChatVisible = visibility[mode];
 
     useEffect(() => {
         const find = () => {
@@ -144,6 +151,7 @@ const FrameChat = observer(() => {
                 background: frameBackground && isChatVisible ? chatBackgroundStyle : '',
                 position: isFloating ? 'fixed' : undefined,
                 zIndex: isFloating ? 13000 : undefined,
+                visibility: isPageVisible ? 'visible' : 'hidden',
                 pointerEvents: isChatVisible ? 'auto' : 'none',
                 paddingLeft: `${frameOffsetX}px`,
                 paddingRight: `${frameOffsetX}px`,
@@ -154,7 +162,12 @@ const FrameChat = observer(() => {
                 fontSize={Number(frameFontSize)}
                 side={frameChatPosition === 2 || frameChatPosition === 3 ? 'right' : 'left'}
                 visible={isChatVisible}
-                onToggle={() => setIsChatVisible((visible) => !visible)}>
+                onToggle={() =>
+                    setVisibility((current) => ({
+                        ...current,
+                        [mode]: !current[mode],
+                    }))
+                }>
                 {chatsElem}
             </ChatVisibilityToggle>
         </div>,

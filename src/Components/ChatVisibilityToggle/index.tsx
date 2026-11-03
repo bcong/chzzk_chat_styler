@@ -64,11 +64,13 @@ const ChatVisibilityToggle = ({ fontSize, visible, onToggle, side, children }: P
         <div
             ref={areaRef}
             className={styles.ChatArea}
+            data-chat-visibility-area
             style={{ pointerEvents: visible ? 'auto' : 'none' }}
             onMouseEnter={showControl}
             onMouseLeave={hideControlLater}>
             <div
                 className={styles.Messages}
+                data-chat-messages
                 style={{ visibility: visible ? 'visible' : 'hidden' }}
                 aria-hidden={!visible}>
                 {children}

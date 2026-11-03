@@ -34,10 +34,83 @@ export const installChatPipHook = () => {
         let chatParent: Node | null = null;
         let waitingForChat = false;
         let restored = false;
+        let isPipChatVisible = true;
+        let isPipControlVisible = false;
+        let hideControlTimer: number | null = null;
 
         const rootObserver = new MutationObserver(syncChat);
         const parentObserver = new MutationObserver(syncChat);
         const documentObserver = new MutationObserver(syncChat);
+
+        const updatePipChatControls = () => {
+            const messages = chatHost.querySelector<HTMLElement>('[data-chat-messages]');
+            if (messages) {
+                messages.style.visibility = isPipChatVisible ? 'visible' : 'hidden';
+                messages.setAttribute('aria-hidden', String(!isPipChatVisible));
+            }
+
+            const toggle = chatHost.querySelector<HTMLButtonElement>('[data-chat-visibility-toggle]');
+            if (!toggle) return;
+
+            const label = isPipChatVisible ? '채팅 숨기기' : '채팅 표시';
+            toggle.setAttribute('aria-label', label);
+            toggle.setAttribute('aria-pressed', String(isPipChatVisible));
+            toggle.title = label;
+            toggle.style.opacity = isPipControlVisible ? '1' : '0';
+            toggle.style.pointerEvents = isPipControlVisible ? 'auto' : 'none';
+
+            const svg = toggle.querySelector('svg');
+            if (!svg) return;
+
+            svg.lastElementChild?.remove();
+            const indicator = pipDocument.createElementNS(
+                'http://www.w3.org/2000/svg',
+                isPipChatVisible ? 'circle' : 'path',
+            );
+            if (isPipChatVisible) {
+                indicator.setAttribute('cx', '12');
+                indicator.setAttribute('cy', '12');
+                indicator.setAttribute('r', '3');
+            } else {
+                indicator.setAttribute('d', 'm3 3 18 18');
+            }
+            svg.appendChild(indicator);
+        };
+
+        const showPipControl = () => {
+            if (hideControlTimer !== null) {
+                pipWindow.clearTimeout(hideControlTimer);
+                hideControlTimer = null;
+            }
+            isPipControlVisible = true;
+            updatePipChatControls();
+        };
+
+        const hidePipControlLater = () => {
+            if (hideControlTimer !== null) return;
+            hideControlTimer = pipWindow.setTimeout(() => {
+                hideControlTimer = null;
+                isPipControlVisible = false;
+                updatePipChatControls();
+            }, 2000);
+        };
+
+        const containsPoint = (element: Element | null, x: number, y: number) => {
+            if (!element) return false;
+            const rect = element.getBoundingClientRect();
+            return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+        };
+
+        function handlePipMouseMove(event: MouseEvent) {
+            if (
+                containsPoint(chatHost.querySelector('[data-chat-visibility-area]'), event.clientX, event.clientY) ||
+                containsPoint(chatHost.querySelector('[data-chat-visibility-toggle]'), event.clientX, event.clientY)
+            ) {
+                showPipControl();
+            } else if (isPipControlVisible) {
+                hidePipControlLater();
+            }
+        }
 
         const restoreVideo = () => {
             if (restored) return;
@@ -45,6 +118,8 @@ export const installChatPipHook = () => {
             rootObserver.disconnect();
             parentObserver.disconnect();
             documentObserver.disconnect();
+            pipWindow.removeEventListener('mousemove', handlePipMouseMove);
+            if (hideControlTimer !== null) pipWindow.clearTimeout(hideControlTimer);
             waitingForChat = false;
 
             if (video && placeholder?.parentNode) {
@@ -64,7 +139,12 @@ export const installChatPipHook = () => {
         };
 
         const copyChatStyles = (source: HTMLElement) => {
-            const classNames = Array.from(source.classList);
+            const classNames = [
+                ...source.classList,
+                ...Array.from(source.querySelectorAll('[class]')).flatMap((element) =>
+                    Array.from(element.classList),
+                ),
+            ];
             pageDocument.querySelectorAll('style').forEach((style) => {
                 const css = style.textContent ?? '';
                 if (!copiedStyles.has(style) && classNames.some((name) => css.includes(name))) {
@@ -111,7 +191,15 @@ export const installChatPipHook = () => {
             waitingForChat = false;
             const clone = source.cloneNode(true) as HTMLElement;
             clone.style.pointerEvents = 'none';
-            clone.querySelector('[data-chat-visibility-toggle]')?.remove();
+            clone.style.visibility = 'visible';
+
+            const toggle = clone.querySelector<HTMLButtonElement>('[data-chat-visibility-toggle]');
+            toggle?.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                isPipChatVisible = !isPipChatVisible;
+                showPipControl();
+            });
 
             if (source.id === 'chatStylerOverlayChat') {
                 const maxLeft = Math.max(0, (pipWindow.innerWidth || width) - 80);
@@ -122,6 +210,7 @@ export const installChatPipHook = () => {
             }
 
             chatHost.replaceChildren(clone);
+            updatePipChatControls();
         }
 
         try {
@@ -141,6 +230,7 @@ export const installChatPipHook = () => {
                 pipDocument.body.insertBefore(video, chatHost);
             }
             pipWindow.addEventListener('pagehide', restoreVideo, { once: true });
+            pipWindow.addEventListener('mousemove', handlePipMouseMove);
             syncChat();
             return pipWindow;
         } catch (error) {
