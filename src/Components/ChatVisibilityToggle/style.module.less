@@ -1,0 +1,45 @@
+.ChatArea {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 28px;
+    min-height: 28px;
+}
+
+.Messages {
+    pointer-events: none;
+}
+
+.Toggle {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity 0.15s;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.9);
+    }
+
+    &:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+    }
+}
+
+.Visible {
+    opacity: 1;
+}

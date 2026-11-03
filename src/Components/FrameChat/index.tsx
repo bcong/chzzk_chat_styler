@@ -4,12 +4,14 @@ import styles from './style.module.less';
 import { useMainStore } from '@Stores/index';
 import { observer } from 'mobx-react-lite';
 import { classes } from '@Utils/index';
-import { shouldFloatChat, shouldRenderChat } from '@Utils/chatVisibility';
+import { findChatPlayerArea, shouldFloatChat, shouldRenderChat } from '@Utils/chatVisibility';
+import ChatVisibilityToggle from '@Components/ChatVisibilityToggle';
 
 const FrameChat = observer(() => {
     const mainStore = useMainStore();
     const [playerSizeDiv, setPlayerSizeDiv] = useState<Element | null>(null);
     const hasSeenPlayer = useRef(false);
+    const [isChatVisible, setIsChatVisible] = useState(true);
     const frameChatPosition = mainStore.setting.get('frame_chat_position');
     const frameRandomUsername = mainStore.setting.get('frame_random_username');
     const frameViewCount = mainStore.setting.get('frame_view_count');
@@ -28,10 +30,7 @@ const FrameChat = observer(() => {
 
     useEffect(() => {
         const find = () => {
-            const playerLayout = document.querySelector('#live_player_layout');
-            const preAdPlayer = document.querySelector('#preAdPlayerWrapper');
-            const player = playerLayout?.parentElement ?? preAdPlayer?.parentElement ?? playerLayout ?? preAdPlayer;
-
+            const player = findChatPlayerArea();
             if (player) {
                 setPlayerSizeDiv(player);
             } else {
@@ -142,15 +141,18 @@ const FrameChat = observer(() => {
             className={classes(styles.FrameChat, frameChatPositionCls)}
             id={id}
             style={{
-                background: frameBackground ? chatBackgroundStyle : '',
+                background: frameBackground && isChatVisible ? chatBackgroundStyle : '',
                 position: isFloating ? 'fixed' : undefined,
                 zIndex: isFloating ? 13000 : undefined,
+                pointerEvents: isChatVisible ? 'auto' : 'none',
                 paddingLeft: `${frameOffsetX}px`,
                 paddingRight: `${frameOffsetX}px`,
                 paddingTop: `${frameOffsetY}px`,
                 paddingBottom: `${frameOffsetY}px`,
             }}>
-            {chatsElem}
+            <ChatVisibilityToggle visible={isChatVisible} onToggle={() => setIsChatVisible((visible) => !visible)}>
+                {chatsElem}
+            </ChatVisibilityToggle>
         </div>,
         portalTarget,
     );

@@ -111,12 +111,14 @@ export const installChatPipHook = () => {
             waitingForChat = false;
             const clone = source.cloneNode(true) as HTMLElement;
             clone.style.pointerEvents = 'none';
+            clone.querySelector('[data-chat-visibility-toggle]')?.remove();
 
             if (source.id === 'chatStylerOverlayChat') {
                 const maxLeft = Math.max(0, (pipWindow.innerWidth || width) - 80);
                 const maxTop = Math.max(0, (pipWindow.innerHeight || height) - 80);
-                clone.style.left = `${Math.min(Math.max(0, parseFloat(source.style.left) || 0), maxLeft)}px`;
-                clone.style.top = `${Math.min(Math.max(0, parseFloat(source.style.top) || 0), maxTop)}px`;
+                const sourceRect = source.getBoundingClientRect();
+                clone.style.left = `${Math.min(Math.max(0, sourceRect.left), maxLeft)}px`;
+                clone.style.top = `${Math.min(Math.max(0, sourceRect.top), maxTop)}px`;
             }
 
             chatHost.replaceChildren(clone);

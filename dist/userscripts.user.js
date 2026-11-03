@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20261102040418
+// @version      20261103151949
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -442,6 +442,46 @@ img {
 }
 ._FrameChat_mz2ar_1 ._Chat_mz2ar_23._Background_mz2ar_64 ._MessageContainer_mz2ar_29 {
   padding: 4px 8px;
+}
+._ChatArea_mdbto_1 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 28px;
+  min-height: 28px;
+}
+._Messages_mdbto_9 {
+  pointer-events: none;
+}
+._Toggle_mdbto_12 {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+._Toggle_mdbto_12:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+._Toggle_mdbto_12:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+._Visible_mdbto_38 {
+  opacity: 1;
 }
 ._OverlayChat_18pdb_1 {
   position: fixed;
@@ -7481,7 +7521,7 @@ img {
       m.hydrateRoot;
     }
     const SettingMenu = "_SettingMenu_sp5yj_1";
-    const styles$8 = {
+    const styles$9 = {
       SettingMenu
     };
     const STUDIO_LINK_SELECTOR = "a[href*='studio.chzzk.naver.com']";
@@ -7501,7 +7541,7 @@ img {
         }
         const wrapper = document.createElement("div");
         wrapper.id = id2;
-        wrapper.className = styles$8.SettingMenu;
+        wrapper.className = styles$9.SettingMenu;
         const button = document.createElement("button");
         button.setAttribute("tip", "채팅 스타일러 설정");
         const label = document.createElement("p");
@@ -7553,7 +7593,7 @@ img {
     const Menu$1 = "_Menu_5j2jf_36";
     const Content = "_Content_5j2jf_57";
     const Version = "_Version_5j2jf_79";
-    const styles$7 = {
+    const styles$8 = {
       SettingTemplate: SettingTemplate$1,
       View: View$3,
       Header,
@@ -7612,7 +7652,7 @@ img {
     const ToggleButton$1 = "_ToggleButton_1j7w4_1";
     const Enable = "_Enable_1j7w4_12";
     const Circle = "_Circle_1j7w4_15";
-    const styles$6 = {
+    const styles$7 = {
       ToggleButton: ToggleButton$1,
       Enable,
       Circle
@@ -7624,14 +7664,14 @@ img {
       const handleToggle = () => {
         setEnable(!enable);
       };
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$6.ToggleButton, enable ? styles$6.Enable : false), onClick: handleToggle, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Circle }) });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$7.ToggleButton, enable ? styles$7.Enable : false), onClick: handleToggle, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.Circle }) });
     };
     const Setting$1 = "_Setting_bt7mm_1";
     const Menus = "_Menus_bt7mm_4";
     const Menu = "_Menu_bt7mm_4";
     const Name = "_Name_bt7mm_14";
     const Value = "_Value_bt7mm_22";
-    const styles$5 = {
+    const styles$6 = {
       Setting: Setting$1,
       Menus,
       Menu,
@@ -7644,7 +7684,7 @@ img {
     const Option = "_Option_5p09x_32";
     const Selected = "_Selected_5p09x_57";
     const View$2 = "_View_5p09x_67";
-    const styles$4 = {
+    const styles$5 = {
       ListBox: ListBox$1,
       ListValue,
       Options,
@@ -7664,11 +7704,11 @@ img {
       };
       const optionsElem = options.map(({ key, name }) => {
         const isSelected = value == key;
-        return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$4.Option, isSelected ? styles$4.Selected : false), onClick: () => !isSelected && handleSetValue(key), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }, key);
+        return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$5.Option, isSelected ? styles$5.Selected : false), onClick: () => !isSelected && handleSetValue(key), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }, key);
       });
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$4.ListBox, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.ListValue, onClick: () => IsOptions(!isOptions), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: options[value].name }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$4.Options, isOptions ? styles$4.View : false), children: optionsElem })
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$5.ListBox, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.ListValue, onClick: () => IsOptions(!isOptions), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: options[value].name }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$5.Options, isOptions ? styles$5.View : false), children: optionsElem })
       ] });
     };
     function die(error) {
@@ -12266,7 +12306,7 @@ img {
     const InputValue = "_InputValue_1a5to_4";
     const Tip = "_Tip_1a5to_25";
     const View$1 = "_View_1a5to_39";
-    const styles$3 = {
+    const styles$4 = {
       InputBox: InputBox$1,
       InputValue,
       Tip,
@@ -12296,16 +12336,16 @@ img {
         }
         setValue(newValue);
       };
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$3.InputBox, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.InputValue, children: /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type, value: String(value), onChange: handleChange }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$3.Tip, tip.length > 0 ? styles$3.View : false), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: tip }) })
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$4.InputBox, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.InputValue, children: /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type, value: String(value), onChange: handleChange }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: classes(styles$4.Tip, tip.length > 0 ? styles$4.View : false), children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: tip }) })
       ] });
     };
     const SliderBar$1 = "_SliderBar_1p3hs_1";
     const SliderTrack = "_SliderTrack_1p3hs_5";
     const SliderFilled = "_SliderFilled_1p3hs_12";
     const SliderThumb = "_SliderThumb_1p3hs_19";
-    const styles$2 = {
+    const styles$3 = {
       SliderBar: SliderBar$1,
       SliderTrack,
       SliderFilled,
@@ -12338,17 +12378,17 @@ img {
           { once: true }
         );
       };
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.SliderBar, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.SliderBar, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: styles$2.SliderTrack,
+          className: styles$3.SliderTrack,
           ref: sliderRef,
           onMouseDown: handleMouseDown,
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "div",
               {
-                className: styles$2.SliderThumb,
+                className: styles$3.SliderThumb,
                 "data-value": value,
                 style: { left: `${(value - min) / (max - min) * 100}%` }
               }
@@ -12356,7 +12396,7 @@ img {
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "div",
               {
-                className: styles$2.SliderFilled,
+                className: styles$3.SliderFilled,
                 style: { width: `${(value - min) / (max - min) * 100}%` }
               }
             )
@@ -12730,14 +12770,14 @@ img {
               contentElem = /* @__PURE__ */ jsxRuntimeExports.jsx(SliderBar, { value, setValue: cb2, min, max });
               break;
           }
-          return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Value, children: contentElem }, idx2);
+          return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Value, children: contentElem }, idx2);
         });
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$5.Menu, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Name, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }),
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$6.Menu, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Name, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: name }) }),
           valueElem
         ] }, idx);
       });
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Setting, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.Menus, children: settingListElem }) });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Setting, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.Menus, children: settingListElem }) });
     });
     const SvgCrossSmall = (props) => /* @__PURE__ */ reactExports.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", id: "Outline", viewBox: "0 0 24 24", width: 512, height: 512, ...props }, /* @__PURE__ */ reactExports.createElement("path", { d: "M18,6h0a1,1,0,0,0-1.414,0L12,10.586,7.414,6A1,1,0,0,0,6,6H6A1,1,0,0,0,6,7.414L10.586,12,6,16.586A1,1,0,0,0,6,18H6a1,1,0,0,0,1.414,0L12,13.414,16.586,18A1,1,0,0,0,18,18h0a1,1,0,0,0,0-1.414L13.414,12,18,7.414A1,1,0,0,0,18,6Z" }));
     const SettingTemplate = ({
@@ -12790,20 +12830,20 @@ img {
           "div",
           {
             ref: settingRef,
-            className: classes(styles$7.SettingTemplate, isSetting ? styles$7.View : false),
+            className: classes(styles$8.SettingTemplate, isSetting ? styles$8.View : false),
             style: { position: "absolute" },
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$7.Header, onMouseDown: handleMouseDown, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.Title, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "채팅 스타일러" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$8.Header, onMouseDown: handleMouseDown, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.Title, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "채팅 스타일러" }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "div",
                   {
-                    className: styles$7.Menus,
+                    className: styles$8.Menus,
                     onMouseDown: (e) => e.stopPropagation(),
                     children: /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "div",
                       {
-                        className: styles$7.Menu,
+                        className: styles$8.Menu,
                         onClick: toggleSetting,
                         children: /* @__PURE__ */ jsxRuntimeExports.jsx(SvgCrossSmall, { fill: "rgb(70, 70, 70)" })
                       }
@@ -12811,10 +12851,10 @@ img {
                   }
                 )
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.Content, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Setting, {}) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$7.Version, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.Content, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Setting, {}) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$8.Version, children: [
                 "빌드 버전: ",
-                "20261102040418"
+                "20261103151949"
               ] })
             ]
           }
@@ -12833,7 +12873,7 @@ img {
     const Username$1 = "_Username_mz2ar_33";
     const Message$1 = "_Message_mz2ar_29";
     const Background$1 = "_Background_mz2ar_64";
-    const styles$1 = {
+    const styles$2 = {
       FrameChat: FrameChat$1,
       LeftTop,
       LeftBottom,
@@ -12846,12 +12886,128 @@ img {
       Message: Message$1,
       Background: Background$1
     };
+    const findChatPlayerArea = () => {
+      const playerLayout = document.querySelector("#live_player_layout");
+      const preAdPlayer = document.querySelector("#preAdPlayerWrapper");
+      return playerLayout ?? (preAdPlayer == null ? void 0 : preAdPlayer.parentElement) ?? null;
+    };
     const shouldRenderChat = (hasPlayer, hasSeenPlayer) => hasPlayer || hasSeenPlayer;
     const shouldFloatChat = (hasPlayer) => !hasPlayer;
+    const ChatArea = "_ChatArea_mdbto_1";
+    const Messages = "_Messages_mdbto_9";
+    const Toggle = "_Toggle_mdbto_12";
+    const Visible = "_Visible_mdbto_38";
+    const styles$1 = {
+      ChatArea,
+      Messages,
+      Toggle,
+      Visible
+    };
+    const ChatVisibilityToggle = ({ visible, onToggle, children }) => {
+      const areaRef = reactExports.useRef(null);
+      const buttonRef = reactExports.useRef(null);
+      const hideTimer = reactExports.useRef(null);
+      const [isControlVisible, setIsControlVisible] = reactExports.useState(false);
+      const showControl = reactExports.useCallback(() => {
+        if (hideTimer.current !== null) {
+          clearTimeout(hideTimer.current);
+          hideTimer.current = null;
+        }
+        setIsControlVisible(true);
+      }, []);
+      const hideControlLater = reactExports.useCallback(() => {
+        if (hideTimer.current !== null) return;
+        hideTimer.current = window.setTimeout(() => {
+          hideTimer.current = null;
+          setIsControlVisible(false);
+        }, 2e3);
+      }, []);
+      reactExports.useEffect(() => {
+        const containsPoint = (element, x2, y2) => {
+          if (!element) return false;
+          const rect = element.getBoundingClientRect();
+          return x2 >= rect.left && x2 <= rect.right && y2 >= rect.top && y2 <= rect.bottom;
+        };
+        const handleMouseMove = (event) => {
+          if (containsPoint(areaRef.current, event.clientX, event.clientY) || containsPoint(buttonRef.current, event.clientX, event.clientY)) {
+            showControl();
+          } else if (isControlVisible) {
+            hideControlLater();
+          }
+        };
+        document.addEventListener("mousemove", handleMouseMove);
+        return () => {
+          document.removeEventListener("mousemove", handleMouseMove);
+          if (hideTimer.current !== null) clearTimeout(hideTimer.current);
+        };
+      }, [hideControlLater, isControlVisible, showControl]);
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          ref: areaRef,
+          className: styles$1.ChatArea,
+          style: { pointerEvents: visible ? "auto" : "none" },
+          onMouseEnter: showControl,
+          onMouseLeave: hideControlLater,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "div",
+              {
+                className: styles$1.Messages,
+                style: { visibility: visible ? "visible" : "hidden" },
+                "aria-hidden": !visible,
+                children
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                ref: buttonRef,
+                type: "button",
+                "data-chat-visibility-toggle": true,
+                className: classes(styles$1.Toggle, isControlVisible ? styles$1.Visible : false),
+                style: { pointerEvents: isControlVisible ? "auto" : "none" },
+                "aria-label": visible ? "채팅 숨기기" : "채팅 표시",
+                "aria-pressed": visible,
+                title: visible ? "채팅 숨기기" : "채팅 표시",
+                onMouseEnter: showControl,
+                onMouseLeave: hideControlLater,
+                onMouseDown: (event) => event.stopPropagation(),
+                onClick: (event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  showControl();
+                  onToggle();
+                },
+                children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "svg",
+                  {
+                    xmlns: "http://www.w3.org/2000/svg",
+                    width: "18",
+                    height: "18",
+                    viewBox: "0 0 24 24",
+                    fill: "none",
+                    stroke: "currentColor",
+                    strokeWidth: "2",
+                    strokeLinecap: "round",
+                    strokeLinejoin: "round",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" }),
+                      visible ? /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "12", r: "3" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "m3 3 18 18" })
+                    ]
+                  }
+                )
+              }
+            )
+          ]
+        }
+      );
+    };
     const FrameChat = observer(() => {
       const mainStore = useMainStore();
       const [playerSizeDiv, setPlayerSizeDiv] = reactExports.useState(null);
       const hasSeenPlayer = reactExports.useRef(false);
+      const [isChatVisible, setIsChatVisible] = reactExports.useState(true);
       const frameChatPosition = mainStore.setting.get("frame_chat_position");
       const frameRandomUsername = mainStore.setting.get("frame_random_username");
       const frameViewCount = mainStore.setting.get("frame_view_count");
@@ -12869,9 +13025,7 @@ img {
       const showNicknames = mainStore.setting.get("show_nicknames");
       reactExports.useEffect(() => {
         const find = () => {
-          const playerLayout = document.querySelector("#live_player_layout");
-          const preAdPlayer = document.querySelector("#preAdPlayerWrapper");
-          const player = (playerLayout == null ? void 0 : playerLayout.parentElement) ?? (preAdPlayer == null ? void 0 : preAdPlayer.parentElement) ?? playerLayout ?? preAdPlayer;
+          const player = findChatPlayerArea();
           if (player) {
             setPlayerSizeDiv(player);
           } else {
@@ -12888,7 +13042,7 @@ img {
       const chatsElem = mainStore.chats.slice(-frameViewCount).map(({ id: id22, username, contentArray, color }) => {
         const background = frameChatBackground ? `rgba(0, 0, 0, ${frameChatOpacity}%)` : "";
         const fontSize = `${frameFontSize}px`;
-        const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        const userNameElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.Username, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "p",
           {
             style: {
@@ -12905,7 +13059,7 @@ img {
             return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize }, children: content.content }, index);
           }
         });
-        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.Message, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        const messageElem = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.Message, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "p",
           {
             style: {
@@ -12918,9 +13072,9 @@ img {
           "div",
           {
             className: classes(
-              styles$1.Chat,
-              frameChatBackground ? styles$1.Background : false,
-              frameSortChatMessages ? styles$1.Sorted : false
+              styles$2.Chat,
+              frameChatBackground ? styles$2.Background : false,
+              frameSortChatMessages ? styles$2.Sorted : false
             ),
             style: {
               width: `${frameViewWidth}px`
@@ -12928,7 +13082,7 @@ img {
             children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "div",
               {
-                className: styles$1.MessageContainer,
+                className: styles$2.MessageContainer,
                 style: {
                   background
                 },
@@ -12945,19 +13099,19 @@ img {
       let frameChatPositionCls = "", frameChatDegree;
       switch (frameChatPosition) {
         case 0:
-          frameChatPositionCls = styles$1.LeftTop;
+          frameChatPositionCls = styles$2.LeftTop;
           frameChatDegree = 180;
           break;
         case 1:
-          frameChatPositionCls = styles$1.LeftBottom;
+          frameChatPositionCls = styles$2.LeftBottom;
           frameChatDegree = 0;
           break;
         case 2:
-          frameChatPositionCls = styles$1.RightTop;
+          frameChatPositionCls = styles$2.RightTop;
           frameChatDegree = 180;
           break;
         case 3:
-          frameChatPositionCls = styles$1.RightBottom;
+          frameChatPositionCls = styles$2.RightBottom;
           frameChatDegree = 0;
           break;
       }
@@ -12969,18 +13123,19 @@ img {
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
-            className: classes(styles$1.FrameChat, frameChatPositionCls),
+            className: classes(styles$2.FrameChat, frameChatPositionCls),
             id: id2,
             style: {
-              background: frameBackground ? chatBackgroundStyle : "",
+              background: frameBackground && isChatVisible ? chatBackgroundStyle : "",
               position: isFloating ? "fixed" : void 0,
               zIndex: isFloating ? 13e3 : void 0,
+              pointerEvents: isChatVisible ? "auto" : "none",
               paddingLeft: `${frameOffsetX}px`,
               paddingRight: `${frameOffsetX}px`,
               paddingTop: `${frameOffsetY}px`,
               paddingBottom: `${frameOffsetY}px`
             },
-            children: chatsElem
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChatVisibilityToggle, { visible: isChatVisible, onToggle: () => setIsChatVisible((visible) => !visible), children: chatsElem })
           }
         ),
         portalTarget
@@ -13007,6 +13162,8 @@ img {
     const OverlayChat = observer(() => {
       const mainStore = useMainStore();
       const chatRef = reactExports.useRef(null);
+      const [playerArea, setPlayerArea] = reactExports.useState(() => findChatPlayerArea());
+      const [isChatVisible, setIsChatVisible] = reactExports.useState(true);
       const [isView, IsView] = reactExports.useState(false);
       const [isDragging, setIsDragging] = reactExports.useState(false);
       const [offset, setOffset] = reactExports.useState({ x: 0, y: 0 });
@@ -13023,6 +13180,23 @@ img {
       const overlayBackground = mainStore.setting.get("overlay_background");
       const overlayBackgroundArea = mainStore.setting.get("overlay_background_area");
       const showNicknames = mainStore.setting.get("show_nicknames");
+      reactExports.useEffect(() => {
+        const find = () => setPlayerArea(findChatPlayerArea());
+        const timer = setInterval(find, 250);
+        return () => clearInterval(timer);
+      }, []);
+      const setChatPosition = (left, top) => {
+        if (!chatRef.current) return;
+        const area2 = playerArea == null ? void 0 : playerArea.getBoundingClientRect();
+        chatRef.current.style.left = `${left - ((area2 == null ? void 0 : area2.left) ?? 0)}px`;
+        chatRef.current.style.top = `${top - ((area2 == null ? void 0 : area2.top) ?? 0)}px`;
+      };
+      reactExports.useEffect(() => {
+        const find = () => setPlayerArea(findChatPlayerArea());
+        find();
+        const timer = setInterval(find, 500);
+        return () => clearInterval(timer);
+      }, []);
       const handleMouseDown = (e) => {
         if (!chatRef.current) return;
         setIsDragging(true);
@@ -13042,8 +13216,7 @@ img {
         const newLeft = offset.x + currentX;
         const newTop = offset.y + currentY;
         setPosition({ left: newLeft, top: newTop });
-        chatRef.current.style.left = `${newLeft}px`;
-        chatRef.current.style.top = `${newTop}px`;
+        setChatPosition(newLeft, newTop);
       };
       const handleMouseUp = () => {
         setIsDragging(false);
@@ -13080,8 +13253,7 @@ img {
             if (rect.bottom > windowHeight) newTop = windowHeight - rect.height;
           }
           setPosition({ left: newLeft, top: newTop });
-          chatRef.current.style.left = `${newLeft}px`;
-          chatRef.current.style.top = `${newTop}px`;
+          setChatPosition(newLeft, newTop);
           mainStore.setSetting("overlay_x", newLeft, true);
           mainStore.setSetting("overlay_y", newTop, true);
         };
@@ -13095,8 +13267,7 @@ img {
         const left = mainStore.setting.get("overlay_x") || 0;
         const top = mainStore.setting.get("overlay_y") || 0;
         setPosition({ left, top });
-        chatRef.current.style.left = `${left}px`;
-        chatRef.current.style.top = `${top}px`;
+        setChatPosition(left, top);
         IsView(true);
       }, []);
       const chatsElem = mainStore.chats.slice(-overlayViewCount).map(({ id: id2, username, contentArray, color }) => {
@@ -13149,6 +13320,7 @@ img {
         );
       });
       const chatBackgroundStyle = `linear-gradient(0deg, rgba(0, 0, 0, ${overlayBackgroundOpacity}%) ${overlayBackgroundArea}%, rgba(0, 0, 0, 0) 100%)`;
+      const area = playerArea == null ? void 0 : playerArea.getBoundingClientRect();
       return ReactDOM.createPortal(
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
@@ -13158,14 +13330,17 @@ img {
             id: "chatStylerOverlayChat",
             onMouseDown: handleMouseDown,
             style: {
-              left: `${position.left}px`,
-              top: `${position.top}px`,
-              background: overlayBackground ? chatBackgroundStyle : ""
+              position: playerArea ? "absolute" : "fixed",
+              left: `${position.left - ((area == null ? void 0 : area.left) ?? 0)}px`,
+              top: `${position.top - ((area == null ? void 0 : area.top) ?? 0)}px`,
+              background: overlayBackground && isChatVisible ? chatBackgroundStyle : "",
+              zIndex: playerArea ? 1 : 13e3,
+              pointerEvents: isChatVisible ? "auto" : "none"
             },
-            children: chatsElem
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChatVisibilityToggle, { visible: isChatVisible, onToggle: () => setIsChatVisible((visible) => !visible), children: chatsElem })
           }
         ),
-        document.body
+        playerArea ?? document.body
       );
     });
     const Chat = observer(() => {
@@ -13291,6 +13466,7 @@ img {
           });
         };
         function syncChat() {
+          var _a2;
           if (restored) return;
           const source = pageDocument.querySelector(CHAT_SELECTOR);
           if (source !== chatRoot || (source == null ? void 0 : source.parentNode) !== chatParent) {
@@ -13323,11 +13499,13 @@ img {
           waitingForChat = false;
           const clone = source.cloneNode(true);
           clone.style.pointerEvents = "none";
+          (_a2 = clone.querySelector("[data-chat-visibility-toggle]")) == null ? void 0 : _a2.remove();
           if (source.id === "chatStylerOverlayChat") {
             const maxLeft = Math.max(0, (pipWindow.innerWidth || width) - 80);
             const maxTop = Math.max(0, (pipWindow.innerHeight || height) - 80);
-            clone.style.left = `${Math.min(Math.max(0, parseFloat(source.style.left) || 0), maxLeft)}px`;
-            clone.style.top = `${Math.min(Math.max(0, parseFloat(source.style.top) || 0), maxTop)}px`;
+            const sourceRect = source.getBoundingClientRect();
+            clone.style.left = `${Math.min(Math.max(0, sourceRect.left), maxLeft)}px`;
+            clone.style.top = `${Math.min(Math.max(0, sourceRect.top), maxTop)}px`;
           }
           chatHost.replaceChildren(clone);
         }

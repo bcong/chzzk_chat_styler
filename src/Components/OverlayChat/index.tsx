@@ -4,10 +4,14 @@ import { useMainStore } from '@Stores/index';
 import { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { classes } from '@Utils/index';
+import { findChatPlayerArea } from '@Utils/chatVisibility';
+import ChatVisibilityToggle from '@Components/ChatVisibilityToggle';
 
 const OverlayChat = observer(() => {
     const mainStore = useMainStore();
     const chatRef = useRef<HTMLDivElement | null>(null);
+    const [playerArea, setPlayerArea] = useState<Element | null>(() => findChatPlayerArea());
+    const [isChatVisible, setIsChatVisible] = useState(true);
     const [isView, IsView] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -25,6 +29,26 @@ const OverlayChat = observer(() => {
     const overlayBackground = mainStore.setting.get('overlay_background');
     const overlayBackgroundArea = mainStore.setting.get('overlay_background_area');
     const showNicknames = mainStore.setting.get('show_nicknames');
+
+    useEffect(() => {
+        const find = () => setPlayerArea(findChatPlayerArea());
+        const timer = setInterval(find, 250);
+        return () => clearInterval(timer);
+    }, []);
+
+    const setChatPosition = (left: number, top: number) => {
+        if (!chatRef.current) return;
+        const area = playerArea?.getBoundingClientRect();
+        chatRef.current.style.left = `${left - (area?.left ?? 0)}px`;
+        chatRef.current.style.top = `${top - (area?.top ?? 0)}px`;
+    };
+
+    useEffect(() => {
+        const find = () => setPlayerArea(findChatPlayerArea());
+        find();
+        const timer = setInterval(find, 500);
+        return () => clearInterval(timer);
+    }, []);
 
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!chatRef.current) return;
@@ -48,9 +72,7 @@ const OverlayChat = observer(() => {
         const newTop = offset.y + currentY;
 
         setPosition({ left: newLeft, top: newTop });
-
-        chatRef.current.style.left = `${newLeft}px`;
-        chatRef.current.style.top = `${newTop}px`;
+        setChatPosition(newLeft, newTop);
     };
 
     const handleMouseUp = () => {
@@ -96,9 +118,7 @@ const OverlayChat = observer(() => {
             }
 
             setPosition({ left: newLeft, top: newTop });
-
-            chatRef.current.style.left = `${newLeft}px`;
-            chatRef.current.style.top = `${newTop}px`;
+            setChatPosition(newLeft, newTop);
 
             mainStore.setSetting('overlay_x', newLeft, true);
             mainStore.setSetting('overlay_y', newTop, true);
@@ -118,9 +138,7 @@ const OverlayChat = observer(() => {
         const top = mainStore.setting.get('overlay_y') || 0;
 
         setPosition({ left, top });
-
-        chatRef.current.style.left = `${left}px`;
-        chatRef.current.style.top = `${top}px`;
+        setChatPosition(left, top);
         IsView(true);
     }, []);
 
@@ -178,6 +196,7 @@ const OverlayChat = observer(() => {
     });
 
     const chatBackgroundStyle = `linear-gradient(0deg, rgba(0, 0, 0, ${overlayBackgroundOpacity}%) ${overlayBackgroundArea}%, rgba(0, 0, 0, 0) 100%)`;
+    const area = playerArea?.getBoundingClientRect();
 
     return ReactDOM.createPortal(
         <div
@@ -186,13 +205,18 @@ const OverlayChat = observer(() => {
             id="chatStylerOverlayChat"
             onMouseDown={handleMouseDown}
             style={{
-                left: `${position.left}px`,
-                top: `${position.top}px`,
-                background: overlayBackground ? chatBackgroundStyle : '',
+                position: playerArea ? 'absolute' : 'fixed',
+                left: `${position.left - (area?.left ?? 0)}px`,
+                top: `${position.top - (area?.top ?? 0)}px`,
+                background: overlayBackground && isChatVisible ? chatBackgroundStyle : '',
+                zIndex: playerArea ? 1 : 13000,
+                pointerEvents: isChatVisible ? 'auto' : 'none',
             }}>
-            {chatsElem}
+            <ChatVisibilityToggle visible={isChatVisible} onToggle={() => setIsChatVisible((visible) => !visible)}>
+                {chatsElem}
+            </ChatVisibilityToggle>
         </div>,
-        document.body,
+        playerArea ?? document.body,
     );
 });
 
