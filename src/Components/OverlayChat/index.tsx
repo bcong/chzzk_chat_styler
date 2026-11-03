@@ -4,7 +4,7 @@ import { useMainStore } from '@Stores/index';
 import { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { classes } from '@Utils/index';
-import { findChatPlayerArea } from '@Utils/chatVisibility';
+import { findChatPlayerArea, getOverlayChatSide } from '@Utils/chatVisibility';
 import ChatVisibilityToggle from '@Components/ChatVisibilityToggle';
 
 const OverlayChat = observer(() => {
@@ -197,6 +197,12 @@ const OverlayChat = observer(() => {
 
     const chatBackgroundStyle = `linear-gradient(0deg, rgba(0, 0, 0, ${overlayBackgroundOpacity}%) ${overlayBackgroundArea}%, rgba(0, 0, 0, 0) 100%)`;
     const area = playerArea?.getBoundingClientRect();
+    const overlayRect = chatRef.current?.getBoundingClientRect();
+    const toggleSide = getOverlayChatSide(
+        overlayRect?.left ?? position.left,
+        overlayRect?.width ?? Number(overlayViewWidth),
+        window.innerWidth,
+    );
 
     return ReactDOM.createPortal(
         <div
@@ -212,7 +218,11 @@ const OverlayChat = observer(() => {
                 zIndex: playerArea ? 1 : 13000,
                 pointerEvents: isChatVisible ? 'auto' : 'none',
             }}>
-            <ChatVisibilityToggle visible={isChatVisible} onToggle={() => setIsChatVisible((visible) => !visible)}>
+            <ChatVisibilityToggle
+                fontSize={Number(overlayFontSize)}
+                side={toggleSide}
+                visible={isChatVisible}
+                onToggle={() => setIsChatVisible((visible) => !visible)}>
                 {chatsElem}
             </ChatVisibilityToggle>
         </div>,

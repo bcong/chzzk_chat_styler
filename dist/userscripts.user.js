@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CHZZK (치지직) - 채팅 스타일러
 // @namespace    https://github.com/bcong
-// @version      20261103151949
+// @version      20261103154426
 // @author       비콩
 // @description  새로운 채팅 환경
 // @license      MIT
@@ -443,27 +443,26 @@ img {
 ._FrameChat_mz2ar_1 ._Chat_mz2ar_23._Background_mz2ar_64 ._MessageContainer_mz2ar_29 {
   padding: 4px 8px;
 }
-._ChatArea_mdbto_1 {
+._ChatArea_19el3_1 {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  min-width: 28px;
-  min-height: 28px;
+  min-width: 24px;
+  min-height: 24px;
 }
-._Messages_mdbto_9 {
+._Messages_19el3_9 {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   pointer-events: none;
 }
-._Toggle_mdbto_12 {
+._Toggle_19el3_15 {
   position: absolute;
-  top: -30px;
-  right: 0;
   z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
   padding: 0;
   border: 0;
   border-radius: 6px;
@@ -473,14 +472,22 @@ img {
   cursor: pointer;
   transition: opacity 0.15s;
 }
-._Toggle_mdbto_12:hover {
+._Toggle_19el3_15:hover {
   background: rgba(0, 0, 0, 0.9);
 }
-._Toggle_mdbto_12:focus-visible {
+._Toggle_19el3_15:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 2px;
 }
-._Visible_mdbto_38 {
+._Left_19el3_37 {
+  left: 0;
+  right: auto;
+}
+._Right_19el3_41 {
+  right: 0;
+  left: auto;
+}
+._Visible_19el3_45 {
   opacity: 1;
 }
 ._OverlayChat_18pdb_1 {
@@ -11803,6 +11810,10 @@ img {
             value: true
           },
           {
+            key: "fullscreen_only_chat",
+            value: false
+          },
+          {
             key: "overlay_view_count",
             value: 10
           },
@@ -12447,6 +12458,16 @@ img {
           ]
         },
         {
+          name: "전체 화면에서만 표시",
+          values: [
+            {
+              type: "toggle",
+              value: mainStore.setting.get("fullscreen_only_chat"),
+              cb: (value) => mainStore.setSetting("fullscreen_only_chat", value, true)
+            }
+          ]
+        },
+        {
           name: "닉네임 표시",
           values: [
             {
@@ -12854,7 +12875,7 @@ img {
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.Content, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Setting, {}) }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$8.Version, children: [
                 "빌드 버전: ",
-                "20261103151949"
+                "20261103154426"
               ] })
             ]
           }
@@ -12893,21 +12914,34 @@ img {
     };
     const shouldRenderChat = (hasPlayer, hasSeenPlayer) => hasPlayer || hasSeenPlayer;
     const shouldFloatChat = (hasPlayer) => !hasPlayer;
-    const ChatArea = "_ChatArea_mdbto_1";
-    const Messages = "_Messages_mdbto_9";
-    const Toggle = "_Toggle_mdbto_12";
-    const Visible = "_Visible_mdbto_38";
+    const getOverlayChatSide = (left, width, viewportWidth) => left + width / 2 <= viewportWidth / 2 ? "left" : "right";
+    const shouldShowFullscreenChat = (fullscreenOnly, isFullscreen) => !fullscreenOnly || isFullscreen;
+    const isChatPlayerFullscreen = (fullscreenElement, playerArea, playerFullscreenClass) => {
+      if (!playerArea) return false;
+      if (playerFullscreenClass) return true;
+      return !!fullscreenElement && (fullscreenElement === playerArea || fullscreenElement.contains(playerArea) || playerArea.contains(fullscreenElement));
+    };
+    const ChatArea = "_ChatArea_19el3_1";
+    const Messages = "_Messages_19el3_9";
+    const Toggle = "_Toggle_19el3_15";
+    const Left = "_Left_19el3_37";
+    const Right = "_Right_19el3_41";
+    const Visible = "_Visible_19el3_45";
     const styles$1 = {
       ChatArea,
       Messages,
       Toggle,
+      Left,
+      Right,
       Visible
     };
-    const ChatVisibilityToggle = ({ visible, onToggle, children }) => {
+    const ChatVisibilityToggle = ({ fontSize, visible, onToggle, side, children }) => {
       const areaRef = reactExports.useRef(null);
       const buttonRef = reactExports.useRef(null);
       const hideTimer = reactExports.useRef(null);
       const [isControlVisible, setIsControlVisible] = reactExports.useState(false);
+      const buttonSize = Math.max(24, Math.round(fontSize * 1.8));
+      const iconSize = Math.max(16, Math.round(fontSize * 1.2));
       const showControl = reactExports.useCallback(() => {
         if (hideTimer.current !== null) {
           clearTimeout(hideTimer.current);
@@ -12965,8 +12999,17 @@ img {
                 ref: buttonRef,
                 type: "button",
                 "data-chat-visibility-toggle": true,
-                className: classes(styles$1.Toggle, isControlVisible ? styles$1.Visible : false),
-                style: { pointerEvents: isControlVisible ? "auto" : "none" },
+                className: classes(
+                  styles$1.Toggle,
+                  isControlVisible ? styles$1.Visible : false,
+                  side === "left" ? styles$1.Left : styles$1.Right
+                ),
+                style: {
+                  width: buttonSize,
+                  height: buttonSize,
+                  top: -(buttonSize + 2),
+                  pointerEvents: isControlVisible ? "auto" : "none"
+                },
                 "aria-label": visible ? "채팅 숨기기" : "채팅 표시",
                 "aria-pressed": visible,
                 title: visible ? "채팅 숨기기" : "채팅 표시",
@@ -12991,6 +13034,7 @@ img {
                     strokeWidth: "2",
                     strokeLinecap: "round",
                     strokeLinejoin: "round",
+                    style: { width: iconSize, height: iconSize },
                     children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" }),
                       visible ? /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "12", r: "3" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "m3 3 18 18" })
@@ -13135,7 +13179,16 @@ img {
               paddingTop: `${frameOffsetY}px`,
               paddingBottom: `${frameOffsetY}px`
             },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChatVisibilityToggle, { visible: isChatVisible, onToggle: () => setIsChatVisible((visible) => !visible), children: chatsElem })
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              ChatVisibilityToggle,
+              {
+                fontSize: Number(frameFontSize),
+                side: frameChatPosition === 2 || frameChatPosition === 3 ? "right" : "left",
+                visible: isChatVisible,
+                onToggle: () => setIsChatVisible((visible) => !visible),
+                children: chatsElem
+              }
+            )
           }
         ),
         portalTarget
@@ -13160,6 +13213,7 @@ img {
       Background
     };
     const OverlayChat = observer(() => {
+      var _a2;
       const mainStore = useMainStore();
       const chatRef = reactExports.useRef(null);
       const [playerArea, setPlayerArea] = reactExports.useState(() => findChatPlayerArea());
@@ -13321,6 +13375,12 @@ img {
       });
       const chatBackgroundStyle = `linear-gradient(0deg, rgba(0, 0, 0, ${overlayBackgroundOpacity}%) ${overlayBackgroundArea}%, rgba(0, 0, 0, 0) 100%)`;
       const area = playerArea == null ? void 0 : playerArea.getBoundingClientRect();
+      const overlayRect = (_a2 = chatRef.current) == null ? void 0 : _a2.getBoundingClientRect();
+      const toggleSide = getOverlayChatSide(
+        (overlayRect == null ? void 0 : overlayRect.left) ?? position.left,
+        (overlayRect == null ? void 0 : overlayRect.width) ?? Number(overlayViewWidth),
+        window.innerWidth
+      );
       return ReactDOM.createPortal(
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
@@ -13337,7 +13397,16 @@ img {
               zIndex: playerArea ? 1 : 13e3,
               pointerEvents: isChatVisible ? "auto" : "none"
             },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChatVisibilityToggle, { visible: isChatVisible, onToggle: () => setIsChatVisible((visible) => !visible), children: chatsElem })
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              ChatVisibilityToggle,
+              {
+                fontSize: Number(overlayFontSize),
+                side: toggleSide,
+                visible: isChatVisible,
+                onToggle: () => setIsChatVisible((visible) => !visible),
+                children: chatsElem
+              }
+            )
           }
         ),
         playerArea ?? document.body
@@ -13345,7 +13414,61 @@ img {
     });
     const Chat = observer(() => {
       const mainStore = useMainStore();
+      const [isFullscreen, setIsFullscreen] = reactExports.useState(false);
+      reactExports.useEffect(() => {
+        let observedArea = null;
+        let observedPlayer = null;
+        const updateFullscreen = () => {
+          const playerArea = findChatPlayerArea();
+          const player = (playerArea == null ? void 0 : playerArea.matches(".pzp-pc")) ? playerArea : (playerArea == null ? void 0 : playerArea.querySelector(".pzp-pc")) ?? null;
+          const playerFullscreenClass = !!((playerArea == null ? void 0 : playerArea.matches(".pzp-pc--fullscreen")) || (playerArea == null ? void 0 : playerArea.querySelector(".pzp-pc--fullscreen")) || (player == null ? void 0 : player.classList.contains("pzp-pc--fullscreen")));
+          setIsFullscreen(
+            isChatPlayerFullscreen(document.fullscreenElement, playerArea, playerFullscreenClass)
+          );
+        };
+        const playerObserver = new MutationObserver(updateFullscreen);
+        const areaObserver = new MutationObserver(updateFullscreen);
+        function findPlayer() {
+          const playerArea = findChatPlayerArea();
+          if (playerArea !== observedArea) {
+            areaObserver.disconnect();
+            playerObserver.disconnect();
+            observedArea = playerArea;
+            if (observedArea) {
+              areaObserver.observe(observedArea, {
+                attributes: true,
+                attributeFilter: ["class"]
+              });
+            }
+            observedPlayer = null;
+          }
+          const player = (playerArea == null ? void 0 : playerArea.querySelector(".pzp-pc")) ?? null;
+          if (player !== observedPlayer) {
+            playerObserver.disconnect();
+            observedPlayer = player;
+            if (observedPlayer) {
+              playerObserver.observe(observedPlayer, {
+                attributes: true,
+                attributeFilter: ["class"]
+              });
+            }
+          }
+          updateFullscreen();
+        }
+        document.addEventListener("fullscreenchange", updateFullscreen);
+        document.addEventListener("webkitfullscreenchange", updateFullscreen);
+        const interval = window.setInterval(findPlayer, 500);
+        findPlayer();
+        return () => {
+          document.removeEventListener("fullscreenchange", updateFullscreen);
+          document.removeEventListener("webkitfullscreenchange", updateFullscreen);
+          clearInterval(interval);
+          areaObserver.disconnect();
+          playerObserver.disconnect();
+        };
+      }, []);
       if (!mainStore.setting.get("enable")) return null;
+      if (!shouldShowFullscreenChat(!!mainStore.setting.get("fullscreen_only_chat"), isFullscreen)) return null;
       switch (mainStore.setting.get("chat_style")) {
         case 0:
           return /* @__PURE__ */ jsxRuntimeExports.jsx(OverlayChat, {});

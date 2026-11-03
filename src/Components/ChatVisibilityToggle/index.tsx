@@ -4,16 +4,20 @@ import { classes } from '@Utils/index';
 import styles from './style.module.less';
 
 type Props = {
+    fontSize: number;
     visible: boolean;
     onToggle: () => void;
+    side: 'left' | 'right';
     children: ReactNode;
 };
 
-const ChatVisibilityToggle = ({ visible, onToggle, children }: Props) => {
+const ChatVisibilityToggle = ({ fontSize, visible, onToggle, side, children }: Props) => {
     const areaRef = useRef<HTMLDivElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const hideTimer = useRef<number | null>(null);
     const [isControlVisible, setIsControlVisible] = useState(false);
+    const buttonSize = Math.max(24, Math.round(fontSize * 1.8));
+    const iconSize = Math.max(16, Math.round(fontSize * 1.2));
 
     const showControl = useCallback(() => {
         if (hideTimer.current !== null) {
@@ -73,8 +77,17 @@ const ChatVisibilityToggle = ({ visible, onToggle, children }: Props) => {
                 ref={buttonRef}
                 type="button"
                 data-chat-visibility-toggle
-                className={classes(styles.Toggle, isControlVisible ? styles.Visible : false)}
-                style={{ pointerEvents: isControlVisible ? 'auto' : 'none' }}
+                className={classes(
+                    styles.Toggle,
+                    isControlVisible ? styles.Visible : false,
+                    side === 'left' ? styles.Left : styles.Right,
+                )}
+                style={{
+                    width: buttonSize,
+                    height: buttonSize,
+                    top: -(buttonSize + 2),
+                    pointerEvents: isControlVisible ? 'auto' : 'none',
+                }}
                 aria-label={visible ? '채팅 숨기기' : '채팅 표시'}
                 aria-pressed={visible}
                 title={visible ? '채팅 숨기기' : '채팅 표시'}
@@ -96,7 +109,8 @@ const ChatVisibilityToggle = ({ visible, onToggle, children }: Props) => {
                     stroke="currentColor"
                     strokeWidth="2"
                     strokeLinecap="round"
-                    strokeLinejoin="round">
+                    strokeLinejoin="round"
+                    style={{ width: iconSize, height: iconSize }}>
                     <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" />
                     {visible ? <circle cx="12" cy="12" r="3" /> : <path d="m3 3 18 18" />}
                 </svg>

@@ -150,7 +150,11 @@ const FrameChat = observer(() => {
                 paddingTop: `${frameOffsetY}px`,
                 paddingBottom: `${frameOffsetY}px`,
             }}>
-            <ChatVisibilityToggle visible={isChatVisible} onToggle={() => setIsChatVisible((visible) => !visible)}>
+            <ChatVisibilityToggle
+                fontSize={Number(frameFontSize)}
+                side={frameChatPosition === 2 || frameChatPosition === 3 ? 'right' : 'left'}
+                visible={isChatVisible}
+                onToggle={() => setIsChatVisible((visible) => !visible)}>
                 {chatsElem}
             </ChatVisibilityToggle>
         </div>,
